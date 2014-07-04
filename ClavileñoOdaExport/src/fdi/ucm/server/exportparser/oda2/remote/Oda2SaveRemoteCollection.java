@@ -37,7 +37,8 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	 * @see fdi.ucm.server.SaveCollection#processCollecccion(fdi.ucm.shared.model.collection.Collection)
 	 */
 	@Override
-	public CompleteCollectionLog processCollecccion(CompleteCollection Salvar) throws CompleteImportRuntimeException{
+	public CompleteCollectionLog processCollecccion(CompleteCollection Salvar,
+			String PathTemporalFiles) throws CompleteImportRuntimeException{
 		try {
 			
 			CompleteCollectionLog CL=new CompleteCollectionLog();
@@ -129,6 +130,16 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	@Override
 	public String getName() {
 		return ODA;
+	}
+
+	@Override
+	public boolean isFileOutput() {
+		return false;
+	}
+
+	@Override
+	public String FileOutput() {
+		return "";
 	}
 
 
