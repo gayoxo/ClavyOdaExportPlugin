@@ -964,7 +964,7 @@ public class SaveProcessMainOdA2 {
 
 	private String SQLScaped(String value) {
 		String Salida=value;
-		Salida=Salida.replace("'", "\\\\'");
+		Salida=Salida.replace("'", "''");
 		Salida=Salida.replace("\"", "\\\"");
 		return Salida;
 	}
