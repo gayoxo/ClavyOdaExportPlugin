@@ -860,7 +860,7 @@ public class SaveProcessMainOdA2 {
 					
 					if (idovrefVal!=null)
 					{
-						Integer Idov=tabla.get(recursoAProcesarC);
+						Integer Idov=tabla.get(idovrefVal.getValue());
 					
 						
 						if  (FIleRel!=null && Idov!=null && (FIleRel instanceof CompleteResourceElementFile))
