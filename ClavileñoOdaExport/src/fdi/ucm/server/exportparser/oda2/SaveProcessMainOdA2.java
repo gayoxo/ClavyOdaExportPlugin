@@ -806,7 +806,7 @@ public class SaveProcessMainOdA2 {
 	 * @param idov
 	 */
 	private void procesa_descripcion(CompleteDocuments objetoDigital, Integer Idov) {
-		MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `text_data` (`idov`, `idseccion`, `value`) VALUES ('"+Idov+"', '111', '"+objetoDigital.getDescriptionText()+"');");
+		MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `text_data` (`idov`, `idseccion`, `value`) VALUES ('"+Idov+"', '111', '"+SQLScaped(objetoDigital.getDescriptionText())+"');");
 		
 	}
 
@@ -922,7 +922,7 @@ public class SaveProcessMainOdA2 {
 				
 				if (StaticFuctionsOda2.isNumeric(attributeValue.getHastype()))
 				{
-					String value = ((CompleteTextElement) attributeValue).getValue();
+					String value = SQLScaped(((CompleteTextElement) attributeValue).getValue());
 					value=value.replace("'", "\\'");
 					MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `numeric_data` (`idov`, `idseccion`, `value`) VALUES ('"+Idov+"', '"+seccion+"', '"+value+"');");
 
@@ -950,7 +950,7 @@ public class SaveProcessMainOdA2 {
 				else
 				{
 				
-				String value = ((CompleteTextElement) attributeValue).getValue();
+				String value = SQLScaped(((CompleteTextElement) attributeValue).getValue());
 				value=value.replace("'", "\\'");
 				MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `text_data` (`idov`, `idseccion`, `value`) VALUES ('"+Idov+"', '"+seccion+"', '"+value+"');");
 				}
@@ -961,6 +961,14 @@ public class SaveProcessMainOdA2 {
 		
 		
 	}
+
+	private String SQLScaped(String value) {
+		String Salida=value;
+		Salida=Salida.replace("'", "\\\\'");
+		Salida=Salida.replace("\"", "\\\"");
+		return Salida;
+	}
+
 
 	/**
 	 * Reseta las tablas sin borrar las tablas añadidas
