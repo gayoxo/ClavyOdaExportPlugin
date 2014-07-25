@@ -984,7 +984,7 @@ public class SaveProcessMainOdA2 {
 			"PRIMARY KEY (`id`),"+
 			"KEY `idseccion` (`idseccion`),"+
 			"KEY `idov` (`idov`)"+
-			") ENGINE=MyISAM AUTO_INCREMENT=24150 DEFAULT CHARSET=utf8;");
+			") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 
 		MySQLConnectionOdA2.RunQuerry("DROP TABLE IF EXISTS `date_data`;");
@@ -995,7 +995,7 @@ public class SaveProcessMainOdA2 {
 			"`value` int(8) DEFAULT NULL,"+
 			"`idrecurso` int(11) DEFAULT NULL,"+
 			"UNIQUE KEY `id` (`id`)"+
-			") ENGINE=MyISAM AUTO_INCREMENT=1527 DEFAULT CHARSET=latin1;");
+			") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;");
 				
 		MySQLConnectionOdA2.RunQuerry("DROP TABLE IF EXISTS `numeric_data`;");
 		MySQLConnectionOdA2.RunQuerry("CREATE TABLE `numeric_data` ("+
@@ -1005,7 +1005,7 @@ public class SaveProcessMainOdA2 {
 			"`value` decimal(30,15) DEFAULT NULL,"+
 			"`idrecurso` int(11) DEFAULT NULL,"+
 			"PRIMARY KEY (`id`)"+
-			") ENGINE=MyISAM AUTO_INCREMENT=948 DEFAULT CHARSET=utf8;");
+			") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 		
 		MySQLConnectionOdA2.RunQuerry("DROP TABLE IF EXISTS `resources`;");
 		MySQLConnectionOdA2.RunQuerry("CREATE TABLE `resources` ("+
@@ -1019,7 +1019,7 @@ public class SaveProcessMainOdA2 {
 				  "`idresource_refered` int(11) DEFAULT NULL,"+
 				  "`type` varchar(255) DEFAULT NULL,"+
 				  "PRIMARY KEY (`id`)"+
-				") ENGINE=MyISAM AUTO_INCREMENT=469 DEFAULT CHARSET=utf8;");
+				") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 				MySQLConnectionOdA2.RunQuerry("DROP TABLE IF EXISTS `section_data`;");
 				MySQLConnectionOdA2.RunQuerry("CREATE TABLE `section_data` ("+
@@ -1036,7 +1036,7 @@ public class SaveProcessMainOdA2 {
 				  "`vocabulario` int(11) DEFAULT NULL,"+
 				  "`decimales` int(11) DEFAULT NULL,"+
 				  "PRIMARY KEY (`id`)"+
-				") ENGINE=MyISAM AUTO_INCREMENT=299 DEFAULT CHARSET=utf8;");
+				") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 				MySQLConnectionOdA2.RunQuerry("INSERT INTO `section_data` VALUES (2,0,'Modelo de MetaDatos','lom','metadatos','S',2,NULL,NULL,'S',0,NULL)," +
 						"(3,0,'Modelo de Datos de los Recursos','recursos','recursos','S',3,NULL,NULL,'S',0,NULL)," +
@@ -1053,7 +1053,7 @@ public class SaveProcessMainOdA2 {
 				  "`value` text,"+
 				  "`idrecurso` int(11) DEFAULT NULL,"+
 				  "PRIMARY KEY (`id`)"+
-				") ENGINE=MyISAM AUTO_INCREMENT=903 DEFAULT CHARSET=utf8;");
+				") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 				
 				MySQLConnectionOdA2.RunQuerry("DROP TABLE IF EXISTS `virtual_object`;");
 				MySQLConnectionOdA2.RunQuerry("CREATE TABLE `virtual_object` ("+
@@ -1061,7 +1061,7 @@ public class SaveProcessMainOdA2 {
 				  "`ispublic` char(1) DEFAULT NULL,"+
 				  "`isprivate` char(1) DEFAULT NULL,"+
 				  "PRIMARY KEY (`id`)"+
-				") ENGINE=MyISAM AUTO_INCREMENT=274 DEFAULT CHARSET=utf8;");
+				") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 				
 	}
@@ -1080,7 +1080,7 @@ public class SaveProcessMainOdA2 {
 		  "`contenido` text,"+
 		  "`orden` int(11) DEFAULT NULL,"+
 		 "PRIMARY KEY (`id`)"+
-		") ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;");
+		") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 	
 		MySQLConnectionOdA2.RunQuerry("INSERT INTO `contenidos_pagina`" +
 				" (`id`, `idpagina`, `tipo`, `imagen`, `contenido`, `orden`) VALUES" +
@@ -1098,7 +1098,7 @@ public class SaveProcessMainOdA2 {
 		  "PRIMARY KEY (`id`),"+
 		  "KEY `idseccion` (`idseccion`),"+
 		  "KEY `idov` (`idov`)"+
-		") ENGINE=MyISAM AUTO_INCREMENT=24150 DEFAULT CHARSET=utf8;");
+		") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 
 		MySQLConnectionOdA2.RunQuerry("DROP TABLE IF EXISTS `date_data`;");
@@ -1109,7 +1109,7 @@ public class SaveProcessMainOdA2 {
 		  "`value` int(8) DEFAULT NULL,"+
 		  "`idrecurso` int(11) DEFAULT NULL,"+
 		  "UNIQUE KEY `id` (`id`)"+
-		") ENGINE=MyISAM AUTO_INCREMENT=1527 DEFAULT CHARSET=latin1;");
+		") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;");
 
 		MySQLConnectionOdA2.RunQuerry("DROP TABLE IF EXISTS `log_modificaciones`;");
 		MySQLConnectionOdA2.RunQuerry("CREATE TABLE `log_modificaciones` ("+
@@ -1119,7 +1119,7 @@ public class SaveProcessMainOdA2 {
 		  "`tipo` varchar(2) DEFAULT NULL,"+
 		  "`idov` int(11) DEFAULT NULL,"+
 		  "PRIMARY KEY (`id`)"+
-		") ENGINE=MyISAM AUTO_INCREMENT=1614 DEFAULT CHARSET=utf8;");
+		") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 		MySQLConnectionOdA2.RunQuerry("DROP TABLE IF EXISTS `mensajes`;");
 		MySQLConnectionOdA2.RunQuerry("CREATE TABLE `mensajes` ("+
@@ -1133,7 +1133,7 @@ public class SaveProcessMainOdA2 {
 		  "`etiqueta` varchar(255) DEFAULT NULL,"+
 		  "`orden` int(11) DEFAULT NULL,"+
 		  "PRIMARY KEY (`id`)"+
-		") ENGINE=MyISAM AUTO_INCREMENT=129 DEFAULT CHARSET=utf8;");
+		") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 		
 		MySQLConnectionOdA2.RunQuerry("INSERT INTO `mensajes` (`id`, `lang`, `atributo`, `valor`, `grupo`, `formato`, `tipo`, `etiqueta`, `orden`) VALUES" +
@@ -1163,7 +1163,7 @@ public class SaveProcessMainOdA2 {
 		  "`protocolo` varchar(255) DEFAULT NULL,"+
 		  "`ventanaexterna` char(1) DEFAULT NULL,"+
 		  "PRIMARY KEY (`id`)"+
-		") ENGINE=MyISAM AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;");
+		") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 		
 		MySQLConnectionOdA2.RunQuerry("insert into `navegacion`" +
 				" (`id`, `nombre`, `tooltip`, `idpadre`, `visible`, `orden`, `tipo_contenido`, `idpagina`, `tipo`, `nombreseo`, `imagen`, `contenido`, `url`, `tiene_contenido`, `protocolo`, `ventanaexterna`)" +
@@ -1177,7 +1177,7 @@ public class SaveProcessMainOdA2 {
 		  "`value` decimal(30,15) DEFAULT NULL,"+
 		  "`idrecurso` int(11) DEFAULT NULL,"+
 		  "PRIMARY KEY (`id`)"+
-		") ENGINE=MyISAM AUTO_INCREMENT=948 DEFAULT CHARSET=utf8;");
+		") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 		
 		MySQLConnectionOdA2.RunQuerry("DROP TABLE IF EXISTS `paginas`;");
 		MySQLConnectionOdA2.RunQuerry("CREATE TABLE `paginas` ("+
@@ -1187,7 +1187,7 @@ public class SaveProcessMainOdA2 {
 		  "`visible` char(1) DEFAULT NULL,"+
 		  "`documento` varchar(255) DEFAULT NULL,"+
 		  "PRIMARY KEY (`id`)"+
-		") ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;");
+		") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 		
 		MySQLConnectionOdA2.RunQuerry("insert  into `paginas`(`id`,`titulo`,`contenido`,`visible`,`documento`) values (1,'Presentación del sitio web',NULL,'N',NULL);");
 
@@ -1199,7 +1199,7 @@ public class SaveProcessMainOdA2 {
 		  "`idov` int(11) DEFAULT NULL,"+
 		  "`tipoPermiso` char(1) DEFAULT NULL,"+
 		  "PRIMARY KEY (`id`)"+
-		") ENGINE=MyISAM AUTO_INCREMENT=199 DEFAULT CHARSET=utf8;");
+		") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 		
 		MySQLConnectionOdA2.RunQuerry("DROP TABLE IF EXISTS `preferencias_presentacion`;");
 		MySQLConnectionOdA2.RunQuerry("CREATE TABLE `preferencias_presentacion` ("+
@@ -1211,7 +1211,7 @@ public class SaveProcessMainOdA2 {
 		  "`orden` int(11) DEFAULT NULL,"+
 		  "`formato` varchar(255) DEFAULT NULL,"+
 		  "PRIMARY KEY (`id`)"+
-		") ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;");
+		") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 		
 		MySQLConnectionOdA2.RunQuerry("INSERT INTO `preferencias_presentacion` (`id`, `atributo`, `valor`, `tipo`, `etiqueta`, `orden`, `formato`) VALUES" +
 				"(1, 'portada_contenido', 'I', 'P', NULL, NULL, NULL)," +
@@ -1233,7 +1233,7 @@ public class SaveProcessMainOdA2 {
 		  "`idresource_refered` int(11) DEFAULT NULL,"+
 		  "`type` varchar(255) DEFAULT NULL,"+
 		  "PRIMARY KEY (`id`)"+
-		") ENGINE=MyISAM AUTO_INCREMENT=469 DEFAULT CHARSET=utf8;");
+		") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 		MySQLConnectionOdA2.RunQuerry("DROP TABLE IF EXISTS `section_data`;");
 		MySQLConnectionOdA2.RunQuerry("CREATE TABLE `section_data` ("+
@@ -1250,7 +1250,7 @@ public class SaveProcessMainOdA2 {
 		  "`vocabulario` int(11) DEFAULT NULL,"+
 		  "`decimales` int(11) DEFAULT NULL,"+
 		  "PRIMARY KEY (`id`)"+
-		") ENGINE=MyISAM AUTO_INCREMENT=299 DEFAULT CHARSET=utf8;");
+		") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 		MySQLConnectionOdA2.RunQuerry("INSERT INTO `section_data` VALUES (2,0,'Modelo de MetaDatos','lom','metadatos','S',2,NULL,NULL,'S',0,NULL)," +
 				"(3,0,'Modelo de Datos de los Recursos','recursos','recursos','S',3,NULL,NULL,'S',0,NULL)," +
@@ -1267,7 +1267,7 @@ public class SaveProcessMainOdA2 {
 		  "`value` text,"+
 		  "`idrecurso` int(11) DEFAULT NULL,"+
 		  "PRIMARY KEY (`id`)"+
-		") ENGINE=MyISAM AUTO_INCREMENT=903 DEFAULT CHARSET=utf8;");
+		") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 		
 		MySQLConnectionOdA2.RunQuerry("DROP TABLE IF EXISTS `usuarios`;");
 		MySQLConnectionOdA2.RunQuerry("CREATE TABLE `usuarios` ("+
@@ -1280,7 +1280,7 @@ public class SaveProcessMainOdA2 {
 		  "`rol` varchar(255) DEFAULT NULL,"+
 		  "`ultimo_acceso` varchar(20) DEFAULT NULL,"+
 		  "PRIMARY KEY (`id`)"+
-		") ENGINE=MyISAM AUTO_INCREMENT=139 DEFAULT CHARSET=utf8;");
+		") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 		
 
 		MySQLConnectionOdA2.RunQuerry("INSERT INTO `usuarios` VALUES (11,'admin1','admin2','test@test.test','admin','admin','B','20121112035440')," +
@@ -1293,7 +1293,7 @@ public class SaveProcessMainOdA2 {
 		  "`ispublic` char(1) DEFAULT NULL,"+
 		  "`isprivate` char(1) DEFAULT NULL,"+
 		  "PRIMARY KEY (`id`)"+
-		") ENGINE=MyISAM AUTO_INCREMENT=274 DEFAULT CHARSET=utf8;");
+		") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
 	
 		
