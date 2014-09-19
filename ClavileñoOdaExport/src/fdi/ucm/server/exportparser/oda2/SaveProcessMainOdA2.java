@@ -944,6 +944,7 @@ public class SaveProcessMainOdA2 {
 				else if (StaticFuctionsOda2.isControled(attributeValue.getHastype()))
 				{
 					String value = ((CompleteTextElement) attributeValue).getValue();
+					value=value.replace("'", "\\'");
 					if (value!=null)
 						MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `controlled_data` (`idov`, `idseccion`, `value`) VALUES ('"+Idov+"', '"+seccion+"', '"+value+"');");
 				}
@@ -979,7 +980,7 @@ public class SaveProcessMainOdA2 {
 			" `id` int(11) NOT NULL AUTO_INCREMENT,"+
 			" `idov` int(11) DEFAULT NULL,"+
 			"`idseccion` int(11) DEFAULT NULL,"+
-			"`value` varchar(255) DEFAULT NULL,"+
+			"`value` text DEFAULT NULL,"+
 			"`idrecurso` int(11) DEFAULT NULL,"+
 			"PRIMARY KEY (`id`),"+
 			"KEY `idseccion` (`idseccion`),"+
@@ -1093,7 +1094,7 @@ public class SaveProcessMainOdA2 {
 		 " `id` int(11) NOT NULL AUTO_INCREMENT,"+
 		 " `idov` int(11) DEFAULT NULL,"+
 		  "`idseccion` int(11) DEFAULT NULL,"+
-		  "`value` varchar(255) DEFAULT NULL,"+
+		  "`value` text DEFAULT NULL,"+
 		  "`idrecurso` int(11) DEFAULT NULL,"+
 		  "PRIMARY KEY (`id`),"+
 		  "KEY `idseccion` (`idseccion`),"+
