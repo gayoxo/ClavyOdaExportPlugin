@@ -296,6 +296,12 @@ public class SaveProcessMainOdA2 {
 					ModeloOda.put(attribute, Salida);
 					processModelo(attribute.getSons(),Salida);
 				}
+			else if (StaticFuctionsOda2.isResources(attribute))
+			{
+				Salida=3;
+				ModeloOda.put(attribute, Salida);
+				processModelo(attribute.getSons(),Salida);
+			}
 				
 
 		}

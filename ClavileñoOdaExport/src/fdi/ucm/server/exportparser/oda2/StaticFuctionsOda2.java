@@ -335,6 +335,30 @@ public class StaticFuctionsOda2 {
 		return false;
 	}
 
+	
+	/**
+	 * Revisa si un elemento es Recursos
+	 * @param hastype
+	 * @return
+	 */
+	public static boolean isRecursos(CompleteElementType hastype) {
+		
+		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
+		for (CompleteOperationalView show : Shows) {
+			
+			if (show.getName().equals(StaticNamesOda2.META))
+			{
+				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
+				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
+					if (CompleteOperationalValueType.getName().equals(StaticNamesOda2.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesOda2.RECURSO)) 
+										return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Revisa si un elemento es Extensible
 	 * @param hastype

@@ -17,7 +17,8 @@ public class StaticNamesOda2 {
 	public static final String FILERESOURCE = "File Resource";
 	public static final String METADATOS = "Metadatos";
 	public static final String DATOS = "Datos";
-	public static final String RESOURCE = "Recursos";
+	public static final String RECURSO = "Recursos";
+	public static final String RESOURCE = "Resource";
 	public static final String IDOV_OWNER = "Idov Owner";
 	
 	//ODA
