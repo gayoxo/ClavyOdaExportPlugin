@@ -266,6 +266,8 @@ public class SaveProcessMainOdA2 {
 					Salida.add((CompleteElementType) iterable_element);
 				else if (StaticFuctionsOda2.isDatos((CompleteElementType) iterable_element))
 					Salida.add((CompleteElementType) iterable_element);
+				else if (StaticFuctionsOda2.isRecursos((CompleteElementType) iterable_element))
+					Salida.add((CompleteElementType) iterable_element);
 		}
 		return Salida;
 	}
