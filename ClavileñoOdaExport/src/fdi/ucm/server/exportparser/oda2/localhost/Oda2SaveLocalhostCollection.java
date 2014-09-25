@@ -22,7 +22,7 @@ import fdi.ucm.server.modelComplete.collection.CompleteCollectionLog;
  */
 public class Oda2SaveLocalhostCollection extends SaveCollection {
 
-	private static final String ODA = "Oda 2.0 en ModelEditorLocalhost";
+	private static final String ODA = "Oda 2.0 en Servidor Local (copia completa)";
 	private static final String ErrorCreandoCarpeta = "Error creando carpeta";
 	private static final String ErrorDeProceso = "Error creando proceso de crear carpeta";
 	private Boolean Merge;

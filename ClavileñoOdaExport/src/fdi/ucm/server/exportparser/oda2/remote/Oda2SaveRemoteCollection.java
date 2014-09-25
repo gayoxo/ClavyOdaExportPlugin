@@ -22,7 +22,7 @@ import fdi.ucm.server.modelComplete.collection.CompleteCollectionLog;
  */
 public class Oda2SaveRemoteCollection extends SaveCollection {
 
-	private static final String ODA = "Oda 2.0 en Remoto";
+	private static final String ODA = "Oda 2.0 en servidor remoto (MySQL only)";
 	private Boolean Merge;
 	private ArrayList<ImportExportPair> Parametros;
 	private boolean Create;
