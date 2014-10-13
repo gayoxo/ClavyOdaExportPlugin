@@ -287,8 +287,8 @@ public class SaveProcessMainOdA2 {
 			{
 			for (CompleteStructure completeElementType : iterable_element.getSons()) {
 				
-				if ((iterable_element instanceof CompleteElementType)&&(StaticFuctionsOda2.isResources((CompleteElementType) completeElementType)))
-					Salida.add((CompleteElementType) iterable_element);
+				if ((completeElementType instanceof CompleteElementType)&&(StaticFuctionsOda2.isResources((CompleteElementType) completeElementType)))
+					Salida.add((CompleteElementType) completeElementType);
 			}
 			
 			}
@@ -1085,20 +1085,12 @@ public class SaveProcessMainOdA2 {
 	 * @return
 	 */
 	private boolean dependedelfile(CompleteStructure hastype) {
-		if (hastype.getFather()!=null&&(hastype.getFather()instanceof CompleteElementType)&&!StaticFuctionsOda2.isResources((CompleteElementType) hastype.getFather()))
-			return dependedelfile((CompleteElementType) hastype.getFather());
-		else
 			if (hastype.getFather()==null)
 				return false;
-			else if (hastype.getFather() instanceof CompleteIterator)
-			{
-			for (CompleteStructure iterable_element : hastype.getFather().getSons()) 
-				if (dependedelfile(iterable_element))
-					return true;
-			}
 			else if ((hastype.getFather()instanceof CompleteElementType)&&StaticFuctionsOda2.isResources((CompleteElementType) hastype.getFather()))
 				return true;
-		return false;
+			else 
+				return dependedelfile(hastype.getFather());
 	}
 
 
