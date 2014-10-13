@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 
 import fdi.ucm.server.modelComplete.CompleteImportRuntimeException;
 import fdi.ucm.server.modelComplete.collection.CompleteCollection;
+import fdi.ucm.server.modelComplete.collection.CompleteCollectionLog;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteFile;
@@ -44,7 +45,6 @@ public class SaveProcessMainOdA2 {
 	private static final String ERROR_DE_CREACION_POR_FALTA_DE_OV_DUEÑO_EN_LOS_DOCUMENTOS_FILE = "Error de creacion por falta de OV dueño en los documentos File";
 	private static final String ERROR_DE_CREACION_POR_FALTA_DE_FILE_FISICO_EN_LOS_DOCUMENTOS_FILE = "Error de creacion por falta de File Fisico en los documentos File";
 	private static final String EXISTE_ERROR_EN_EL_PARSEADO_DE_LAS_ITERACIONES = "Existe error en el parseado de las iteraciones.";
-	private static final String ERROR_DE_CREACION_POR_FALTA_DE_META_FILE = "Error de creacion por falta de Meta File.";
 	private static final String ERROR_DE_CREACION_POR_FALTA_DE_META_OBJETO_VIRTUAL = "Error de creacion por falta de Meta Objeto virtual.";
 	private CompleteCollection toOda;
 	private HashMap<CompleteElementType, Integer> ModeloOda;
@@ -53,12 +53,14 @@ public class SaveProcessMainOdA2 {
 	private HashSet<Integer> Procesed;
 	private HashMap<Integer,CompleteFile>  Iconos;
 	private HashMap<CompleteDocuments, Integer> tabla;
+	private CompleteCollectionLog ColectionLog;
 
 	/**
 	 * Constructor por defecto
+	 * @param cL 
 	 * @param Coleccion coleccion a insertar en oda.
 	 */
-	public SaveProcessMainOdA2(CompleteCollection coleccion){
+	public SaveProcessMainOdA2(CompleteCollection coleccion, CompleteCollectionLog cL){
 		toOda=coleccion;
 		ModeloOda=new HashMap<CompleteElementType, Integer>();
 		Vocabularios=new HashSet<Integer>();
@@ -66,6 +68,31 @@ public class SaveProcessMainOdA2 {
 		Iconos=new HashMap<Integer, CompleteFile>();
 		VocabulariosSalida=new HashMap<Integer, Integer>();
 		tabla=new HashMap<CompleteDocuments, Integer>();
+		ColectionLog=cL;
+	}
+
+	
+
+	/**
+	 * Procesa la clase
+	 * @throws ImportRuntimeException en caso de errores varios. Consultar el error en {@link CompleteImportRuntimeException}
+	 */
+	public void preocess() throws CompleteImportRuntimeException {
+		
+		ProcessValidacion();
+
+		
+		ArrayList<CompleteStructure> DatosYMeta=new ArrayList<CompleteStructure>();
+		
+		
+		ArrayList<CompleteElementType> MetaDatos=findMetaDatos();
+		if (MetaDatos!=null)
+			DatosYMeta.addAll(MetaDatos);
+		
+		
+		processModeloIniciales(DatosYMeta);	
+		
+		processOV(toOda.getEstructuras());
 		
 	}
 
@@ -196,42 +223,30 @@ public class SaveProcessMainOdA2 {
 	 */
 	private void ProcessValidacion() {
 		if (!findVOM())
+			{
+			ColectionLog.getLogLines().add(ERROR_DE_CREACION_POR_FALTA_DE_META_OBJETO_VIRTUAL);
 			throw new CompleteImportRuntimeException(ERROR_DE_CREACION_POR_FALTA_DE_META_OBJETO_VIRTUAL);
+			}
 		
-		if (!findFile())
-			throw new CompleteImportRuntimeException(ERROR_DE_CREACION_POR_FALTA_DE_META_FILE);
+		if (findFile())
+		{
+			if (!findFileFisico())
+				{
+				ColectionLog.getLogLines().add(ERROR_DE_CREACION_POR_FALTA_DE_FILE_FISICO_EN_LOS_DOCUMENTOS_FILE);
+				throw new CompleteImportRuntimeException(ERROR_DE_CREACION_POR_FALTA_DE_FILE_FISICO_EN_LOS_DOCUMENTOS_FILE);
+				}
+			
+			if (!findFileOwner())
+				{
+				ColectionLog.getLogLines().add(ERROR_DE_CREACION_POR_FALTA_DE_OV_DUEÑO_EN_LOS_DOCUMENTOS_FILE);
+				throw new CompleteImportRuntimeException(ERROR_DE_CREACION_POR_FALTA_DE_OV_DUEÑO_EN_LOS_DOCUMENTOS_FILE);
+				}
+		}
 		
-		if (!findFileFisico())
-			throw new CompleteImportRuntimeException(ERROR_DE_CREACION_POR_FALTA_DE_FILE_FISICO_EN_LOS_DOCUMENTOS_FILE);
 		
-		if (!findFileOwner())
-			throw new CompleteImportRuntimeException(ERROR_DE_CREACION_POR_FALTA_DE_OV_DUEÑO_EN_LOS_DOCUMENTOS_FILE);
 	}
 	
 
-
-	/**
-	 * Procesa la clase
-	 * @throws ImportRuntimeException en caso de errores varios. Consultar el error en {@link CompleteImportRuntimeException}
-	 */
-	public void preocess() throws CompleteImportRuntimeException {
-		
-		ProcessValidacion();
-
-		
-		ArrayList<CompleteStructure> DatosYMeta=new ArrayList<CompleteStructure>();
-		
-		
-		ArrayList<CompleteElementType> MetaDatos=findMetaDatos();
-		if (MetaDatos!=null)
-			DatosYMeta.addAll(MetaDatos);
-		
-		
-		processModeloIniciales(DatosYMeta);	
-		
-		processOV(toOda.getEstructuras());
-		
-	}
 
 	
 
@@ -262,12 +277,22 @@ public class SaveProcessMainOdA2 {
 		ArrayList<CompleteElementType> Salida=new ArrayList<CompleteElementType>();
 		for (CompleteStructure iterable_element : elementType.getSons()) {
 			if (iterable_element instanceof CompleteElementType)
+				{
 				if (StaticFuctionsOda2.isMetaDatos((CompleteElementType) iterable_element))
 					Salida.add((CompleteElementType) iterable_element);
 				else if (StaticFuctionsOda2.isDatos((CompleteElementType) iterable_element))
 					Salida.add((CompleteElementType) iterable_element);
-				else if (StaticFuctionsOda2.isRecursos((CompleteElementType) iterable_element))
+				}
+			else if (iterable_element instanceof CompleteIterator)
+			{
+			for (CompleteStructure completeElementType : iterable_element.getSons()) {
+				
+				if ((iterable_element instanceof CompleteElementType)&&(StaticFuctionsOda2.isResources((CompleteElementType) completeElementType)))
 					Salida.add((CompleteElementType) iterable_element);
+			}
+			
+			}
+					
 		}
 		return Salida;
 	}
@@ -298,7 +323,7 @@ public class SaveProcessMainOdA2 {
 					ModeloOda.put(attribute, Salida);
 					processModelo(attribute.getSons(),Salida);
 				}
-			else if (StaticFuctionsOda2.isRecursos(attribute))
+			else if (StaticFuctionsOda2.isResources(attribute))
 			{
 				Salida=3;
 				ModeloOda.put(attribute, Salida);
@@ -837,9 +862,10 @@ public class SaveProcessMainOdA2 {
 	 * @param recursoAProcesar Recurso que sera procesado
 	 * @param idov identificador del sueño del recurso.
 	 * @param visibleValue2 
+	 * @return 
 	 * @throws ImportRuntimeException si el elemento no tiene un campo en su descripcion necesario.
 	 */
-	private void procesa_recursos(CompleteDocuments recursoAProcesar, Integer idov, boolean visibleValue2) throws CompleteImportRuntimeException {
+	private int procesa_recursos(CompleteDocuments recursoAProcesar, Integer idov, boolean visibleValue2) throws CompleteImportRuntimeException {
 
 		
 		boolean visBool=visibleValue2;
@@ -857,7 +883,12 @@ public class SaveProcessMainOdA2 {
 					
 					Integer Idov=tabla.get(recursoAProcesarC);
 					if (Idov!=null)
-						MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `idov_refered`, `type`) VALUES ('"+idov+"', '"+VisString+"','N', '"+Idov+"','OV')");	
+						 {
+						int Salida = MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `idov_refered`, `type`) VALUES ('"+idov+"', '"+VisString+"','N', '"+Idov+"','OV')");	
+						return Salida;
+						 }
+					else
+						ColectionLog.getLogLines().add("Link a objeto virtual: "+ recursoAProcesarC.getDescriptionText()+ "no existe en la lista de recursos, pero tiene un link, IGNORADO" );
 				}
 				else
 					if (StaticFuctionsOda2.isAFile(recursoAProcesarC))
@@ -881,16 +912,22 @@ public class SaveProcessMainOdA2 {
 								String[] spliteStri=(((CompleteResourceElementFile)FIleRel).getValue()).getPath().split("/");
 								String NameS = spliteStri[spliteStri.length-1];
 								if (Idov==idov)
-									MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `name`, `type`) VALUES ('"+idov+"', '"+VisString+"','"+iconoov+"', '"+NameS+"', 'P' )");
+									{
+									int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `name`, `type`) VALUES ('"+idov+"', '"+VisString+"','"+iconoov+"', '"+NameS+"', 'P' )");
+									return Salida;
+									}
 								else
-									MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`, `name`,`idresource_refered`, `type`) VALUES ('"+idov+"', '"+VisString+"', '"+NameS+"', '"+Idov+"','F')");
+									{
+									int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`, `name`,`idresource_refered`, `type`) VALUES ('"+idov+"', '"+VisString+"', '"+NameS+"', '"+Idov+"','F')");
+									return Salida;
+									}
 							}
-						else throw new CompleteImportRuntimeException("EL file referencia es nulo, o no es un file o el dueño no es un Objeto virtual valido con identificador");
+						else ColectionLog.getLogLines().add("EL file referencia es nulo, o no es un file o el dueño no es un Objeto virtual valido con identificadorArchivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO");
 					}
-					else throw new CompleteImportRuntimeException("El objeto dueño es nulo o no Objetovirtual");
+					else ColectionLog.getLogLines().add("El objeto dueño del archivo es nulo o no Objeto Virtual, Archivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO ");
 				}
 
-
+				return -1;
 		
 	}
 
@@ -903,15 +940,34 @@ public class SaveProcessMainOdA2 {
 	 * @throws ImportRuntimeException en caso de errores varios. Consultar el error en {@link CompleteImportRuntimeException}
 	 */
 	private void procesa_Atributos(CompleteDocuments DO, Integer Idov) throws CompleteImportRuntimeException {
-		for (CompleteElement attributeValue : DO.getDescription()) {
-			
+		
+		ArrayList<CompleteElement> Normales=new ArrayList<CompleteElement>();
+		ArrayList<CompleteElement> Recursos=new ArrayList<CompleteElement>();
+		HashMap<Integer, Long> AmbitoSalida=new HashMap<Integer, Long>();
+		
+		for (CompleteElement attributeValue : DO.getDescription()) 
+		{
+			if (dependedelfile(attributeValue.getHastype()))
+				Recursos.add(attributeValue);
+			else
+				Normales.add(attributeValue);
+		}
+		
+		
+		
+		for (CompleteElement attributeValue : Normales) {
+						
 			if (attributeValue.getHastype() instanceof CompleteResourceElementType)
 			{
 				if (StaticFuctionsOda2.isResources(attributeValue.getHastype()))	
 				{
 					boolean VisibleValue= StaticFuctionsOda2.getVisible(((CompleteResourceElement)attributeValue));
 						if (attributeValue instanceof CompleteLinkElement)
-							procesa_recursos(((CompleteLinkElement)attributeValue).getValue(),Idov,VisibleValue);
+							{
+							Integer Value=procesa_recursos(((CompleteLinkElement)attributeValue).getValue(),Idov,VisibleValue);
+							if (Value>0&&attributeValue.getAmbitos().size()>0)
+								AmbitoSalida.put(attributeValue.getAmbitos().get(0),new Long(Value));
+							}
 				}
 			}
 			if (attributeValue.getHastype() instanceof CompleteLinkElementType)
@@ -920,7 +976,11 @@ public class SaveProcessMainOdA2 {
 				{
 					boolean VisibleValue= StaticFuctionsOda2.getVisible(((CompleteLinkElement)attributeValue));
 						if (attributeValue instanceof CompleteLinkElement)
-							procesa_recursos(((CompleteLinkElement)attributeValue).getValue(),Idov,VisibleValue);
+							{
+							Integer Value=procesa_recursos(((CompleteLinkElement)attributeValue).getValue(),Idov,VisibleValue);
+							if (Value>0&&attributeValue.getAmbitos().size()>0)
+								AmbitoSalida.put(attributeValue.getAmbitos().get(0),new Long(Value));
+							}
 				}
 			}
 			else{
@@ -968,8 +1028,80 @@ public class SaveProcessMainOdA2 {
 			}
 		}
 		
+		for (CompleteElement attributeValue : Recursos) {
+			
+			Integer seccion=ModeloOda.get(attributeValue.getHastype());
+			Long ValueRec=null;
+			if (attributeValue.getAmbitos().size()>0)
+				ValueRec=AmbitoSalida.get(attributeValue.getAmbitos().get(0));
+			if (seccion!=null&&ValueRec!=null){
+				
+			if (attributeValue instanceof CompleteTextElement){
+				
+				if (StaticFuctionsOda2.isNumeric(attributeValue.getHastype()))
+				{
+					String value = SQLScaped(((CompleteTextElement) attributeValue).getValue());
+					value=value.replace("'", "\\'");
+					MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `numeric_data` (`idov`, `idseccion`, `value`,`idrecurso`) VALUES ('"+Idov+"', '"+seccion+"', '"+value+"', '"+ValueRec+"');");
+
+				}
+				else if (StaticFuctionsOda2.isDate(attributeValue.getHastype()))
+				{
+					SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					Date fecha = null;
+					try {
+						fecha = formatoDelTexto.parse(((CompleteTextElement) attributeValue).getValue());
+						DateFormat df = new SimpleDateFormat ("yyyyMMdd");
+						String value=df.format(fecha);
+						MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `date_data` (`idov`, `idseccion`, `value`,`idrecurso`) VALUES ('"+Idov+"', '"+seccion+"', '"+value+"', '"+ValueRec+"');");
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					
+				}
+				else if (StaticFuctionsOda2.isControled(attributeValue.getHastype()))
+				{
+					String value = ((CompleteTextElement) attributeValue).getValue();
+					value=value.replace("'", "\\'");
+					if (value!=null)
+						MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `controlled_data` (`idov`, `idseccion`, `value`,`idrecurso`) VALUES ('"+Idov+"', '"+seccion+"', '"+value+"', '"+ValueRec+"');");
+				}
+				else
+				{
+				
+				String value = SQLScaped(((CompleteTextElement) attributeValue).getValue());
+				value=value.replace("'", "\\'");
+				MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `text_data` (`idov`, `idseccion`, `value`,`idrecurso`) VALUES ('"+Idov+"', '"+seccion+"', '"+value+"', '"+ValueRec+"');");
+				}
+			}
+			}
+		}
 		
 	}
+
+	/**
+	 * Depende del file o es un atributo estandar
+	 * @param hastype
+	 * @return
+	 */
+	private boolean dependedelfile(CompleteStructure hastype) {
+		if (hastype.getFather()!=null&&(hastype.getFather()instanceof CompleteElementType)&&!StaticFuctionsOda2.isResources((CompleteElementType) hastype.getFather()))
+			return dependedelfile((CompleteElementType) hastype.getFather());
+		else
+			if (hastype.getFather()==null)
+				return false;
+			else if (hastype.getFather() instanceof CompleteIterator)
+			{
+			for (CompleteStructure iterable_element : hastype.getFather().getSons()) 
+				if (dependedelfile(iterable_element))
+					return true;
+			}
+			else if ((hastype.getFather()instanceof CompleteElementType)&&StaticFuctionsOda2.isResources((CompleteElementType) hastype.getFather()))
+				return true;
+		return false;
+	}
+
+
 
 	private String SQLScaped(String value) {
 		String Salida=value;

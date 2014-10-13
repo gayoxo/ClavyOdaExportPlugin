@@ -45,7 +45,7 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 			
 			CompleteCollectionLog CL=new CompleteCollectionLog();
 			SaveProcessMainOdA2 oda;
-			oda = new SaveProcessMainOdA2(Salvar);
+			oda = new SaveProcessMainOdA2(Salvar,CL);
 			if (MySQLConnectionOdA2.isDataBaseCreada()||!Merge)
 				SaveProcessMainOdA2.resetProfundoTablas();
 			else
