@@ -11,6 +11,7 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteLinkElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteOperationalValue;
 import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElement;
+import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementURL;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
@@ -633,5 +634,65 @@ public class StaticFuctionsOda2 {
 
 
 
+	public static boolean isAURL(CompleteDocuments recursoAProcesarC) {
+		if (isURL(recursoAProcesarC.getDocument()))
+			return true;
+	return false;
+	}
+
+
+
+	public static boolean isURL(CompleteGrammar document) {
+		ArrayList<CompleteOperationalView> Shows = document.getViews();
+		for (CompleteOperationalView show : Shows) {
+			
+			if (show.getName().equals(StaticNamesOda2.META))
+			{
+				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
+				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
+					if (CompleteOperationalValueType.getName().equals(StaticNamesOda2.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesOda2.URL)) 
+										return true;
+				}
+			}
+		}
+		return false;
+	}
+
+
+
+	public static CompleteResourceElementURL findMetaValueUri(
+			List<CompleteElement> description) {
+		for (CompleteElement completeElement : description) {
+			if (completeElement instanceof CompleteResourceElementURL&&StaticFuctionsOda2.isURI(completeElement.getHastype()))
+				return (CompleteResourceElementURL) completeElement;
+		}
+		return null;
+	}
+
+
+	/**
+	 * Revisa si un elemento es FileResource
+	 * @param hastype
+	 * @return
+	 */
+	public static boolean isURI(CompleteElementType hastype) {
+		
+		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
+		for (CompleteOperationalView show : Shows) {
+			
+			if (show.getName().equals(StaticNamesOda2.META))
+			{
+				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
+				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
+					if (CompleteOperationalValueType.getName().equals(StaticNamesOda2.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesOda2.URI)) 
+										return true;
+
+				}
+			}
+		}
+		return false;
+	}
 	
 }

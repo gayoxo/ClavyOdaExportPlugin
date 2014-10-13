@@ -23,6 +23,7 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteFile;
 import fdi.ucm.server.modelComplete.collection.document.CompleteLinkElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementFile;
+import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementURL;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
@@ -926,7 +927,25 @@ public class SaveProcessMainOdA2 {
 					}
 					else ColectionLog.getLogLines().add("El objeto dueño del archivo es nulo o no Objeto Virtual, Archivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO ");
 				}
+					else
+						if (StaticFuctionsOda2.isAURL(recursoAProcesarC))
+						{
+							//public static final String URI = "URI";
+							CompleteResourceElementURL UniFile=StaticFuctionsOda2.findMetaValueUri(recursoAProcesarC.getDescription());
 
+							
+								
+								if  (UniFile!=null&&!UniFile.getValue().isEmpty())
+									{
+
+											int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `name`, `type`) VALUES ('"+idov+"', '"+VisString+"','N', '"+UniFile.getValue()+"', 'U' )");
+											return Salida;
+
+
+									}
+								else ColectionLog.getLogLines().add("El URI referencia es nulo, o vacio identificadorArchivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO");
+
+						}
 				return -1;
 		
 	}
