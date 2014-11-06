@@ -255,6 +255,7 @@ public class MySQLConnectionOdA2 {
 	    }
 	    catch(Exception e){
 	        e.printStackTrace();
+	        e.getCause().printStackTrace();
 	        throw new RuntimeException();
 	        
 	    }
