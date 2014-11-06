@@ -93,7 +93,7 @@ public class MySQLConnectionOdA2 {
 	 * @throws SQLException
 	 */
 	private void InicializacionAnonima(String database, String user, String password) throws SQLException {
-		String DBaseServerUnknow = "jdbc:mysql://localhost:3306/";
+		String DBaseServerUnknow = "jdbc:mysql://a-note.fdi.ucm.es:3306/";
 		conexion = DriverManager.getConnection(DBaseServerUnknow, user, password);	
 		ResultSet resultSet = conexion.getMetaData().getCatalogs();
 
@@ -238,7 +238,7 @@ public class MySQLConnectionOdA2 {
 	public static Boolean CheckDBS(String database,String user, String password) {
 	    try{
 	        Class.forName(DriverDatabase); 
-	        String DBaseServerUnknow = "jdbc:mysql://localhost:3306/";
+	        String DBaseServerUnknow = "jdbc:mysql://a-note.fdi.ucm.es:3306/";
 	        Connection conn = DriverManager.getConnection(DBaseServerUnknow, user, password); 
 
 	        ResultSet resultSet = conn.getMetaData().getCatalogs();
