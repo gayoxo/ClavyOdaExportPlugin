@@ -51,7 +51,6 @@ public class SaveProcessMainOdA2 {
 	private HashMap<CompleteElementType, Integer> ModeloOda;
 	private HashSet<Integer> Vocabularios;
 	private HashMap<Integer,Integer> VocabulariosSalida;
-	private HashSet<Integer> Procesed;
 	private HashMap<Integer,CompleteFile>  Iconos;
 	private HashMap<CompleteDocuments, Integer> tabla;
 	private CompleteCollectionLog ColectionLog;
@@ -65,7 +64,6 @@ public class SaveProcessMainOdA2 {
 		toOda=coleccion;
 		ModeloOda=new HashMap<CompleteElementType, Integer>();
 		Vocabularios=new HashSet<Integer>();
-		Procesed=new HashSet<Integer>();
 		Iconos=new HashMap<Integer, CompleteFile>();
 		VocabulariosSalida=new HashMap<Integer, Integer>();
 		tabla=new HashMap<CompleteDocuments, Integer>();
@@ -645,14 +643,10 @@ public class SaveProcessMainOdA2 {
 				if (attribute instanceof CompleteTextElementType&&StaticFuctionsOda2.isControled((CompleteTextElementType)attribute))
 				{
 					Integer Numero=StaticFuctionsOda2.getVocNumber((CompleteTextElementType) attribute);
-					if (Numero!=null)
-						{
-						if (!(Procesed.contains(Numero)))
-							Procesed.add(Numero);
-						else
+					Boolean Compartido=StaticFuctionsOda2.getVocCompartido((CompleteTextElementType) attribute);
+					if (Numero!=null&&Compartido)
 							Vocabularios.add(Numero);
 
-						}
 				}
 			rellenaTablaVocabularios(attribute.getSons());
 		}

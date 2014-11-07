@@ -43,4 +43,5 @@ public class StaticNamesOda2 {
 		public static final String VOCNUMBER = "Vocabulary N#";
 		public static final Object URL = "URL";
 		public static final Object URI = "URI";
+		public static final String COMPARTIDO = "Compartido";
 }

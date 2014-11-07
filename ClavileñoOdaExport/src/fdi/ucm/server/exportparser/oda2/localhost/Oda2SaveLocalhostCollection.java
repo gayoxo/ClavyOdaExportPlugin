@@ -52,6 +52,7 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 				SaveProcessMainOdA2.resetBasico();
 				
 			oda.preocess();	
+			CL.getLogLines().add("http://a-note.fdi.ucm.es:10000/Database");
 			return CL;
 
 		} catch (CompleteImportRuntimeException e) {

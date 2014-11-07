@@ -26,6 +26,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	private Boolean Merge;
 	private ArrayList<ImportExportPair> Parametros;
 	private boolean Create;
+	private String Database;
 
 	/**
 	 * Constructor por defecto
@@ -101,7 +102,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	public void setConfiguracion(ArrayList<String> DateEntrada) {
 		if (DateEntrada!=null)
 		{
-			String Database = RemoveSpecialCharacters(DateEntrada.get(1));
+			Database = RemoveSpecialCharacters(DateEntrada.get(1));
 			boolean existe=MySQLConnectionOdA2.CheckDBS(DateEntrada.get(0),Database,Integer.parseInt(DateEntrada.get(2)),DateEntrada.get(3),DateEntrada.get(4));
 			Merge=Boolean.parseBoolean(DateEntrada.get(5));
 			Create=Boolean.parseBoolean(DateEntrada.get(6));

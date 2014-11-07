@@ -591,13 +591,13 @@ public class StaticFuctionsOda2 {
 	public static Integer getVocNumber(CompleteTextElementType attribute) {
 		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
 		for (CompleteOperationalView show : Shows) {	
-			if (show.getName().equals(StaticNamesOda2.METATYPE))
+			if (show.getName().equals(StaticNamesOda2.VOCABULARY))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType showValues : ShowValue) {
 					if (showValues.getName().equals(StaticNamesOda2.VOCNUMBER))
 						try {
-							return Integer.getInteger(showValues.getDefault());
+							return Integer.parseInt(showValues.getDefault());
 						} catch (Exception e) {
 							return null;
 						}	
@@ -607,6 +607,28 @@ public class StaticFuctionsOda2 {
 			}
 		}
 		return null;
+	}
+	
+	
+	public static Boolean getVocCompartido(CompleteTextElementType attribute) {
+		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
+		for (CompleteOperationalView show : Shows) {	
+			if (show.getName().equals(StaticNamesOda2.VOCABULARY))
+			{
+				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
+				for (CompleteOperationalValueType showValues : ShowValue) {
+					if (showValues.getName().equals(StaticNamesOda2.COMPARTIDO))
+						try {
+							return Boolean.parseBoolean(showValues.getDefault());
+						} catch (Exception e) {
+							return true;
+						}	
+
+							
+				}
+			}
+		}
+		return true;
 	}
 
 
