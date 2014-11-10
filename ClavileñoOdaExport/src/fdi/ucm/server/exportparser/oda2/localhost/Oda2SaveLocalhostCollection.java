@@ -28,6 +28,7 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 	private Boolean Merge;
 	private ArrayList<ImportExportPair> Parametros;
 	private boolean Create;
+	private String Database;
 
 	/**
 	 * Constructor por defecto
@@ -52,7 +53,7 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 				SaveProcessMainOdA2.resetBasico();
 				
 			oda.preocess();	
-			CL.getLogLines().add("http://a-note.fdi.ucm.es:10000/Database");
+			CL.getLogLines().add("URL de la coleccion : http://a-note.fdi.ucm.es:10000/"+Database);
 			return CL;
 
 		} catch (CompleteImportRuntimeException e) {
@@ -102,7 +103,7 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 	public void setConfiguracion(ArrayList<String> DateEntrada) {
 		if (DateEntrada!=null)
 		{
-			String Database = RemoveSpecialCharacters(DateEntrada.get(0));
+			Database = RemoveSpecialCharacters(DateEntrada.get(0));
 			boolean existe=MySQLConnectionOdA2.CheckDBS(Database,DateEntrada.get(1),DateEntrada.get(2));
 			Merge=Boolean.parseBoolean(DateEntrada.get(3));
 			Create=Boolean.parseBoolean(DateEntrada.get(4));
