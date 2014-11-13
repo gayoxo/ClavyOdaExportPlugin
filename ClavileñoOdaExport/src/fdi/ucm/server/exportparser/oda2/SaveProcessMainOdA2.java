@@ -43,17 +43,17 @@ public class SaveProcessMainOdA2 {
 	
 
 	
-	private static final String ERROR_DE_CREACION_POR_FALTA_DE_OV_DUEÑO_EN_LOS_DOCUMENTOS_FILE = "Error de creacion por falta de OV dueño en los documentos File";
-	private static final String ERROR_DE_CREACION_POR_FALTA_DE_FILE_FISICO_EN_LOS_DOCUMENTOS_FILE = "Error de creacion por falta de File Fisico en los documentos File";
-	private static final String EXISTE_ERROR_EN_EL_PARSEADO_DE_LAS_ITERACIONES = "Existe error en el parseado de las iteraciones.";
-	private static final String ERROR_DE_CREACION_POR_FALTA_DE_META_OBJETO_VIRTUAL = "Error de creacion por falta de Meta Objeto virtual.";
-	private CompleteCollection toOda;
-	private HashMap<CompleteElementType, Integer> ModeloOda;
-	private HashSet<Integer> Vocabularios;
-	private HashMap<Integer,Integer> VocabulariosSalida;
-	private HashMap<Integer,CompleteFile>  Iconos;
-	private HashMap<CompleteDocuments, Integer> tabla;
-	private CompleteCollectionLog ColectionLog;
+	protected static final String ERROR_DE_CREACION_POR_FALTA_DE_OV_DUEÑO_EN_LOS_DOCUMENTOS_FILE = "Error de creacion por falta de OV dueño en los documentos File";
+	protected static final String ERROR_DE_CREACION_POR_FALTA_DE_FILE_FISICO_EN_LOS_DOCUMENTOS_FILE = "Error de creacion por falta de File Fisico en los documentos File";
+	protected static final String EXISTE_ERROR_EN_EL_PARSEADO_DE_LAS_ITERACIONES = "Existe error en el parseado de las iteraciones.";
+	protected static final String ERROR_DE_CREACION_POR_FALTA_DE_META_OBJETO_VIRTUAL = "Error de creacion por falta de Meta Objeto virtual.";
+	protected CompleteCollection toOda;
+	protected HashMap<CompleteElementType, Integer> ModeloOda;
+	protected HashSet<Integer> Vocabularios;
+	protected HashMap<Integer,Integer> VocabulariosSalida;
+	protected HashMap<Integer,CompleteFile>  Iconos;
+	protected HashMap<CompleteDocuments, Integer> tabla;
+	protected CompleteCollectionLog ColectionLog;
 
 	/**
 	 * Constructor por defecto
@@ -860,7 +860,7 @@ public class SaveProcessMainOdA2 {
 	 * @return 
 	 * @throws ImportRuntimeException si el elemento no tiene un campo en su descripcion necesario.
 	 */
-	private int procesa_recursos(CompleteDocuments recursoAProcesar, Integer idov, boolean visibleValue2) throws CompleteImportRuntimeException {
+	protected int procesa_recursos(CompleteDocuments recursoAProcesar, Integer idov, boolean visibleValue2) throws CompleteImportRuntimeException {
 
 		
 		boolean visBool=visibleValue2;
@@ -906,6 +906,8 @@ public class SaveProcessMainOdA2 {
 								else iconoov="N";
 								String[] spliteStri=(((CompleteResourceElementFile)FIleRel).getValue()).getPath().split("/");
 								String NameS = spliteStri[spliteStri.length-1];
+								
+								
 								if (Idov==idov)
 									{
 									int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `name`, `type`) VALUES ('"+idov+"', '"+VisString+"','"+iconoov+"', '"+NameS+"', 'P' )");

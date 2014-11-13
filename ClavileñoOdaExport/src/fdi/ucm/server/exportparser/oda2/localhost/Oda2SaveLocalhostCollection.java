@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import fdi.ucm.server.exportparser.oda2.MySQLConnectionOdA2;
-import fdi.ucm.server.exportparser.oda2.SaveProcessMainOdA2;
 import fdi.ucm.server.modelComplete.ImportExportDataEnum;
 import fdi.ucm.server.modelComplete.ImportExportPair;
 import fdi.ucm.server.modelComplete.CompleteImportRuntimeException;
@@ -45,12 +44,12 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 		try {
 			
 			CompleteCollectionLog CL=new CompleteCollectionLog();
-			SaveProcessMainOdA2 oda;
-			oda = new SaveProcessMainOdA2(Salvar,CL);
+			SaveProcessMainOdA2Local oda;
+			oda = new SaveProcessMainOdA2Local(Salvar,CL,Database);
 			if (MySQLConnectionOdA2.isDataBaseCreada()||!Merge)
-				SaveProcessMainOdA2.resetProfundoTablas();
+				SaveProcessMainOdA2Local.resetProfundoTablas();
 			else
-				SaveProcessMainOdA2.resetBasico();
+				SaveProcessMainOdA2Local.resetBasico();
 				
 			oda.preocess();	
 			CL.getLogLines().add("URL de la coleccion : http://a-note.fdi.ucm.es:10000/"+Database);
