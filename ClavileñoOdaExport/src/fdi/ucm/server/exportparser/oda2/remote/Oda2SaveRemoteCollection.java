@@ -54,7 +54,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 			String PathTemporalFiles) throws CompleteImportRuntimeException{
 		try {
 			Path=PathTemporalFiles;
-			SOURCE_FOLDER=Path+File.separator+"Oda";
+			SOURCE_FOLDER=Path+"Oda"+File.separator;
 			File Dir=new File(SOURCE_FOLDER);
 			Dir.mkdirs();
 			
@@ -73,7 +73,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 			
 			fileList = new ArrayList<String>();
 			OUTPUT_ZIP_FILE = Path+System.currentTimeMillis()+".zip";
-			generateFileList(new File(OUTPUT_ZIP_FILE));
+			generateFileList(new File(SOURCE_FOLDER));
 			zipIt(OUTPUT_ZIP_FILE);
 			
 			
