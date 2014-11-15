@@ -52,6 +52,9 @@ public class SaveProcessMainOdA2Local extends SaveProcessMainOdA2{
 	@Override
 	protected int procesa_recursos(CompleteDocuments recursoAProcesar, Integer idov, boolean visibleValue2) throws CompleteImportRuntimeException {
 
+		if (recursoAProcesar==null)
+			return -1;
+		
 		
 		boolean visBool=visibleValue2;
 		String VisString;

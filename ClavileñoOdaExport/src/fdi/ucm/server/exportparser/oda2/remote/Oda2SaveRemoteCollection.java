@@ -4,7 +4,17 @@
 package fdi.ucm.server.exportparser.oda2.remote;
 
 //import java.io.IOException;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.zip.Adler32;
+import java.util.zip.CheckedOutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import fdi.ucm.server.exportparser.oda2.MySQLConnectionOdA2;
 import fdi.ucm.server.exportparser.oda2.SaveProcessMainOdA2;
@@ -28,7 +38,9 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	private boolean Create;
 	private String Database;
 	private String Path;
-
+	private String FileIO;
+	private static final int BUFFER = 2048;
+	 
 	/**
 	 * Constructor por defecto
 	 */
@@ -51,6 +63,11 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 			else
 				SaveProcessMainOdA2.resetBasico();
 			oda.preocess();	
+			
+			String A=Zip();
+			
+			FileIO=A;
+			
 			return CL;
 			
 
@@ -136,12 +153,12 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 
 	@Override
 	public boolean isFileOutput() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public String FileOutput() {
-		return "";
+		return FileIO;
 	}
 
 	@Override
@@ -151,5 +168,101 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	}
 
 
+	public String Zip() {
+		  
+		String Salida = Path+System.currentTimeMillis()+".zip";
+		ZipOutputStream out = null;      
+		try {
+		         BufferedInputStream origin = null;
+		         FileOutputStream dest = new 
+		           FileOutputStream(Salida);
+		         CheckedOutputStream checksum = new 
+		           CheckedOutputStream(dest, new Adler32());
+		         out = new 
+		           ZipOutputStream(new 
+		             BufferedOutputStream(checksum));
+		         //out.setMethod(ZipOutputStream.DEFLATED);
+		         byte data[] = new byte[BUFFER];
+		         // get a list of files from current directory
+		         File f = new File(Path);
+		         String files[] = f.list();
+
+		         
+		         addFilesToZip(files,out,Salida,origin,data,"");
+//		         for (int i=0; i<files.length; i++) {
+//		        	 
+//		        	 String elem=Path+files[i];
+//		        	 if (!elem.equals(Salida))
+//		        	 {
+//		        		 System.out.println("Adding: "+elem);
+//			            
+//			            
+//			            
+//			            FileInputStream fi = new 
+//			              FileInputStream(elem);
+//			            origin = new 
+//			              BufferedInputStream(fi, BUFFER);
+//			            ZipEntry entry = new ZipEntry(elem);
+//			            out.putNextEntry(entry);
+//			            int count;
+//			            while((count = origin.read(data, 0, 
+//			              BUFFER)) != -1) {
+//			               out.write(data, 0, count);
+//			            }
+//			            origin.close();
+//		        	 }
+//		         }
+		         out.close();
+		         System.out.println("checksum: "+checksum.getChecksum().getValue());
+		      } catch(Exception e) {
+		         e.printStackTrace();
+		         
+		      } finally 
+		      {
+		    	  if (out!=null)
+					try {
+						out.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+		    	  
+		      }
+		      return Salida;
+	}
+
+	private void addFilesToZip(String[] files, ZipOutputStream out, String salida, BufferedInputStream origin, byte[] data,String RelativePath) throws IOException {
+		 for (int i=0; i<files.length; i++) {
+        	 
+        	 String elem=Path+RelativePath+files[i];
+        	 File F=new File(elem);
+        	 if (!elem.equals(salida)&&!F.isDirectory())
+        	 {
+        		 System.out.println("Adding: "+elem);
+	            
+	            
+	            
+	            FileInputStream fi = new 
+	              FileInputStream(elem);
+	            origin = new 
+	              BufferedInputStream(fi, BUFFER);
+	            ZipEntry entry = new ZipEntry(elem);
+	            out.putNextEntry(entry);
+	            int count;
+	            while((count = origin.read(data, 0, 
+	              BUFFER)) != -1) {
+	               out.write(data, 0, count);
+	            }
+	            origin.close();
+        	 }
+        	 else if (!elem.equals(salida)&&F.isDirectory())
+        	 {
+        		 String files2[] = F.list();
+		         addFilesToZip(files2,out,salida,origin,data,files[i]+File.separator);
+        	 }
+        	 
+         }
+		
+	} 
+	
 	
 }

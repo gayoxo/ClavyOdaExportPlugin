@@ -54,6 +54,8 @@ public class SaveProcessMainOdA2Remote extends SaveProcessMainOdA2{
 	@Override
 	protected int procesa_recursos(CompleteDocuments recursoAProcesar, Integer idov, boolean visibleValue2) throws CompleteImportRuntimeException {
 
+		if (recursoAProcesar==null)
+			return -1;
 		
 		boolean visBool=visibleValue2;
 		String VisString;
@@ -107,7 +109,7 @@ public class SaveProcessMainOdA2Remote extends SaveProcessMainOdA2{
 								if (Idov==idov)
 									{
 									
-									 String Urls=TempPath;
+									 String Urls=TempPath+Idov+"/";
 									 File DestinoD=new File(Urls); 
 									 DestinoD.mkdirs();
 									 Urls=Urls+NameS;
@@ -134,7 +136,7 @@ public class SaveProcessMainOdA2Remote extends SaveProcessMainOdA2{
 									 
 									 if (iconoov.equals("S"))
 									 {
-										 String Urlsi=TempPath;
+										 String Urlsi=TempPath+"iconos/";
 										 File DestinoDi=new File(Urlsi); 
 										 DestinoDi.mkdirs();
 										 Urlsi=Urlsi+Idov+"."+extension;
