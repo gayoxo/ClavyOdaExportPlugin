@@ -22,8 +22,6 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteFile;
 import fdi.ucm.server.modelComplete.collection.document.CompleteLinkElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElement;
-import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementFile;
-import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementURL;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
@@ -39,7 +37,7 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
  * @author Joaquin Gayoso-Cabada
  *
  */
-public class SaveProcessMainOdA2 {
+public abstract class SaveProcessMainOdA2 {
 	
 
 	
@@ -852,6 +850,7 @@ public class SaveProcessMainOdA2 {
 			Iconos.put(ObjetoDigitalIdov, new CompleteFile(Path,toOda));		
 	}
 
+	
 	/**
 	 * Procesa un recurso sobre su Objeto Digital
 	 * @param recursoAProcesar Recurso que sera procesado
@@ -860,92 +859,102 @@ public class SaveProcessMainOdA2 {
 	 * @return 
 	 * @throws ImportRuntimeException si el elemento no tiene un campo en su descripcion necesario.
 	 */
-	protected int procesa_recursos(CompleteDocuments recursoAProcesar, Integer idov, boolean visibleValue2) throws CompleteImportRuntimeException {
-
-		
-		boolean visBool=visibleValue2;
-		String VisString;
-		if (visBool) 
-				VisString="S";
-		else 
-			VisString="N";
-		
+	protected abstract int procesa_recursos(CompleteDocuments recursoAProcesar, Integer idov, boolean visibleValue2);
 	
-				CompleteDocuments recursoAProcesarC = (CompleteDocuments)recursoAProcesar;
-				
-				if (StaticFuctionsOda2.isAVirtualObject(recursoAProcesarC))
-				{
-					
-					Integer Idov=tabla.get(recursoAProcesarC);
-					if (Idov!=null)
-						 {
-						int Salida = MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `idov_refered`, `type`) VALUES ('"+idov+"', '"+VisString+"','N', '"+Idov+"','OV')");	
-						return Salida;
-						 }
-					else
-						ColectionLog.getLogLines().add("Link a objeto virtual: "+ recursoAProcesarC.getDescriptionText()+ "no existe en la lista de recursos, pero tiene un link, IGNORADO" );
-				}
-				else
-					if (StaticFuctionsOda2.isAFile(recursoAProcesarC))
-				{
-						CompleteResourceElement FIleRel=StaticFuctionsOda2.findMetaValueFile(recursoAProcesarC.getDescription());
-						CompleteLinkElement idovrefVal= StaticFuctionsOda2.findMetaValueIDOVowner(recursoAProcesarC.getDescription());
-					
-					
-					if (idovrefVal!=null)
-					{
-						Integer Idov=tabla.get(idovrefVal.getValue());
-					
-						
-						if  (FIleRel!=null && Idov!=null && (FIleRel instanceof CompleteResourceElementFile))
-							{
-								CompleteFile Icon=Iconos.get(idov);
-								String iconoov;
-								if (Icon!=null && Icon.getPath().equals((((CompleteResourceElementFile)FIleRel).getValue()).getPath()))
-									iconoov="S";
-								else iconoov="N";
-								String[] spliteStri=(((CompleteResourceElementFile)FIleRel).getValue()).getPath().split("/");
-								String NameS = spliteStri[spliteStri.length-1];
-								
-								
-								if (Idov==idov)
-									{
-									int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `name`, `type`) VALUES ('"+idov+"', '"+VisString+"','"+iconoov+"', '"+NameS+"', 'P' )");
-									return Salida;
-									}
-								else
-									{
-									int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`, `name`,`idresource_refered`, `type`) VALUES ('"+idov+"', '"+VisString+"', '"+NameS+"', '"+Idov+"','F')");
-									return Salida;
-									}
-							}
-						else ColectionLog.getLogLines().add("EL file referencia es nulo, o no es un file o el dueño no es un Objeto virtual valido con identificadorArchivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO");
-					}
-					else ColectionLog.getLogLines().add("El objeto dueño del archivo es nulo o no Objeto Virtual, Archivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO ");
-				}
-					else
-						if (StaticFuctionsOda2.isAURL(recursoAProcesarC))
-						{
-							//public static final String URI = "URI";
-							CompleteResourceElementURL UniFile=StaticFuctionsOda2.findMetaValueUri(recursoAProcesarC.getDescription());
-
-							
-								
-								if  (UniFile!=null&&!UniFile.getValue().isEmpty())
-									{
-
-											int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `name`, `type`) VALUES ('"+idov+"', '"+VisString+"','N', '"+UniFile.getValue()+"', 'U' )");
-											return Salida;
-
-
-									}
-								else ColectionLog.getLogLines().add("El URI referencia es nulo, o vacio identificadorArchivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO");
-
-						}
-				return -1;
-		
-	}
-
+//	/**
+//	 * Procesa un recurso sobre su Objeto Digital
+//	 * @param recursoAProcesar Recurso que sera procesado
+//	 * @param idov identificador del sueño del recurso.
+//	 * @param visibleValue2 
+//	 * @return 
+//	 * @throws ImportRuntimeException si el elemento no tiene un campo en su descripcion necesario.
+//	 */
+//	protected int procesa_recursos(CompleteDocuments recursoAProcesar, Integer idov, boolean visibleValue2) throws CompleteImportRuntimeException {
+//
+//		
+//		boolean visBool=visibleValue2;
+//		String VisString;
+//		if (visBool) 
+//				VisString="S";
+//		else 
+//			VisString="N";
+//		
+//	
+//				CompleteDocuments recursoAProcesarC = (CompleteDocuments)recursoAProcesar;
+//				
+//				if (StaticFuctionsOda2.isAVirtualObject(recursoAProcesarC))
+//				{
+//					
+//					Integer Idov=tabla.get(recursoAProcesarC);
+//					if (Idov!=null)
+//						 {
+//						int Salida = MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `idov_refered`, `type`) VALUES ('"+idov+"', '"+VisString+"','N', '"+Idov+"','OV')");	
+//						return Salida;
+//						 }
+//					else
+//						ColectionLog.getLogLines().add("Link a objeto virtual: "+ recursoAProcesarC.getDescriptionText()+ "no existe en la lista de recursos, pero tiene un link, IGNORADO" );
+//				}
+//				else
+//					if (StaticFuctionsOda2.isAFile(recursoAProcesarC))
+//				{
+//						CompleteResourceElement FIleRel=StaticFuctionsOda2.findMetaValueFile(recursoAProcesarC.getDescription());
+//						CompleteLinkElement idovrefVal= StaticFuctionsOda2.findMetaValueIDOVowner(recursoAProcesarC.getDescription());
+//					
+//					
+//					if (idovrefVal!=null)
+//					{
+//						Integer Idov=tabla.get(idovrefVal.getValue());
+//					
+//						
+//						if  (FIleRel!=null && Idov!=null && (FIleRel instanceof CompleteResourceElementFile))
+//							{
+//								CompleteFile Icon=Iconos.get(idov);
+//								String iconoov;
+//								if (Icon!=null && Icon.getPath().equals((((CompleteResourceElementFile)FIleRel).getValue()).getPath()))
+//									iconoov="S";
+//								else iconoov="N";
+//								String[] spliteStri=(((CompleteResourceElementFile)FIleRel).getValue()).getPath().split("/");
+//								String NameS = spliteStri[spliteStri.length-1];
+//								
+//								
+//								if (Idov==idov)
+//									{
+//									int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `name`, `type`) VALUES ('"+idov+"', '"+VisString+"','"+iconoov+"', '"+NameS+"', 'P' )");
+//									return Salida;
+//									}
+//								else
+//									{
+//									int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`, `name`,`idresource_refered`, `type`) VALUES ('"+idov+"', '"+VisString+"', '"+NameS+"', '"+Idov+"','F')");
+//									return Salida;
+//									}
+//							}
+//						else ColectionLog.getLogLines().add("EL file referencia es nulo, o no es un file o el dueño no es un Objeto virtual valido con identificadorArchivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO");
+//					}
+//					else ColectionLog.getLogLines().add("El objeto dueño del archivo es nulo o no Objeto Virtual, Archivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO ");
+//				}
+//					else
+//						if (StaticFuctionsOda2.isAURL(recursoAProcesarC))
+//						{
+//							//public static final String URI = "URI";
+//							CompleteResourceElementURL UniFile=StaticFuctionsOda2.findMetaValueUri(recursoAProcesarC.getDescription());
+//
+//							
+//								
+//								if  (UniFile!=null&&!UniFile.getValue().isEmpty())
+//									{
+//
+//											int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `name`, `type`) VALUES ('"+idov+"', '"+VisString+"','N', '"+UniFile.getValue()+"', 'U' )");
+//											return Salida;
+//
+//
+//									}
+//								else ColectionLog.getLogLines().add("El URI referencia es nulo, o vacio identificadorArchivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO");
+//
+//						}
+//				return -1;
+//		
+//	}
+//
 
 
 	/**
