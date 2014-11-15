@@ -27,6 +27,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	private ArrayList<ImportExportPair> Parametros;
 	private boolean Create;
 	private String Database;
+	private String Path;
 
 	/**
 	 * Constructor por defecto
@@ -41,10 +42,10 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	public CompleteCollectionLog processCollecccion(CompleteCollection Salvar,
 			String PathTemporalFiles) throws CompleteImportRuntimeException{
 		try {
-			
+			Path=PathTemporalFiles;
 			CompleteCollectionLog CL=new CompleteCollectionLog();
 			SaveProcessMainOdA2 oda;
-			oda = new SaveProcessMainOdA2Remote(Salvar,CL);
+			oda = new SaveProcessMainOdA2Remote(Salvar,CL,Path);
 			if (MySQLConnectionOdA2.isDataBaseCreada()||!Merge)
 				SaveProcessMainOdA2.resetProfundoTablas();
 			else
@@ -141,6 +142,12 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	@Override
 	public String FileOutput() {
 		return "";
+	}
+
+	@Override
+	public void SetlocalTemporalFolder(String TemporalPath) {
+		Path=TemporalPath;
+		
 	}
 
 

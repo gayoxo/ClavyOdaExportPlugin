@@ -31,12 +31,14 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementU
  */
 public class SaveProcessMainOdA2Remote extends SaveProcessMainOdA2{
 	
-	private static final String DATA_DIRECTORY = "ME2013";
 	
-	
-	public SaveProcessMainOdA2Remote(CompleteCollection coleccion, CompleteCollectionLog cL){
+	private String TempPath;
+
+
+
+	public SaveProcessMainOdA2Remote(CompleteCollection coleccion, CompleteCollectionLog cL, String pathTemporalFiles){
 		super(coleccion, cL);
-		
+		TempPath=pathTemporalFiles;
 
 	}
 
@@ -105,7 +107,7 @@ public class SaveProcessMainOdA2Remote extends SaveProcessMainOdA2{
 								if (Idov==idov)
 									{
 									
-									 String Urls="/var/www/"+Database+"/bo/download/"+Idov+"/";
+									 String Urls=TempPath;
 									 File DestinoD=new File(Urls); 
 									 DestinoD.mkdirs();
 									 Urls=Urls+NameS;
@@ -132,7 +134,7 @@ public class SaveProcessMainOdA2Remote extends SaveProcessMainOdA2{
 									 
 									 if (iconoov.equals("S"))
 									 {
-										 String Urlsi="/var/www/"+Database+"/bo/download/iconos/";
+										 String Urlsi=TempPath;
 										 File DestinoDi=new File(Urlsi); 
 										 DestinoDi.mkdirs();
 										 Urlsi=Urlsi+Idov+"."+extension;

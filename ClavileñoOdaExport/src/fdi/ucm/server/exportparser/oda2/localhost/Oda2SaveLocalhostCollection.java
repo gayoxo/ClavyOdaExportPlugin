@@ -144,6 +144,11 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 		return "";
 	}
 
+	@Override
+	public void SetlocalTemporalFolder(String TemporalPath) {
+		
+	}
+
 	
 
 	
