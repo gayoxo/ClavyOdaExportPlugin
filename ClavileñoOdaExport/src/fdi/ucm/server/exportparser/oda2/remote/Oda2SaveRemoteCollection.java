@@ -3,16 +3,12 @@
  */
 package fdi.ucm.server.exportparser.oda2.remote;
 
-//import java.io.IOException;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.zip.Adler32;
-import java.util.zip.CheckedOutputStream;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -39,8 +35,11 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	private String Database;
 	private String Path;
 	private String FileIO;
-	private static final int BUFFER = 2048;
-	 
+//	private static final int BUFFER = 2048;
+	private List<String> fileList; 
+	private String OUTPUT_ZIP_FILE = "";
+	private String SOURCE_FOLDER = ""; // SourceFolder path
+	
 	/**
 	 * Constructor por defecto
 	 */
@@ -55,18 +54,32 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 			String PathTemporalFiles) throws CompleteImportRuntimeException{
 		try {
 			Path=PathTemporalFiles;
+			SOURCE_FOLDER=Path+File.separator+"Oda";
+			File Dir=new File(SOURCE_FOLDER);
+			Dir.mkdirs();
+			
 			CompleteCollectionLog CL=new CompleteCollectionLog();
 			SaveProcessMainOdA2 oda;
-			oda = new SaveProcessMainOdA2Remote(Salvar,CL,Path);
+			oda = new SaveProcessMainOdA2Remote(Salvar,CL,SOURCE_FOLDER);
 			if (MySQLConnectionOdA2.isDataBaseCreada()||!Merge)
 				SaveProcessMainOdA2.resetProfundoTablas();
 			else
 				SaveProcessMainOdA2.resetBasico();
 			oda.preocess();	
 			
-			String A=Zip();
 			
-			FileIO=A;
+			
+			
+			
+			fileList = new ArrayList<String>();
+			OUTPUT_ZIP_FILE = Path+System.currentTimeMillis()+".zip";
+			generateFileList(new File(OUTPUT_ZIP_FILE));
+			zipIt(OUTPUT_ZIP_FILE);
+			
+			
+//			String A=Zip();
+			
+			FileIO=OUTPUT_ZIP_FILE;
 			
 			return CL;
 			
@@ -168,101 +181,189 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	}
 
 
-	public String Zip() {
-		  
-		String Salida = Path+System.currentTimeMillis()+".zip";
-		ZipOutputStream out = null;      
-		try {
-		         BufferedInputStream origin = null;
-		         FileOutputStream dest = new 
-		           FileOutputStream(Salida);
-		         CheckedOutputStream checksum = new 
-		           CheckedOutputStream(dest, new Adler32());
-		         out = new 
-		           ZipOutputStream(new 
-		             BufferedOutputStream(checksum));
-		         //out.setMethod(ZipOutputStream.DEFLATED);
-		         byte data[] = new byte[BUFFER];
-		         // get a list of files from current directory
-		         File f = new File(Path);
-		         String files[] = f.list();
+//	public String Zip() {
+//		  
+//		String Salida = Path+System.currentTimeMillis()+".zip";
+//		ZipOutputStream out = null;      
+//		try {
+//		         BufferedInputStream origin = null;
+//		         FileOutputStream dest = new 
+//		           FileOutputStream(Salida);
+//		         CheckedOutputStream checksum = new 
+//		           CheckedOutputStream(dest, new Adler32());
+//		         out = new 
+//		           ZipOutputStream(new 
+//		             BufferedOutputStream(checksum));
+//		         //out.setMethod(ZipOutputStream.DEFLATED);
+//		         byte data[] = new byte[BUFFER];
+//		         // get a list of files from current directory
+//		         File f = new File(FolderP);
+//		         String files[] = f.list();
+//
+//		         
+//		         addFilesToZip(files,out,Salida,origin,data,"");
+////		         for (int i=0; i<files.length; i++) {
+////		        	 
+////		        	 String elem=Path+files[i];
+////		        	 if (!elem.equals(Salida))
+////		        	 {
+////		        		 System.out.println("Adding: "+elem);
+////			            
+////			            
+////			            
+////			            FileInputStream fi = new 
+////			              FileInputStream(elem);
+////			            origin = new 
+////			              BufferedInputStream(fi, BUFFER);
+////			            ZipEntry entry = new ZipEntry(elem);
+////			            out.putNextEntry(entry);
+////			            int count;
+////			            while((count = origin.read(data, 0, 
+////			              BUFFER)) != -1) {
+////			               out.write(data, 0, count);
+////			            }
+////			            origin.close();
+////		        	 }
+////		         }
+//		         out.close();
+//		         System.out.println("checksum: "+checksum.getChecksum().getValue());
+//		      } catch(Exception e) {
+//		         e.printStackTrace();
+//		         
+//		      } finally 
+//		      {
+//		    	  if (out!=null)
+//					try {
+//						out.close();
+//					} catch (IOException e) {
+//						e.printStackTrace();
+//					}
+//		    	  
+//		      }
+//		      return Salida;
+//	}
+//
+//	private void addFilesToZip(String[] files, ZipOutputStream out, String salida, BufferedInputStream origin, byte[] data,String RelativePath) throws IOException {
+//		 for (int i=0; i<files.length; i++) {
+//        	 
+//        	 String elem=FolderP+RelativePath+files[i];
+//        	 File F=new File(elem);
+//        	 if (!elem.equals(salida)&&!F.isDirectory())
+//        	 {
+//        		 System.out.println("Adding: "+elem);
+//	            
+//	            
+//	            
+//	            FileInputStream fi = new 
+//	              FileInputStream(elem);
+//	            origin = new 
+//	              BufferedInputStream(fi, BUFFER);
+//	            ZipEntry entry = new ZipEntry(elem);
+//	            out.putNextEntry(entry);
+//	            int count;
+//	            while((count = origin.read(data, 0, 
+//	              BUFFER)) != -1) {
+//	               out.write(data, 0, count);
+//	            }
+//	            origin.close();
+//        	 }
+//        	 else if (!elem.equals(salida)&&F.isDirectory())
+//        	 {
+//        		 String files2[] = F.list();
+//		         addFilesToZip(files2,out,salida,origin,data,files[i]+File.separator);
+//        	 }
+//        	 
+//         }
+//		
+//	} 
+	
+	
+	public void zipIt(String zipFile)
+	{
+	   byte[] buffer = new byte[1024];
+	   String source = "";
+	   FileOutputStream fos = null;
+	   ZipOutputStream zos = null;
+	   try
+	   {
+	      try
+	      {
+	         source = SOURCE_FOLDER.substring(SOURCE_FOLDER.lastIndexOf("\\") + 1, SOURCE_FOLDER.length());
+	      }
+	     catch (Exception e)
+	     {
+	        source = SOURCE_FOLDER;
+	     }
+	     fos = new FileOutputStream(zipFile);
+	     zos = new ZipOutputStream(fos);
 
-		         
-		         addFilesToZip(files,out,Salida,origin,data,"");
-//		         for (int i=0; i<files.length; i++) {
-//		        	 
-//		        	 String elem=Path+files[i];
-//		        	 if (!elem.equals(Salida))
-//		        	 {
-//		        		 System.out.println("Adding: "+elem);
-//			            
-//			            
-//			            
-//			            FileInputStream fi = new 
-//			              FileInputStream(elem);
-//			            origin = new 
-//			              BufferedInputStream(fi, BUFFER);
-//			            ZipEntry entry = new ZipEntry(elem);
-//			            out.putNextEntry(entry);
-//			            int count;
-//			            while((count = origin.read(data, 0, 
-//			              BUFFER)) != -1) {
-//			               out.write(data, 0, count);
-//			            }
-//			            origin.close();
-//		        	 }
-//		         }
-		         out.close();
-		         System.out.println("checksum: "+checksum.getChecksum().getValue());
-		      } catch(Exception e) {
-		         e.printStackTrace();
-		         
-		      } finally 
-		      {
-		    	  if (out!=null)
-					try {
-						out.close();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-		    	  
-		      }
-		      return Salida;
+	     System.out.println("Output to Zip : " + zipFile);
+	     FileInputStream in = null;
+
+	     for (String file : this.fileList)
+	     {
+	        System.out.println("File Added : " + file);
+	        ZipEntry ze = new ZipEntry(source + File.separator + file);
+	        zos.putNextEntry(ze);
+	        try
+	        {
+	           in = new FileInputStream(SOURCE_FOLDER + File.separator + file);
+	           int len;
+	           while ((len = in.read(buffer)) > 0)
+	           {
+	              zos.write(buffer, 0, len);
+	           }
+	        }
+	        finally
+	        {
+	           in.close();
+	        }
+	     }
+
+	     zos.closeEntry();
+	     System.out.println("Folder successfully compressed");
+
+	  }
+	  catch (IOException ex)
+	  {
+	     ex.printStackTrace();
+	  }
+	  finally
+	  {
+	     try
+	     {
+	        zos.close();
+	     }
+	     catch (IOException e)
+	     {
+	        e.printStackTrace();
+	     }
+	  }
 	}
 
-	private void addFilesToZip(String[] files, ZipOutputStream out, String salida, BufferedInputStream origin, byte[] data,String RelativePath) throws IOException {
-		 for (int i=0; i<files.length; i++) {
-        	 
-        	 String elem=Path+RelativePath+files[i];
-        	 File F=new File(elem);
-        	 if (!elem.equals(salida)&&!F.isDirectory())
-        	 {
-        		 System.out.println("Adding: "+elem);
-	            
-	            
-	            
-	            FileInputStream fi = new 
-	              FileInputStream(elem);
-	            origin = new 
-	              BufferedInputStream(fi, BUFFER);
-	            ZipEntry entry = new ZipEntry(elem);
-	            out.putNextEntry(entry);
-	            int count;
-	            while((count = origin.read(data, 0, 
-	              BUFFER)) != -1) {
-	               out.write(data, 0, count);
-	            }
-	            origin.close();
-        	 }
-        	 else if (!elem.equals(salida)&&F.isDirectory())
-        	 {
-        		 String files2[] = F.list();
-		         addFilesToZip(files2,out,salida,origin,data,files[i]+File.separator);
-        	 }
-        	 
-         }
-		
-	} 
-	
+	public void generateFileList(File node)
+	{
+
+	  // add file only
+	  if (node.isFile())
+	  {
+	     fileList.add(generateZipEntry(node.toString()));
+
+	  }
+
+	  if (node.isDirectory())
+	  {
+	     String[] subNote = node.list();
+	     for (String filename : subNote)
+	     {
+	        generateFileList(new File(node, filename));
+	     }
+	  }
+	}
+
+	private String generateZipEntry(String file)
+	{
+	   return file.substring(SOURCE_FOLDER.length() + 1, file.length());
+	}
 	
 }
