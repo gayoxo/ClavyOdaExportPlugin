@@ -363,7 +363,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 
 	private String generateZipEntry(String file)
 	{
-	   return file.substring(SOURCE_FOLDER.length() + 1, file.length());
+	   return file.substring(SOURCE_FOLDER.length(), file.length());
 	}
 	
 }
