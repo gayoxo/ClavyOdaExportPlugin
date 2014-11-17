@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import fdi.ucm.server.exportparser.oda2.MySQLConnectionOdA2;
+import fdi.ucm.server.exportparser.oda2.localhost.overwrite.SaveProcessMainOdA2LocalOverwrite;
+import fdi.ucm.server.exportparser.oda2.nooverwrite.SaveProcessMainOdA2LocalNoOverwrite;
 import fdi.ucm.server.modelComplete.ImportExportDataEnum;
 import fdi.ucm.server.modelComplete.ImportExportPair;
 import fdi.ucm.server.modelComplete.CompleteImportRuntimeException;
@@ -24,10 +26,11 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 	private static final String ODA = "Oda 2.0 en Servidor Local (copia completa)";
 	private static final String ErrorCreandoCarpeta = "Error creando carpeta";
 	private static final String ErrorDeProceso = "Error creando proceso de crear carpeta";
-	private Boolean Merge;
+	private Boolean KeepConfig;
 	private ArrayList<ImportExportPair> Parametros;
 	private boolean Create;
 	private String Database;
+	private boolean Overwrite;
 
 	/**
 	 * Constructor por defecto
@@ -45,13 +48,30 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 			
 			CompleteCollectionLog CL=new CompleteCollectionLog();
 			SaveProcessMainOdA2Local oda;
-			oda = new SaveProcessMainOdA2Local(Salvar,CL,Database);
-			if (MySQLConnectionOdA2.isDataBaseCreada()||!Merge)
-				SaveProcessMainOdA2Local.resetProfundoTablas();
+			
+			if (Overwrite)
+			{
+			
+			
+			oda = new SaveProcessMainOdA2LocalOverwrite(Salvar,CL,Database);
+			if (MySQLConnectionOdA2.isDataBaseCreada()||!KeepConfig)
+				SaveProcessMainOdA2LocalOverwrite.resetProfundoTablas();
 			else
-				SaveProcessMainOdA2Local.resetBasico();
+				SaveProcessMainOdA2LocalOverwrite.resetBasico();
+			
+			}
+			else
+		{
 				
-			oda.preocess();	
+			oda = new SaveProcessMainOdA2LocalNoOverwrite(Salvar,CL,Database);
+			if (MySQLConnectionOdA2.isDataBaseCreada())
+				SaveProcessMainOdA2LocalOverwrite.resetProfundoTablas();
+				
+				
+		}
+			
+			oda.preocess();
+				
 			CL.getLogLines().add("URL de la coleccion : http://a-note.fdi.ucm.es:10000/"+Database);
 			return CL;
 
@@ -87,11 +107,12 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 		if (Parametros==null)
 		{
 			ArrayList<ImportExportPair> ListaCampos=new ArrayList<ImportExportPair>();
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Database"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Name of Oda Collection (Used as name of database)"));
 			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "User"));
 			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.EncriptedText, "Password"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Merge if exist"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Create if not exist"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Keep collection details if exist (Keep Oda Configuration, only for overwrite option true)"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Create if not exist (Create a new database and generate structure by zero)"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Overwrite Documents and Grammar (Delete and generate everything)"));
 			Parametros=ListaCampos;
 			return ListaCampos;
 		}
@@ -104,8 +125,9 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 		{
 			Database = RemoveSpecialCharacters(DateEntrada.get(0));
 			boolean existe=MySQLConnectionOdA2.CheckDBS(Database,DateEntrada.get(1),DateEntrada.get(2));
-			Merge=Boolean.parseBoolean(DateEntrada.get(3));
+			KeepConfig=Boolean.parseBoolean(DateEntrada.get(3));
 			Create=Boolean.parseBoolean(DateEntrada.get(4));
+			Overwrite=Boolean.parseBoolean(DateEntrada.get(5));
 			if (!existe&&!Create)
 				throw new CompleteImportRuntimeException("DDBB not exist and you do not select \"Create if not exist\" checkbox");
 			else{

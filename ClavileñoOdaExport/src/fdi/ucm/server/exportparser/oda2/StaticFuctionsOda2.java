@@ -716,5 +716,51 @@ public class StaticFuctionsOda2 {
 		}
 		return false;
 	}
+
+
+
+	public static Integer getIDODAD(CompleteElementType attribute) {
+		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
+		for (CompleteOperationalView show : Shows) {
+			
+			if (show.getName().equals(StaticNamesOda2.PRESNTACION))
+			{
+				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
+				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
+					if (CompleteOperationalValueType.getName().equals(StaticNamesOda2.OdaID))
+						try {
+							Integer I=Integer.parseInt(CompleteOperationalValueType.getDefault());
+								return I;
+						} catch (Exception e) {
+							return null;
+						}
+						
+
+				}
+			}
+		}
+		return null;
+		
+	}
+
+
+
+	public static boolean isIDOV(CompleteTextElementType hastype) {
+		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
+		for (CompleteOperationalView show : Shows) {
+			
+			if (show.getName().equals(StaticNamesOda2.PRESNTACION))
+			{
+				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
+				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
+					if (CompleteOperationalValueType.getName().equals(StaticNamesOda2.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesOda2.IDOV)) 
+										return true;
+
+				}
+			}
+		}
+		return false;
+	}
 	
 }

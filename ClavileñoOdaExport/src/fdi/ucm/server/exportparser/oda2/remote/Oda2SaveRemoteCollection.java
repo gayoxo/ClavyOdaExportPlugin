@@ -81,6 +81,8 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 			
 			FileIO=OUTPUT_ZIP_FILE;
 			
+			CL.getLogLines().add("Descarga el zip y inserta en la localizacion base de oda \"<BaseOda>/bo/download\" ");
+			
 			return CL;
 			
 
@@ -140,20 +142,10 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 			if (!existe&&!Create)
 				throw new CompleteImportRuntimeException("DDBB not exist and you do not select \"Create if not exist\" checkbox");
 			else{
-//				try 
-//				{
-//					if (!existe)	
-//						OdaUnixLocalhost.SystemProcess(Database,DateEntrada.get(3),DateEntrada.get(4));
 					
 					MySQLConnectionOdA2.getInstance(DateEntrada.get(0),Database,Integer.parseInt(DateEntrada.get(2)),DateEntrada.get(3),DateEntrada.get(4));
 				
-//				} catch (IOException e) {
-//					System.err.println(ErrorCreandoCarpeta);
-//					e.printStackTrace();
-//				}catch (InterruptedException e) {
-//					System.err.println(ErrorDeProceso);
-//					e.printStackTrace();
-//				}
+
 			}
 		}
 		}

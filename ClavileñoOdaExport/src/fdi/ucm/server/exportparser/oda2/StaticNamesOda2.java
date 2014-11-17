@@ -24,8 +24,10 @@ public class StaticNamesOda2 {
 	public static final String PUBLIC = "Public";
 	public static final String PRIVATE = "Private";
 	public static final String EXTENSIBLE = "Extensible";
+	public static final String OdaID = "OdaId";
 
 	//	PRESENTACION
+	public static final String PRESNTACION = "Presentacion";
 	public static final String VISIBLESHOWN = "Visible";
 	public static final String BROWSERSHOWN = "Browseable";	
 	

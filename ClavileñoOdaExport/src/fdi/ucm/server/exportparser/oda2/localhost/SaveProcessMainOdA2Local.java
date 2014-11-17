@@ -1,6 +1,7 @@
+/**
+ * 
+ */
 package fdi.ucm.server.exportparser.oda2.localhost;
-
-
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,20 +27,19 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementF
 import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementURL;
 
 /**
- * Clase que parsea una coleccion del sistema en el formato Oda.
  * @author Joaquin Gayoso-Cabada
  *
  */
-public class SaveProcessMainOdA2Local extends SaveProcessMainOdA2{
+public abstract class SaveProcessMainOdA2Local extends SaveProcessMainOdA2 {
+
 	
+	protected String Database;
 	
-	private String Database;
-	
-	public SaveProcessMainOdA2Local(CompleteCollection coleccion, CompleteCollectionLog cL, String database){
+	public SaveProcessMainOdA2Local(CompleteCollection coleccion,
+			CompleteCollectionLog cL, String database) {
 		super(coleccion, cL);
 		Database=database;
 	}
-
 
 	/**
 	 * Procesa un recurso sobre su Objeto Digital
@@ -120,14 +120,14 @@ public class SaveProcessMainOdA2Local extends SaveProcessMainOdA2{
 										 url = uri.toURL();
 										saveImage(url, Urls);
 									} catch (MalformedURLException e) {
-										ColectionLog.getLogLines().add("URL erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + Urls);
+										ColectionLog.getLogLines().add("URL erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/"+Idov+"/"+NameS);
 										
 										e.printStackTrace();
 									} catch (IOException e) {
-										ColectionLog.getLogLines().add("Problema I/O  " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + Urls);
+										ColectionLog.getLogLines().add("Problema I/O  " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/"+Idov+"/"+NameS);
 										e.printStackTrace();
 									} catch (URISyntaxException e) {
-										ColectionLog.getLogLines().add("URI erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + Urls);
+										ColectionLog.getLogLines().add("URI erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/"+Idov+"/"+NameS);
 										
 										e.printStackTrace();
 									}
@@ -147,13 +147,13 @@ public class SaveProcessMainOdA2Local extends SaveProcessMainOdA2{
 											 url2 = uri2.toURL();
 											saveImage(url2, Urlsi);
 										} catch (MalformedURLException e) {
-											ColectionLog.getLogLines().add("URL erronea en icono " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + Urlsi);
+											ColectionLog.getLogLines().add("URL erronea en icono " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Urlsi+Idov+"."+extension);
 											e.printStackTrace();
 										} catch (IOException e) {
-											ColectionLog.getLogLines().add("Problema I/O  " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + Urlsi);
+											ColectionLog.getLogLines().add("Problema I/O  " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Urlsi+Idov+"."+extension);
 											e.printStackTrace();
 										} catch (URISyntaxException e) {
-											ColectionLog.getLogLines().add("URI erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + Urls);									
+											ColectionLog.getLogLines().add("URI erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Urlsi+Idov+"."+extension);									
 											e.printStackTrace();
 										}
 									 }

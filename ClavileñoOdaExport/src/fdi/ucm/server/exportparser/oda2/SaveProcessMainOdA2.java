@@ -218,7 +218,7 @@ public abstract class SaveProcessMainOdA2 {
 	/**
 	 * Funcion que realiza una validacion basica del sistema
 	 */
-	private void ProcessValidacion() {
+	protected void ProcessValidacion() {
 		if (!findVOM())
 			{
 			ColectionLog.getLogLines().add(ERROR_DE_CREACION_POR_FALTA_DE_META_OBJETO_VIRTUAL);
@@ -254,7 +254,7 @@ public abstract class SaveProcessMainOdA2 {
 	 * Busca los metadatos
 	 * @return Lista de Metadatos
 	 */
-	private ArrayList<CompleteElementType> findMetaDatos() {
+	protected ArrayList<CompleteElementType> findMetaDatos() {
 		ArrayList<CompleteElementType> Salida=new ArrayList<CompleteElementType>();
 		for (CompleteGrammar meta : toOda.getMetamodelGrammar()) {
 				if (StaticFuctionsOda2.isVirtualObject(meta))
@@ -301,7 +301,7 @@ public abstract class SaveProcessMainOdA2 {
 	 * @param list raices del modelo de entrada.
 	 * @throws ImportRuntimeException error si esta mal introducido el modelo en la funcion 
 	 */
-	private void processModeloIniciales(List<CompleteStructure> list) throws CompleteImportRuntimeException {
+	protected void processModeloIniciales(List<CompleteStructure> list) throws CompleteImportRuntimeException {
 		list=CleanRepeticiones(list,new ArrayList<Integer>());
 		rellenaTablaVocabularios(list);
 		for (CompleteStructure Cattribute : list) {
@@ -336,7 +336,7 @@ public abstract class SaveProcessMainOdA2 {
 	 * @param list lista a limpiar
 	 * @return Lista limpia de elementos
 	 */
-	private ArrayList<CompleteStructure> CleanRepeticiones(List<CompleteStructure> list,ArrayList<Integer> Ambitos) {
+	protected ArrayList<CompleteStructure> CleanRepeticiones(List<CompleteStructure> list,ArrayList<Integer> Ambitos) {
 		ArrayList<CompleteStructure> Salida=new ArrayList<CompleteStructure>();
 		for (CompleteStructure collectionAttribute : list) {
 			if (collectionAttribute instanceof CompleteIterator)
@@ -635,7 +635,7 @@ public abstract class SaveProcessMainOdA2 {
 	 * Rellena la tabla con los vocabularios y la tabla de compartidos con aquellos que compartiran vocabulario.
 	 * @param list modelo de entrada.
 	 */
-	private void rellenaTablaVocabularios(List<CompleteStructure> list) {
+	protected void rellenaTablaVocabularios(List<CompleteStructure> list) {
 		for (CompleteStructure attribute : list) {
 			if (attribute instanceof CompleteElementType)
 				if (attribute instanceof CompleteTextElementType&&StaticFuctionsOda2.isControled((CompleteTextElementType)attribute))
@@ -656,7 +656,7 @@ public abstract class SaveProcessMainOdA2 {
 	 * @param padre padre meta de modelo.
 	 * @throws CompleteImportRuntimeException error si esta mal introducido el modelo en la funcion
 	 */
-	private void processModelo(List<CompleteStructure> list, int padre) throws CompleteImportRuntimeException {
+	protected void processModelo(List<CompleteStructure> list, int padre) throws CompleteImportRuntimeException {
 	
 		int pos =1;
 		for (CompleteStructure Cattribute : list) {
@@ -736,7 +736,7 @@ public abstract class SaveProcessMainOdA2 {
 	 * @param vocabulario voavulario
 	 * @return id de salida en la tabla
 	 */
-	private int insertIntoFather(int padre, String name, String browser, char Tipo, String vocabulario,String visible) {
+	protected int insertIntoFather(int padre, String name, String browser, char Tipo, String vocabulario,String visible) {
 		try {
 			ResultSet rs=MySQLConnectionOdA2.RunQuerrySELECT("SELECT MAX(orden) FROM section_data WHERE idpadre="+padre+";");
 			if (rs!=null) 
@@ -765,7 +765,7 @@ public abstract class SaveProcessMainOdA2 {
 	 * @param list lista de Secciones candidatas a oV
 	  * @throws ImportRuntimeException en caso de errores varios. Consultar el error en {@link ImportRuntimeException}
 	 */
-	private void processOV(List<CompleteDocuments> list) throws CompleteImportRuntimeException {
+	protected void processOV(List<CompleteDocuments> list) throws CompleteImportRuntimeException {
 		for (CompleteDocuments resources : list) {
 			if (StaticFuctionsOda2.isAVirtualObject(resources))
 				saveOV(resources);
@@ -796,7 +796,7 @@ public abstract class SaveProcessMainOdA2 {
 	 * @param ObjetoDigital OV en forma de seccion.
 	 * @throws ImportRuntimeException en caso de errores varios. Consultar el error en {@link ImportRuntimeException}
 	 */
-	private void saveOV(CompleteDocuments ObjetoDigital) throws CompleteImportRuntimeException {
+	protected void saveOV(CompleteDocuments ObjetoDigital) throws CompleteImportRuntimeException {
 		try{
 //		Integer Idov=StaticFuctionsOda2.findIdov(ObjetoDigital);
 		boolean Public=StaticFuctionsOda2.getPublic(ObjetoDigital);
@@ -831,7 +831,7 @@ public abstract class SaveProcessMainOdA2 {
 	 * @param objetoDigital
 	 * @param idov
 	 */
-	private void procesa_descripcion(CompleteDocuments objetoDigital, Integer Idov) {
+	protected void procesa_descripcion(CompleteDocuments objetoDigital, Integer Idov) {
 		MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `text_data` (`idov`, `idseccion`, `value`) VALUES ('"+Idov+"', '111', '"+SQLScaped(objetoDigital.getDescriptionText())+"');");
 		
 	}
@@ -843,7 +843,7 @@ public abstract class SaveProcessMainOdA2 {
 	 * @param ObjetoDigitalIdov Identificador del ObjetoDigital
 	 * @throws ImportRuntimeException si el Objeto no tiene idov
 	 */
-	private void procesa_iconos(CompleteDocuments ObjetoDigital, Integer ObjetoDigitalIdov) throws CompleteImportRuntimeException {
+	protected void procesa_iconos(CompleteDocuments ObjetoDigital, Integer ObjetoDigitalIdov) throws CompleteImportRuntimeException {
 		
 		String Path= StaticFuctionsOda2.getIcon(ObjetoDigital);
 		if (Path!=null)
@@ -963,7 +963,7 @@ public abstract class SaveProcessMainOdA2 {
 	 * @param Idov Identificador del objeto.
 	 * @throws ImportRuntimeException en caso de errores varios. Consultar el error en {@link CompleteImportRuntimeException}
 	 */
-	private void procesa_Atributos(CompleteDocuments DO, Integer Idov) throws CompleteImportRuntimeException {
+	protected void procesa_Atributos(CompleteDocuments DO, Integer Idov) throws CompleteImportRuntimeException {
 		
 		ArrayList<CompleteElement> Normales=new ArrayList<CompleteElement>();
 		ArrayList<CompleteElement> Recursos=new ArrayList<CompleteElement>();

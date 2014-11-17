@@ -121,14 +121,14 @@ public class SaveProcessMainOdA2Remote extends SaveProcessMainOdA2{
 										 url = uri.toURL();
 										saveImage(url, Urls);
 									} catch (MalformedURLException e) {
-										ColectionLog.getLogLines().add("URL erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + Urls);
+										ColectionLog.getLogLines().add("URL erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "../"+Idov+"/"+NameS);
 										
 										e.printStackTrace();
 									} catch (IOException e) {
-										ColectionLog.getLogLines().add("Problema I/O  " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + Urls);
+										ColectionLog.getLogLines().add("Problema I/O  " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "../"+Idov+"/"+NameS);
 										e.printStackTrace();
 									} catch (URISyntaxException e) {
-										ColectionLog.getLogLines().add("URI erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + Urls);
+										ColectionLog.getLogLines().add("URI erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "../"+Idov+"/"+NameS);
 										
 										e.printStackTrace();
 									}
@@ -148,13 +148,13 @@ public class SaveProcessMainOdA2Remote extends SaveProcessMainOdA2{
 											 url2 = uri2.toURL();
 											saveImage(url2, Urlsi);
 										} catch (MalformedURLException e) {
-											ColectionLog.getLogLines().add("URL erronea en icono " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + Urlsi);
+											ColectionLog.getLogLines().add("URL erronea en icono " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "../iconos/"+Idov+"."+extension);
 											e.printStackTrace();
 										} catch (IOException e) {
-											ColectionLog.getLogLines().add("Problema I/O  " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + Urlsi);
+											ColectionLog.getLogLines().add("Problema I/O  " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "../iconos/"+Idov+"."+extension);
 											e.printStackTrace();
 										} catch (URISyntaxException e) {
-											ColectionLog.getLogLines().add("URI erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + Urls);									
+											ColectionLog.getLogLines().add("URI erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "../iconos/"+Idov+"."+extension);									
 											e.printStackTrace();
 										}
 									 }
