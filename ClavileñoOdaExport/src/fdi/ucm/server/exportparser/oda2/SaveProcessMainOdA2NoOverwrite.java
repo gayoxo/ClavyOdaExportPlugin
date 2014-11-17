@@ -1,16 +1,13 @@
 /**
  * 
  */
-package fdi.ucm.server.exportparser.oda2.nooverwrite;
+package fdi.ucm.server.exportparser.oda2;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
-import fdi.ucm.server.exportparser.oda2.MySQLConnectionOdA2;
-import fdi.ucm.server.exportparser.oda2.StaticFuctionsOda2;
-import fdi.ucm.server.exportparser.oda2.localhost.SaveProcessMainOdA2Local;
 import fdi.ucm.server.modelComplete.CompleteImportRuntimeException;
 import fdi.ucm.server.modelComplete.collection.CompleteCollection;
 import fdi.ucm.server.modelComplete.collection.CompleteCollectionLog;
@@ -27,17 +24,17 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
  * @author Joaquin Gayoso-Cabada
  *
  */
-public class SaveProcessMainOdA2LocalNoOverwrite extends
-		SaveProcessMainOdA2Local {
+public class SaveProcessMainOdA2NoOverwrite extends
+		SaveProcessMainOdA2 {
 
 	
 	HashMap<Integer, ArrayList<CompleteStructure>> VocabulariosElement;
 	private CompleteTextElementType IDOV;
 	
 	
-	public SaveProcessMainOdA2LocalNoOverwrite(CompleteCollection coleccion,
-			CompleteCollectionLog cL, String database) {
-		super(coleccion, cL, database);
+	public SaveProcessMainOdA2NoOverwrite(CompleteCollection coleccion,
+			CompleteCollectionLog cL, String pathGeneral) {
+		super(coleccion, cL, pathGeneral);
 		VocabulariosElement=new HashMap<Integer,ArrayList<CompleteStructure>>();
 	}
 

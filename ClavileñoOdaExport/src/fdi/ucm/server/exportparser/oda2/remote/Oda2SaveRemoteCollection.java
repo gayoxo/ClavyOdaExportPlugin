@@ -14,6 +14,8 @@ import java.util.zip.ZipOutputStream;
 
 import fdi.ucm.server.exportparser.oda2.MySQLConnectionOdA2;
 import fdi.ucm.server.exportparser.oda2.SaveProcessMainOdA2;
+import fdi.ucm.server.exportparser.oda2.SaveProcessMainOdA2NoOverwrite;
+import fdi.ucm.server.exportparser.oda2.SaveProcessMainOdA2Overwrite;
 import fdi.ucm.server.modelComplete.ImportExportDataEnum;
 import fdi.ucm.server.modelComplete.ImportExportPair;
 import fdi.ucm.server.modelComplete.CompleteImportRuntimeException;
@@ -29,7 +31,7 @@ import fdi.ucm.server.modelComplete.collection.CompleteCollectionLog;
 public class Oda2SaveRemoteCollection extends SaveCollection {
 
 	private static final String ODA = "Oda 2.0 en servidor remoto (MySQL only)";
-	private Boolean Merge;
+	private Boolean KeepConfig;
 	private ArrayList<ImportExportPair> Parametros;
 	private boolean Create;
 	private String Database;
@@ -39,6 +41,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	private List<String> fileList; 
 	private String OUTPUT_ZIP_FILE = "";
 	private String SOURCE_FOLDER = ""; // SourceFolder path
+	private boolean Overwrite;
 	
 	/**
 	 * Constructor por defecto
@@ -59,13 +62,31 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 			Dir.mkdirs();
 			
 			CompleteCollectionLog CL=new CompleteCollectionLog();
+			
 			SaveProcessMainOdA2 oda;
-			oda = new SaveProcessMainOdA2Remote(Salvar,CL,SOURCE_FOLDER);
-			if (MySQLConnectionOdA2.isDataBaseCreada()||!Merge)
-				SaveProcessMainOdA2.resetProfundoTablas();
+			
+			if (Overwrite)
+			{
+			
+			
+			oda = new SaveProcessMainOdA2Overwrite(Salvar,CL,SOURCE_FOLDER);
+			if (MySQLConnectionOdA2.isDataBaseCreada()||!KeepConfig)
+				SaveProcessMainOdA2Overwrite.resetProfundoTablas();
 			else
-				SaveProcessMainOdA2.resetBasico();
-			oda.preocess();	
+				SaveProcessMainOdA2Overwrite.resetBasico();
+			
+			}
+			else
+		{
+				
+			oda = new SaveProcessMainOdA2NoOverwrite(Salvar,CL,SOURCE_FOLDER);
+			if (MySQLConnectionOdA2.isDataBaseCreada())
+				SaveProcessMainOdA2Overwrite.resetProfundoTablas();
+				
+				
+		}
+			
+			oda.preocess();
 			
 			
 			
@@ -123,8 +144,9 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Number, "Port"));
 			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "User"));
 			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.EncriptedText, "Password"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Merge if exist"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Create if not exist"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Keep collection details if exist (Keep Oda Configuration, only for overwrite option true)"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Create if not exist (Create a new database and generate structure by zero)"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Overwrite Documents and Grammar (Delete and generate everything)"));
 			Parametros=ListaCampos;
 			return ListaCampos;
 		}
@@ -137,8 +159,9 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 		{
 			Database = RemoveSpecialCharacters(DateEntrada.get(1));
 			boolean existe=MySQLConnectionOdA2.CheckDBS(DateEntrada.get(0),Database,Integer.parseInt(DateEntrada.get(2)),DateEntrada.get(3),DateEntrada.get(4));
-			Merge=Boolean.parseBoolean(DateEntrada.get(5));
+			KeepConfig=Boolean.parseBoolean(DateEntrada.get(5));
 			Create=Boolean.parseBoolean(DateEntrada.get(6));
+			Overwrite=Boolean.parseBoolean(DateEntrada.get(7));
 			if (!existe&&!Create)
 				throw new CompleteImportRuntimeException("DDBB not exist and you do not select \"Create if not exist\" checkbox");
 			else{

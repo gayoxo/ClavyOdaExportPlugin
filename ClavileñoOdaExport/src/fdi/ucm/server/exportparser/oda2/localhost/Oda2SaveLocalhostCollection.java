@@ -7,8 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import fdi.ucm.server.exportparser.oda2.MySQLConnectionOdA2;
-import fdi.ucm.server.exportparser.oda2.localhost.overwrite.SaveProcessMainOdA2LocalOverwrite;
-import fdi.ucm.server.exportparser.oda2.nooverwrite.SaveProcessMainOdA2LocalNoOverwrite;
+import fdi.ucm.server.exportparser.oda2.SaveProcessMainOdA2;
+import fdi.ucm.server.exportparser.oda2.SaveProcessMainOdA2NoOverwrite;
+import fdi.ucm.server.exportparser.oda2.SaveProcessMainOdA2Overwrite;
 import fdi.ucm.server.modelComplete.ImportExportDataEnum;
 import fdi.ucm.server.modelComplete.ImportExportPair;
 import fdi.ucm.server.modelComplete.CompleteImportRuntimeException;
@@ -47,25 +48,25 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 		try {
 			
 			CompleteCollectionLog CL=new CompleteCollectionLog();
-			SaveProcessMainOdA2Local oda;
+			SaveProcessMainOdA2 oda;
 			
 			if (Overwrite)
 			{
 			
 			
-			oda = new SaveProcessMainOdA2LocalOverwrite(Salvar,CL,Database);
+			oda = new SaveProcessMainOdA2Overwrite(Salvar,CL,"/var/www/"+Database+"/bo/download/");
 			if (MySQLConnectionOdA2.isDataBaseCreada()||!KeepConfig)
-				SaveProcessMainOdA2LocalOverwrite.resetProfundoTablas();
+				SaveProcessMainOdA2Overwrite.resetProfundoTablas();
 			else
-				SaveProcessMainOdA2LocalOverwrite.resetBasico();
+				SaveProcessMainOdA2Overwrite.resetBasico();
 			
 			}
 			else
 		{
 				
-			oda = new SaveProcessMainOdA2LocalNoOverwrite(Salvar,CL,Database);
+			oda = new SaveProcessMainOdA2NoOverwrite(Salvar,CL,"/var/www/"+Database+"/bo/download/");
 			if (MySQLConnectionOdA2.isDataBaseCreada())
-				SaveProcessMainOdA2LocalOverwrite.resetProfundoTablas();
+				SaveProcessMainOdA2Overwrite.resetProfundoTablas();
 				
 				
 		}

@@ -2,6 +2,15 @@ package fdi.ucm.server.exportparser.oda2;
 
 
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
@@ -22,6 +31,8 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteFile;
 import fdi.ucm.server.modelComplete.collection.document.CompleteLinkElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElement;
+import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementFile;
+import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementURL;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
@@ -52,13 +63,14 @@ public abstract class SaveProcessMainOdA2 {
 	protected HashMap<Integer,CompleteFile>  Iconos;
 	protected HashMap<CompleteDocuments, Integer> tabla;
 	protected CompleteCollectionLog ColectionLog;
+	private String PathGeneral;
 
 	/**
 	 * Constructor por defecto
 	 * @param cL 
 	 * @param Coleccion coleccion a insertar en oda.
 	 */
-	public SaveProcessMainOdA2(CompleteCollection coleccion, CompleteCollectionLog cL){
+	public SaveProcessMainOdA2(CompleteCollection coleccion, CompleteCollectionLog cL,String pathGeneral){
 		toOda=coleccion;
 		ModeloOda=new HashMap<CompleteElementType, Integer>();
 		Vocabularios=new HashSet<Integer>();
@@ -66,6 +78,7 @@ public abstract class SaveProcessMainOdA2 {
 		VocabulariosSalida=new HashMap<Integer, Integer>();
 		tabla=new HashMap<CompleteDocuments, Integer>();
 		ColectionLog=cL;
+		PathGeneral=pathGeneral;
 	}
 
 	
@@ -121,39 +134,6 @@ public abstract class SaveProcessMainOdA2 {
 	}
 	
 	
-
-//	/**
-//	 * Busca un meta con el IDOV dentro de un meta
-//	 * @param modeloObjetos
-//	 * @return
-//	 */
-//	private boolean findIDOV() {
-//		boolean NoError=false;
-//		for (CompleteGrammar iterable_element : toOda.getMetamodelGrammar()) {
-//			if (StaticFuctionsOda2.isVirtualObject(iterable_element))
-//				 	 if (!findIDOVINOV( iterable_element))
-//				 		 return false;
-//				 	 else NoError=true;
-//				}
-//		return NoError;
-//	}
-	
-//	/**
-//	 * Busca el idov interno que da sentido al sistema
-//	 * @param padre
-//	 * @return
-//	 */
-//	private boolean findIDOVINOV(CompleteGrammar padre) {
-//		for (CompleteStructure iterable_element2 : padre.getSons()) {
-//			if (iterable_element2 instanceof CompleteElementType)
-//			{
-//			 if (StaticFuctionsOda2.isIDOV(((CompleteElementType) iterable_element2)))
-//				 return true;
-//			}
-//		}
-//		return false;
-//	}
-
 
 	/**
 	 * Busca un File fisico dentro del File
@@ -851,16 +831,6 @@ public abstract class SaveProcessMainOdA2 {
 	}
 
 	
-	/**
-	 * Procesa un recurso sobre su Objeto Digital
-	 * @param recursoAProcesar Recurso que sera procesado
-	 * @param idov identificador del sueño del recurso.
-	 * @param visibleValue2 
-	 * @return 
-	 * @throws ImportRuntimeException si el elemento no tiene un campo en su descripcion necesario.
-	 */
-	protected abstract int procesa_recursos(CompleteDocuments recursoAProcesar, Integer idov, boolean visibleValue2);
-	
 //	/**
 //	 * Procesa un recurso sobre su Objeto Digital
 //	 * @param recursoAProcesar Recurso que sera procesado
@@ -869,92 +839,167 @@ public abstract class SaveProcessMainOdA2 {
 //	 * @return 
 //	 * @throws ImportRuntimeException si el elemento no tiene un campo en su descripcion necesario.
 //	 */
-//	protected int procesa_recursos(CompleteDocuments recursoAProcesar, Integer idov, boolean visibleValue2) throws CompleteImportRuntimeException {
-//
-//		
-//		boolean visBool=visibleValue2;
-//		String VisString;
-//		if (visBool) 
-//				VisString="S";
-//		else 
-//			VisString="N";
-//		
+//	protected abstract int procesa_recursos(CompleteDocuments recursoAProcesar, Integer idov, boolean visibleValue2);
 //	
-//				CompleteDocuments recursoAProcesarC = (CompleteDocuments)recursoAProcesar;
-//				
-//				if (StaticFuctionsOda2.isAVirtualObject(recursoAProcesarC))
-//				{
-//					
-//					Integer Idov=tabla.get(recursoAProcesarC);
-//					if (Idov!=null)
-//						 {
-//						int Salida = MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `idov_refered`, `type`) VALUES ('"+idov+"', '"+VisString+"','N', '"+Idov+"','OV')");	
-//						return Salida;
-//						 }
-//					else
-//						ColectionLog.getLogLines().add("Link a objeto virtual: "+ recursoAProcesarC.getDescriptionText()+ "no existe en la lista de recursos, pero tiene un link, IGNORADO" );
-//				}
-//				else
-//					if (StaticFuctionsOda2.isAFile(recursoAProcesarC))
-//				{
-//						CompleteResourceElement FIleRel=StaticFuctionsOda2.findMetaValueFile(recursoAProcesarC.getDescription());
-//						CompleteLinkElement idovrefVal= StaticFuctionsOda2.findMetaValueIDOVowner(recursoAProcesarC.getDescription());
-//					
-//					
-//					if (idovrefVal!=null)
-//					{
-//						Integer Idov=tabla.get(idovrefVal.getValue());
-//					
-//						
-//						if  (FIleRel!=null && Idov!=null && (FIleRel instanceof CompleteResourceElementFile))
-//							{
-//								CompleteFile Icon=Iconos.get(idov);
-//								String iconoov;
-//								if (Icon!=null && Icon.getPath().equals((((CompleteResourceElementFile)FIleRel).getValue()).getPath()))
-//									iconoov="S";
-//								else iconoov="N";
-//								String[] spliteStri=(((CompleteResourceElementFile)FIleRel).getValue()).getPath().split("/");
-//								String NameS = spliteStri[spliteStri.length-1];
-//								
-//								
-//								if (Idov==idov)
-//									{
-//									int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `name`, `type`) VALUES ('"+idov+"', '"+VisString+"','"+iconoov+"', '"+NameS+"', 'P' )");
-//									return Salida;
-//									}
-//								else
-//									{
-//									int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`, `name`,`idresource_refered`, `type`) VALUES ('"+idov+"', '"+VisString+"', '"+NameS+"', '"+Idov+"','F')");
-//									return Salida;
-//									}
-//							}
-//						else ColectionLog.getLogLines().add("EL file referencia es nulo, o no es un file o el dueño no es un Objeto virtual valido con identificadorArchivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO");
-//					}
-//					else ColectionLog.getLogLines().add("El objeto dueño del archivo es nulo o no Objeto Virtual, Archivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO ");
-//				}
-//					else
-//						if (StaticFuctionsOda2.isAURL(recursoAProcesarC))
-//						{
-//							//public static final String URI = "URI";
-//							CompleteResourceElementURL UniFile=StaticFuctionsOda2.findMetaValueUri(recursoAProcesarC.getDescription());
-//
-//							
-//								
-//								if  (UniFile!=null&&!UniFile.getValue().isEmpty())
-//									{
-//
-//											int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `name`, `type`) VALUES ('"+idov+"', '"+VisString+"','N', '"+UniFile.getValue()+"', 'U' )");
-//											return Salida;
-//
-//
-//									}
-//								else ColectionLog.getLogLines().add("El URI referencia es nulo, o vacio identificadorArchivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO");
-//
-//						}
-//				return -1;
-//		
-//	}
-//
+	/**
+	 * Procesa un recurso sobre su Objeto Digital
+	 * @param recursoAProcesar Recurso que sera procesado
+	 * @param idov identificador del sueño del recurso.
+	 * @param visibleValue2 
+	 * @return 
+	 * @throws ImportRuntimeException si el elemento no tiene un campo en su descripcion necesario.
+	 */
+	protected int procesa_recursos(CompleteDocuments recursoAProcesar, Integer idov, boolean visibleValue2) throws CompleteImportRuntimeException {
+
+		
+		if (recursoAProcesar==null)
+			return -1;
+		
+		
+		boolean visBool=visibleValue2;
+		String VisString;
+		if (visBool) 
+				VisString="S";
+		else 
+			VisString="N";
+		
+	
+				CompleteDocuments recursoAProcesarC = (CompleteDocuments)recursoAProcesar;
+				
+				if (StaticFuctionsOda2.isAVirtualObject(recursoAProcesarC))
+				{
+					
+					Integer Idov=tabla.get(recursoAProcesarC);
+					if (Idov!=null)
+						 {
+						int Salida = MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `idov_refered`, `type`) VALUES ('"+idov+"', '"+VisString+"','N', '"+Idov+"','OV')");	
+						return Salida;
+						 }
+					else
+						ColectionLog.getLogLines().add("Link a objeto virtual: "+ recursoAProcesarC.getDescriptionText()+ "no existe en la lista de recursos, pero tiene un link, IGNORADO" );
+				}
+				else
+					if (StaticFuctionsOda2.isAFile(recursoAProcesarC))
+				{
+						CompleteResourceElement FIleRel=StaticFuctionsOda2.findMetaValueFile(recursoAProcesarC.getDescription());
+						CompleteLinkElement idovrefVal= StaticFuctionsOda2.findMetaValueIDOVowner(recursoAProcesarC.getDescription());
+					
+					
+					if (idovrefVal!=null)
+					{
+						Integer Idov=tabla.get(idovrefVal.getValue());
+					
+						
+						if  (FIleRel!=null && Idov!=null && (FIleRel instanceof CompleteResourceElementFile))
+							{
+								CompleteFile Icon=Iconos.get(idov);
+								String iconoov;
+								if (Icon!=null && Icon.getPath().equals((((CompleteResourceElementFile)FIleRel).getValue()).getPath()))
+									iconoov="S";
+								else iconoov="N";
+								String[] spliteStri=(((CompleteResourceElementFile)FIleRel).getValue()).getPath().split("/");
+								String NameS = spliteStri[spliteStri.length-1];
+								String[] ext = NameS.split(".");
+								String extension="jpg";
+								if (ext.length>0)
+								 extension= ext[ext.length-1];
+								
+								
+								if (Idov==idov)
+									{
+									
+									// String Urls="/var/www/"+Database+"/bo/download/"+Idov+"/";
+									//TODO
+									 String Urls=PathGeneral+Idov+"/";
+									 File DestinoD=new File(Urls); 
+									 DestinoD.mkdirs();
+									 Urls=Urls+NameS;
+									 File DestinoF=new File(Urls); 
+									 DestinoF.delete();
+									 try {			 
+										 URL url = new URL((((CompleteResourceElementFile)FIleRel).getValue()).getPath());
+										 URI uri = new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+										 url = uri.toURL();
+										saveImage(url, Urls);
+									} catch (MalformedURLException e) {
+										ColectionLog.getLogLines().add("URL erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/"+Idov+"/"+NameS);
+										
+										e.printStackTrace();
+									} catch (IOException e) {
+										ColectionLog.getLogLines().add("Problema I/O  " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/"+Idov+"/"+NameS);
+										e.printStackTrace();
+									} catch (URISyntaxException e) {
+										ColectionLog.getLogLines().add("URI erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/"+Idov+"/"+NameS);
+										
+										e.printStackTrace();
+									}
+									
+									 
+									 if (iconoov.equals("S"))
+									 {
+//										 String Urlsi="/var/www/"+Database+"/bo/download/iconos/";
+//										 TODO 
+										 
+										 String Urlsi=PathGeneral+"/iconos/";
+										 File DestinoDi=new File(Urlsi); 
+										 DestinoDi.mkdirs();
+										 Urlsi=Urlsi+Idov+"."+extension;
+										 File DestinoFi=new File(Urlsi); 
+										 DestinoFi.delete();
+										 try {
+											 URL url2 = new URL((((CompleteResourceElementFile)FIleRel).getValue()).getPath());
+											 URI uri2 = new URI(url2.getProtocol(), url2.getUserInfo(), url2.getHost(), url2.getPort(), url2.getPath(), url2.getQuery(), url2.getRef());
+											 url2 = uri2.toURL();
+											saveImage(url2, Urlsi);
+										} catch (MalformedURLException e) {
+											ColectionLog.getLogLines().add("URL erronea en icono " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Urlsi+Idov+"."+extension);
+											e.printStackTrace();
+										} catch (IOException e) {
+											ColectionLog.getLogLines().add("Problema I/O  " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Urlsi+Idov+"."+extension);
+											e.printStackTrace();
+										} catch (URISyntaxException e) {
+											ColectionLog.getLogLines().add("URI erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Urlsi+Idov+"."+extension);									
+											e.printStackTrace();
+										}
+									 }
+									 
+									int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `name`, `type`) VALUES ('"+idov+"', '"+VisString+"','"+iconoov+"', '"+NameS+"', 'P' )");
+									return Salida;
+									
+									}
+								else
+									{
+									int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`, `name`,`idresource_refered`, `type`) VALUES ('"+idov+"', '"+VisString+"', '"+NameS+"', '"+Idov+"','F')");
+									return Salida;
+									}
+							}
+						else ColectionLog.getLogLines().add("EL file referencia es nulo, o no es un file o el dueño no es un Objeto virtual valido con identificadorArchivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO");
+					}
+					else ColectionLog.getLogLines().add("El objeto dueño del archivo es nulo o no Objeto Virtual, Archivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO ");
+				}
+					else
+						if (StaticFuctionsOda2.isAURL(recursoAProcesarC))
+						{
+							//public static final String URI = "URI";
+							CompleteResourceElementURL UniFile=StaticFuctionsOda2.findMetaValueUri(recursoAProcesarC.getDescription());
+
+							
+								
+								if  (UniFile!=null&&!UniFile.getValue().isEmpty())
+									{
+
+											int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `name`, `type`) VALUES ('"+idov+"', '"+VisString+"','N', '"+UniFile.getValue()+"', 'U' )");
+											return Salida;
+
+
+									}
+								else ColectionLog.getLogLines().add("El URI referencia es nulo, o vacio identificadorArchivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO");
+
+						}
+				return -1;
+		
+	}
+
 
 
 	/**
@@ -1459,4 +1504,28 @@ public abstract class SaveProcessMainOdA2 {
 
 	
 
+	/**
+	 * Salva una imagen dado un destino
+	 * @param imageUrl
+	 * @param destinationFile
+	 * @throws IOException
+	 */
+	private void saveImage(URL imageUrl, String destinationFile) throws IOException {
+
+		URL url = imageUrl;
+		InputStream is = url.openStream();
+		OutputStream os = new FileOutputStream(destinationFile);
+
+		byte[] b = new byte[2048];
+		int length;
+
+		while ((length = is.read(b)) != -1) {
+			os.write(b, 0, length);
+		}
+
+		is.close();
+		os.close();
+	}
+	
+	
 }
