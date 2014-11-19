@@ -749,7 +749,7 @@ public class StaticFuctionsOda2 {
 		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
 		for (CompleteOperationalView show : Shows) {
 			
-			if (show.getName().equals(StaticNamesOda2.PRESNTACION))
+			if (show.getName().equals(StaticNamesOda2.META))
 			{
 				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
 				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
