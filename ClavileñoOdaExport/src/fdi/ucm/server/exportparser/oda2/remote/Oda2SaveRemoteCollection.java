@@ -139,12 +139,12 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 		if (Parametros==null)
 		{
 			ArrayList<ImportExportPair> ListaCampos=new ArrayList<ImportExportPair>();
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Server"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Database"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Number, "Port"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "User"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.EncriptedText, "Password"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Keep collection details if exist (Keep Oda Configuration, only for overwrite option true)"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "MySQL Server Direction"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "MySQL Oda Destiny Database"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Number, "MySQL Port"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "MySQL User"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.EncriptedText, "MySQL Password"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Keep collection details if exist (Keep Oda Configuration, only affects overwrite option true)"));
 			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Create if not exist (Create a new database and generate structure by zero)"));
 			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Overwrite Documents and Grammar (Delete and generate everything)"));
 			Parametros=ListaCampos;

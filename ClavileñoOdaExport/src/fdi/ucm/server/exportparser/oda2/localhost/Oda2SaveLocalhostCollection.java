@@ -108,10 +108,10 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 		if (Parametros==null)
 		{
 			ArrayList<ImportExportPair> ListaCampos=new ArrayList<ImportExportPair>();
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Name of Oda Collection (Used as name of database)"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "User"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.EncriptedText, "Password"));
-			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Keep collection details if exist (Keep Oda Configuration, only for overwrite option true)"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "Name of Oda Collection (Used as name of database in MySQL Clavy)"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Text, "MySQL Clavy User"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.EncriptedText, "MySQL Clavy Password"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Keep collection details if exist (Keep Oda Configuration, only affects overwrite option true)"));
 			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Create if not exist (Create a new database and generate structure by zero)"));
 			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Overwrite Documents and Grammar (Delete and generate everything)"));
 			Parametros=ListaCampos;
