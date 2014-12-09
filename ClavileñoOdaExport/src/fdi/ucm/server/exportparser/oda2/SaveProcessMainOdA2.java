@@ -993,7 +993,7 @@ public abstract class SaveProcessMainOdA2 {
 
 
 									}
-								else ColectionLog.getLogLines().add("El URI referencia es nulo, o vacio identificadorArchivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO");
+								else ColectionLog.getLogLines().add("El URI referencia es nulo, o vacio identificador Archivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO");
 
 						}
 				return -1;
