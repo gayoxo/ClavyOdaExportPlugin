@@ -25,7 +25,7 @@ import java.util.Map.Entry;
 
 import fdi.ucm.server.modelComplete.CompleteImportRuntimeException;
 import fdi.ucm.server.modelComplete.collection.CompleteCollection;
-import fdi.ucm.server.modelComplete.collection.CompleteCollectionLog;
+import fdi.ucm.server.modelComplete.collection.CompleteLogAndUpdates;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteFile;
@@ -62,7 +62,7 @@ public abstract class SaveProcessMainOdA2 {
 	protected HashMap<Integer,Integer> VocabulariosSalida;
 	protected HashMap<Integer,CompleteFile>  Iconos;
 	protected HashMap<CompleteDocuments, Integer> tabla;
-	protected CompleteCollectionLog ColectionLog;
+	protected CompleteLogAndUpdates ColectionLog;
 	private String PathGeneral;
 
 	/**
@@ -70,7 +70,7 @@ public abstract class SaveProcessMainOdA2 {
 	 * @param cL 
 	 * @param Coleccion coleccion a insertar en oda.
 	 */
-	public SaveProcessMainOdA2(CompleteCollection coleccion, CompleteCollectionLog cL,String pathGeneral){
+	public SaveProcessMainOdA2(CompleteCollection coleccion, CompleteLogAndUpdates cL,String pathGeneral){
 		toOda=coleccion;
 		ModeloOda=new HashMap<CompleteElementType, Integer>();
 		Vocabularios=new HashSet<Integer>();

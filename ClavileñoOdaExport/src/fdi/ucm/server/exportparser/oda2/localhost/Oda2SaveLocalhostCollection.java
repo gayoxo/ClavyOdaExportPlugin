@@ -15,7 +15,7 @@ import fdi.ucm.server.modelComplete.ImportExportPair;
 import fdi.ucm.server.modelComplete.CompleteImportRuntimeException;
 import fdi.ucm.server.modelComplete.SaveCollection;
 import fdi.ucm.server.modelComplete.collection.CompleteCollection;
-import fdi.ucm.server.modelComplete.collection.CompleteCollectionLog;
+import fdi.ucm.server.modelComplete.collection.CompleteLogAndUpdates;
 
 /**
  * Clase que impementa el plugin de oda para Localhost
@@ -43,11 +43,11 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 	 * @see fdi.ucm.server.SaveCollection#processCollecccion(fdi.ucm.shared.model.collection.Collection)
 	 */
 	@Override
-	public CompleteCollectionLog processCollecccion(CompleteCollection Salvar,
+	public CompleteLogAndUpdates processCollecccion(CompleteCollection Salvar,
 			String PathTemporalFiles) throws CompleteImportRuntimeException{
 		try {
 			
-			CompleteCollectionLog CL=new CompleteCollectionLog();
+			CompleteLogAndUpdates CL=new CompleteLogAndUpdates();
 			SaveProcessMainOdA2 oda;
 			
 			if (Overwrite)

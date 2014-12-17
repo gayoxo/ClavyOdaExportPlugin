@@ -10,7 +10,7 @@ import java.util.Map.Entry;
 
 import fdi.ucm.server.modelComplete.CompleteImportRuntimeException;
 import fdi.ucm.server.modelComplete.collection.CompleteCollection;
-import fdi.ucm.server.modelComplete.collection.CompleteCollectionLog;
+import fdi.ucm.server.modelComplete.collection.CompleteLogAndUpdates;
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
@@ -33,7 +33,7 @@ public class SaveProcessMainOdA2NoOverwrite extends
 	
 	
 	public SaveProcessMainOdA2NoOverwrite(CompleteCollection coleccion,
-			CompleteCollectionLog cL, String pathGeneral) {
+			CompleteLogAndUpdates cL, String pathGeneral) {
 		super(coleccion, cL, pathGeneral);
 		VocabulariosElement=new HashMap<Integer,ArrayList<CompleteStructure>>();
 	}
