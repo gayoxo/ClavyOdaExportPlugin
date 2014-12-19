@@ -13,8 +13,8 @@ import fdi.ucm.server.modelComplete.collection.CompleteLogAndUpdates;
 public class SaveProcessMainOdA2Overwrite extends SaveProcessMainOdA2{
 	
 	
-	public SaveProcessMainOdA2Overwrite(CompleteCollection coleccion, CompleteLogAndUpdates cL, String pathGeneral){
-		super(coleccion, cL,pathGeneral);
+	public SaveProcessMainOdA2Overwrite(CompleteCollection coleccion, CompleteLogAndUpdates cL, String pathGeneral,boolean ReturnsIds){
+		super(coleccion, cL,pathGeneral,ReturnsIds);
 	}
 
 

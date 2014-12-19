@@ -32,6 +32,7 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 	private boolean Create;
 	private String Database;
 	private boolean Overwrite;
+	private boolean Return;
 
 	/**
 	 * Constructor por defecto
@@ -54,7 +55,7 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 			{
 			
 			
-			oda = new SaveProcessMainOdA2Overwrite(Salvar,CL,"/var/www/"+Database+"/bo/download/");
+			oda = new SaveProcessMainOdA2Overwrite(Salvar,CL,"/var/www/"+Database+"/bo/download/",Return);
 			if (MySQLConnectionOdA2.isDataBaseCreada()||!KeepConfig)
 				SaveProcessMainOdA2Overwrite.resetProfundoTablas();
 			else
@@ -64,7 +65,7 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 			else
 		{
 				
-			oda = new SaveProcessMainOdA2NoOverwrite(Salvar,CL,"/var/www/"+Database+"/bo/download/");
+			oda = new SaveProcessMainOdA2NoOverwrite(Salvar,CL,"/var/www/"+Database+"/bo/download/",Return);
 			if (MySQLConnectionOdA2.isDataBaseCreada())
 				SaveProcessMainOdA2Overwrite.resetProfundoTablas();
 				
@@ -114,6 +115,7 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Keep collection details if exist (Keep Oda Configuration, only affects overwrite option true)"));
 			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Create if not exist (Create a new database and generate structure by zero)"));
 			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Overwrite Documents and Grammar (Delete and generate everything)"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Return Documents Ids"));
 			Parametros=ListaCampos;
 			return ListaCampos;
 		}
@@ -129,6 +131,7 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 			KeepConfig=Boolean.parseBoolean(DateEntrada.get(3));
 			Create=Boolean.parseBoolean(DateEntrada.get(4));
 			Overwrite=Boolean.parseBoolean(DateEntrada.get(5));
+			Return=Boolean.parseBoolean(DateEntrada.get(6));
 			if (!existe&&!Create)
 				throw new CompleteImportRuntimeException("DDBB not exist and you do not select \"Create if not exist\" checkbox");
 			else{

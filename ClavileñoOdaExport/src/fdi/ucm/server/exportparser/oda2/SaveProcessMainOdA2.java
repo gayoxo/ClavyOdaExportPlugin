@@ -56,6 +56,7 @@ public abstract class SaveProcessMainOdA2 {
 	protected static final String ERROR_DE_CREACION_POR_FALTA_DE_FILE_FISICO_EN_LOS_DOCUMENTOS_FILE = "Error de creacion por falta de File Fisico en los documentos File";
 	protected static final String EXISTE_ERROR_EN_EL_PARSEADO_DE_LAS_ITERACIONES = "Existe error en el parseado de las iteraciones.";
 	protected static final String ERROR_DE_CREACION_POR_FALTA_DE_META_OBJETO_VIRTUAL = "Error de creacion por falta de Meta Objeto virtual.";
+	protected boolean ReturnIDs;
 	protected CompleteCollection toOda;
 	protected HashMap<CompleteElementType, Integer> ModeloOda;
 	protected HashSet<Integer> Vocabularios;
@@ -64,13 +65,14 @@ public abstract class SaveProcessMainOdA2 {
 	protected HashMap<CompleteDocuments, Integer> tabla;
 	protected CompleteLogAndUpdates ColectionLog;
 	private String PathGeneral;
+	protected CompleteTextElementType IDOV;
 
 	/**
 	 * Constructor por defecto
 	 * @param cL 
 	 * @param Coleccion coleccion a insertar en oda.
 	 */
-	public SaveProcessMainOdA2(CompleteCollection coleccion, CompleteLogAndUpdates cL,String pathGeneral){
+	public SaveProcessMainOdA2(CompleteCollection coleccion, CompleteLogAndUpdates cL,String pathGeneral,boolean ReturnsIds){
 		toOda=coleccion;
 		ModeloOda=new HashMap<CompleteElementType, Integer>();
 		Vocabularios=new HashSet<Integer>();
@@ -79,6 +81,7 @@ public abstract class SaveProcessMainOdA2 {
 		tabla=new HashMap<CompleteDocuments, Integer>();
 		ColectionLog=cL;
 		PathGeneral=pathGeneral;
+		this.ReturnIDs=ReturnsIds;
 	}
 
 	
@@ -99,6 +102,7 @@ public abstract class SaveProcessMainOdA2 {
 		if (MetaDatos!=null)
 			DatosYMeta.addAll(MetaDatos);
 		
+		IDOV=findIdov();
 		
 		processModeloIniciales(DatosYMeta);	
 		
@@ -793,6 +797,13 @@ public abstract class SaveProcessMainOdA2 {
 				
 		int Salida = MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `virtual_object` (`ispublic`,`isprivate`) VALUES ('"+SPublic+"','"+SPrivate+"');");
 		
+		if (ReturnIDs)
+		{
+		CompleteTextElement TT=new CompleteTextElement(this.IDOV, Integer.toString(Salida));
+		TT.setDocumentsFather(ObjetoDigital);
+		ColectionLog.getNuevosElementos().add(TT);
+		}
+		
 		tabla.put(ObjetoDigital,Salida);
 		procesa_descripcion(ObjetoDigital,Salida);
 		procesa_iconos(ObjetoDigital,Salida);
@@ -932,6 +943,9 @@ public abstract class SaveProcessMainOdA2 {
 										ColectionLog.getLogLines().add("URI erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/"+Idov+"/"+NameS);
 										
 										e.printStackTrace();
+									} catch (Exception e) {
+										ColectionLog.getLogLines().add("Erro indeterminado " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/"+Idov+"/"+NameS);									
+										e.printStackTrace();
 									}
 									
 									 
@@ -960,7 +974,11 @@ public abstract class SaveProcessMainOdA2 {
 										} catch (URISyntaxException e) {
 											ColectionLog.getLogLines().add("URI erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Urlsi+Idov+"."+extension);									
 											e.printStackTrace();
+										} catch (Exception e) {
+											ColectionLog.getLogLines().add("Erro indeterminado " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Urlsi+Idov+"."+extension);									
+											e.printStackTrace();
 										}
+										 
 									 }
 									 
 									int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `name`, `type`) VALUES ('"+idov+"', '"+VisString+"','"+iconoov+"', '"+NameS+"', 'P' )");
@@ -1525,6 +1543,27 @@ public abstract class SaveProcessMainOdA2 {
 
 		is.close();
 		os.close();
+	}
+	
+	protected CompleteTextElementType findIdov() {
+		for (CompleteGrammar meta : toOda.getMetamodelGrammar()) {
+			if (StaticFuctionsOda2.isVirtualObject(meta))
+				return findMetaDatosIDOVenOV(meta);
+	}
+		return null;
+	}
+
+	private CompleteTextElementType findMetaDatosIDOVenOV(CompleteGrammar meta) {
+		for (CompleteStructure iterable_element : meta.getSons()) {
+			if (iterable_element instanceof CompleteTextElementType)
+				{
+				if (StaticFuctionsOda2.isIDOV((CompleteTextElementType) iterable_element))
+					return (CompleteTextElementType) iterable_element;
+				}
+			
+			}
+		return null;
+					
 	}
 	
 	

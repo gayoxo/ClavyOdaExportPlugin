@@ -42,6 +42,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	private String OUTPUT_ZIP_FILE = "";
 	private String SOURCE_FOLDER = ""; // SourceFolder path
 	private boolean Overwrite;
+	private boolean Return;
 	
 	/**
 	 * Constructor por defecto
@@ -69,7 +70,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 			{
 			
 			
-			oda = new SaveProcessMainOdA2Overwrite(Salvar,CL,SOURCE_FOLDER);
+			oda = new SaveProcessMainOdA2Overwrite(Salvar,CL,SOURCE_FOLDER,Return);
 			if (MySQLConnectionOdA2.isDataBaseCreada()||!KeepConfig)
 				SaveProcessMainOdA2Overwrite.resetProfundoTablas();
 			else
@@ -79,7 +80,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 			else
 		{
 				
-			oda = new SaveProcessMainOdA2NoOverwrite(Salvar,CL,SOURCE_FOLDER);
+			oda = new SaveProcessMainOdA2NoOverwrite(Salvar,CL,SOURCE_FOLDER,Return);
 			if (MySQLConnectionOdA2.isDataBaseCreada())
 				SaveProcessMainOdA2Overwrite.resetProfundoTablas();
 				
@@ -147,6 +148,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Keep collection details if exist (Keep Oda Configuration, only affects overwrite option true)"));
 			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Create if not exist (Create a new database and generate structure by zero)"));
 			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Overwrite Documents and Grammar (Delete and generate everything)"));
+			ListaCampos.add(new ImportExportPair(ImportExportDataEnum.Boolean, "Return Documents Ids"));
 			Parametros=ListaCampos;
 			return ListaCampos;
 		}
@@ -162,6 +164,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 			KeepConfig=Boolean.parseBoolean(DateEntrada.get(5));
 			Create=Boolean.parseBoolean(DateEntrada.get(6));
 			Overwrite=Boolean.parseBoolean(DateEntrada.get(7));
+			Return=Boolean.parseBoolean(DateEntrada.get(8));
 			if (!existe&&!Create)
 				throw new CompleteImportRuntimeException("DDBB not exist and you do not select \"Create if not exist\" checkbox");
 			else{

@@ -15,7 +15,6 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
 import fdi.ucm.server.modelComplete.collection.document.CompleteElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteIterator;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteStructure;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
@@ -29,12 +28,12 @@ public class SaveProcessMainOdA2NoOverwrite extends
 
 	
 	HashMap<Integer, ArrayList<CompleteStructure>> VocabulariosElement;
-	private CompleteTextElementType IDOV;
+	
 	
 	
 	public SaveProcessMainOdA2NoOverwrite(CompleteCollection coleccion,
-			CompleteLogAndUpdates cL, String pathGeneral) {
-		super(coleccion, cL, pathGeneral);
+			CompleteLogAndUpdates cL, String pathGeneral,boolean ReturnsIds) {
+		super(coleccion, cL, pathGeneral,ReturnsIds);
 		VocabulariosElement=new HashMap<Integer,ArrayList<CompleteStructure>>();
 	}
 
@@ -74,26 +73,7 @@ public class SaveProcessMainOdA2NoOverwrite extends
 	}
 	
 	
-	private CompleteTextElementType findIdov() {
-		for (CompleteGrammar meta : toOda.getMetamodelGrammar()) {
-			if (StaticFuctionsOda2.isVirtualObject(meta))
-				return findMetaDatosIDOVenOV(meta);
-	}
-		return null;
-	}
-
-	private CompleteTextElementType findMetaDatosIDOVenOV(CompleteGrammar meta) {
-		for (CompleteStructure iterable_element : meta.getSons()) {
-			if (iterable_element instanceof CompleteTextElementType)
-				{
-				if (StaticFuctionsOda2.isIDOV((CompleteTextElementType) iterable_element))
-					return (CompleteTextElementType) iterable_element;
-				}
-			
-			}
-		return null;
-					
-	}
+	
 
 	@Override
 	protected void rellenaTablaVocabularios(List<CompleteStructure> list) {
@@ -247,6 +227,13 @@ public class SaveProcessMainOdA2NoOverwrite extends
 			
 					
 			int Salida = MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `virtual_object` (`ispublic`,`isprivate`) VALUES ('"+SPublic+"','"+SPrivate+"');");
+			
+			if (ReturnIDs)
+			{
+			CompleteTextElement TT=new CompleteTextElement(this.IDOV, Integer.toString(Salida));
+			TT.setDocumentsFather(ObjetoDigital);
+			ColectionLog.getNuevosElementos().add(TT);
+			}
 			
 			tabla.put(ObjetoDigital,Salida);
 			procesa_descripcion(ObjetoDigital,Salida);
