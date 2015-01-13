@@ -998,21 +998,22 @@ public abstract class SaveProcessMainOdA2 {
 					else
 						if (StaticFuctionsOda2.isAURL(recursoAProcesarC))
 						{
-							//public static final String URI = "URI";
-							CompleteResourceElementURL UniFile=StaticFuctionsOda2.findMetaValueUri(recursoAProcesarC.getDescription());
-
-							
+							String ValueUri="";
+							CompleteResourceElement UniFile=StaticFuctionsOda2.findMetaValueUri(recursoAProcesarC.getDescription());
+							if (UniFile instanceof CompleteResourceElementURL)
+								ValueUri=((CompleteResourceElementURL)UniFile).getValue();
+							else if (UniFile instanceof CompleteResourceElementFile&&((CompleteResourceElementFile)UniFile).getValue()!=null)
+								ValueUri=((CompleteResourceElementFile)UniFile).getValue().getPath();
 								
-								if  (UniFile!=null&&!UniFile.getValue().isEmpty())
+								if  (UniFile!=null&&!ValueUri.isEmpty())
 									{
 
-											int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `name`, `type`) VALUES ('"+idov+"', '"+VisString+"','N', '"+UniFile.getValue()+"', 'U' )");
+											int Salida =MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `resources` (`idov`, `visible`,`iconoov`, `name`, `type`) VALUES ('"+idov+"', '"+VisString+"','N', '"+ValueUri+"', 'U' )");
 											return Salida;
 
 
 									}
-								else ColectionLog.getLogLines().add("El URI referencia es nulo, o vacio identificador Archivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO");
-
+								else ColectionLog.getLogLines().add("El URI referencia es nulo, o vacio identificadorArchivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO");
 						}
 				return -1;
 		

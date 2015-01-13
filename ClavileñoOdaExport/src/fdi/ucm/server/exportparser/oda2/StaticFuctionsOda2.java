@@ -11,7 +11,6 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteLinkElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteOperationalValue;
 import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElement;
-import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElementURL;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
@@ -683,11 +682,11 @@ public class StaticFuctionsOda2 {
 
 
 
-	public static CompleteResourceElementURL findMetaValueUri(
+	public static CompleteResourceElement findMetaValueUri(
 			List<CompleteElement> description) {
 		for (CompleteElement completeElement : description) {
-			if (completeElement instanceof CompleteResourceElementURL&&StaticFuctionsOda2.isURI(completeElement.getHastype()))
-				return (CompleteResourceElementURL) completeElement;
+			if (completeElement instanceof CompleteResourceElement&&StaticFuctionsOda2.isURI(completeElement.getHastype()))
+				return (CompleteResourceElement) completeElement;
 		}
 		return null;
 	}
