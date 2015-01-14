@@ -95,15 +95,21 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 			
 			fileList = new ArrayList<String>();
 			OUTPUT_ZIP_FILE = Path+System.currentTimeMillis()+".zip";
+			FileIO=OUTPUT_ZIP_FILE;
+			
 			generateFileList(new File(SOURCE_FOLDER));
-			zipIt(OUTPUT_ZIP_FILE);
+			try {
+				zipIt(OUTPUT_ZIP_FILE);
+				CL.getLogLines().add("Descarga el zip y inserta en la localizacion base de oda \"<BaseOda>/bo/download\" ");
+			} catch (Exception e) {
+				CL.getLogLines().add("Error en zip, refresh images manually");
+			}
+			
 			
 			
 //			String A=Zip();
 			
-			FileIO=OUTPUT_ZIP_FILE;
 			
-			CL.getLogLines().add("Descarga el zip y inserta en la localizacion base de oda \"<BaseOda>/bo/download\" ");
 			
 			return CL;
 			
