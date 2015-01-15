@@ -144,7 +144,7 @@ public abstract class SaveProcessMainOdA2 {
 			metaDatos.remove(completeStructure);
 		}
 		
-		for (CompleteStructure completeStructure : Borrar) {
+		for (CompleteStructure completeStructure : metaDatos) {
 			removeIGNORED(completeStructure.getSons());
 		}
 		
