@@ -124,7 +124,7 @@ public abstract class SaveProcessMainOdA2 {
 			metaDatos.remove((CompleteElementType)completeStructure);
 		}
 		
-		for (CompleteElementType completeStructure : Borrar) {
+		for (CompleteElementType completeStructure : metaDatos) {
 			removeIGNORED(completeStructure.getSons());
 		}
 		
