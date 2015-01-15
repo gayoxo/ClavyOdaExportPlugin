@@ -64,6 +64,8 @@ public class SaveProcessMainOdA2NoOverwrite extends
 			DatosYMeta.addAll(MetaDatos);
 		
 		//buscar el IDOV
+		removeIGNOREDC(MetaDatos);
+		
 		
 		IDOV=findIdov();
 		

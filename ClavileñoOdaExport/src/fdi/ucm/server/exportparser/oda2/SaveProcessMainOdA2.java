@@ -113,7 +113,7 @@ public abstract class SaveProcessMainOdA2 {
 	}
 
 
-	private void removeIGNOREDC(List<CompleteElementType> metaDatos) {
+	protected void removeIGNOREDC(List<CompleteElementType> metaDatos) {
 		ArrayList<CompleteElementType> Borrar=new ArrayList<>();
 		for (CompleteStructure completeElementType : metaDatos) {
 			if (completeElementType instanceof CompleteElementType&& StaticFuctionsOda2.isIgnored((CompleteElementType)completeElementType))
