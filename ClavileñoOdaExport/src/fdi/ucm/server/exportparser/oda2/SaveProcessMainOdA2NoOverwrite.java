@@ -169,6 +169,11 @@ public class SaveProcessMainOdA2NoOverwrite extends
 			
 				Salida=MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `section_data` (`idpadre`, `nombre`, `visible`,`orden`, `browseable`, `tipo_valores`, `extensible`, `vocabulario`) VALUES ('"+padre+"','"+Name+"', '"+Visible+"','"+pos+"','"+Browser+"' , 'X', '"+Extensible+"', '0');");
 			}
+			
+			
+			StaticFuctionsOda2.findPresentacionYCompleta(attribute,Salida);
+			ColectionLog.getNuevosOperationalViewStructure().add(attribute);
+			
 			}
 			ModeloOda.put(attribute, Salida);
 			processModelo(attribute.getSons(),Salida);

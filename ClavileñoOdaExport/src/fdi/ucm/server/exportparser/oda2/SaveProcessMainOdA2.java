@@ -98,17 +98,58 @@ public abstract class SaveProcessMainOdA2 {
 		ArrayList<CompleteStructure> DatosYMeta=new ArrayList<CompleteStructure>();
 		
 		
-		ArrayList<CompleteElementType> MetaDatos=findMetaDatos();
+		List<CompleteElementType> MetaDatos=findMetaDatos();
 		if (MetaDatos!=null)
 			DatosYMeta.addAll(MetaDatos);
 		
 		IDOV=findIdov();
+		
+		removeIGNOREDC(MetaDatos);
 		
 		processModeloIniciales(DatosYMeta);	
 		
 		processOV(toOda.getEstructuras());
 		
 	}
+
+
+	private void removeIGNOREDC(List<CompleteElementType> metaDatos) {
+		ArrayList<CompleteElementType> Borrar=new ArrayList<>();
+		for (CompleteStructure completeElementType : metaDatos) {
+			if (completeElementType instanceof CompleteElementType&& StaticFuctionsOda2.isIgnored((CompleteElementType)completeElementType))
+				Borrar.add((CompleteElementType)completeElementType);
+		}
+		
+		for (CompleteElementType completeStructure : Borrar) {
+			metaDatos.remove((CompleteElementType)completeStructure);
+		}
+		
+		for (CompleteElementType completeStructure : Borrar) {
+			removeIGNORED(completeStructure.getSons());
+		}
+		
+	}
+
+
+
+	private void removeIGNORED(List<CompleteStructure> metaDatos) {
+		
+		ArrayList<CompleteElementType> Borrar=new ArrayList<>();
+		for (CompleteStructure completeElementType : metaDatos) {
+			if (completeElementType instanceof CompleteElementType&& StaticFuctionsOda2.isIgnored((CompleteElementType)completeElementType))
+				Borrar.add((CompleteElementType)completeElementType);
+		}
+		
+		for (CompleteElementType completeStructure : Borrar) {
+			metaDatos.remove(completeStructure);
+		}
+		
+		for (CompleteStructure completeStructure : Borrar) {
+			removeIGNORED(completeStructure.getSons());
+		}
+		
+	}
+
 
 
 	/**

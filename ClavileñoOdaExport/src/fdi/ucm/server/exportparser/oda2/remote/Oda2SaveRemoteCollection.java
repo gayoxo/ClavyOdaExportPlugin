@@ -102,6 +102,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 				zipIt(OUTPUT_ZIP_FILE);
 				CL.getLogLines().add("Descarga el zip y inserta en la localizacion base de oda \"<BaseOda>/bo/download\" ");
 			} catch (Exception e) {
+				e.printStackTrace();
 				CL.getLogLines().add("Error en zip, refresh images manually");
 			}
 			
@@ -387,7 +388,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 
 	private String generateZipEntry(String file)
 	{
-	   return file.substring(SOURCE_FOLDER.length(), file.length());
+	   return file.substring(SOURCE_FOLDER.length()-1, file.length());
 	}
 	
 }

@@ -761,5 +761,54 @@ public class StaticFuctionsOda2 {
 		}
 		return false;
 	}
+
+
+
+	public static void findPresentacionYCompleta(
+			CompleteElementType attribute,Integer IdovNuevo) {
+		ArrayList<CompleteOperationalView> Shows = attribute.getShows();
+		for (CompleteOperationalView show : Shows) {
+			
+			if (show.getName().equals(StaticNamesOda2.PRESNTACION))
+			{
+				boolean found=false;
+				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
+				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
+					if (CompleteOperationalValueType.getName().equals(StaticNamesOda2.OdaID))
+						try {
+							Integer.parseInt(CompleteOperationalValueType.getDefault());
+								found=true;
+						} catch (Exception e) {
+							
+						}
+						
+
+				}
+				
+				if (!found)
+					show.getValues().add(new CompleteOperationalValueType(StaticNamesOda2.OdaID, Integer.toString(IdovNuevo), show));
+			}
+		}
+	}
+
+
+
+	public static boolean isIgnored(CompleteElementType hastype) {
+		ArrayList<CompleteOperationalView> Shows = hastype.getShows();
+		for (CompleteOperationalView show : Shows) {
+			
+			if (show.getName().equals(StaticNamesOda2.META))
+			{
+				ArrayList<CompleteOperationalValueType> ShowValue = show.getValues();
+				for (CompleteOperationalValueType CompleteOperationalValueType : ShowValue) {
+					if (CompleteOperationalValueType.getName().equals(StaticNamesOda2.TYPE))
+						if (CompleteOperationalValueType.getDefault().equals(StaticNamesOda2.IGNORED)) 
+										return true;
+
+				}
+			}
+		}
+		return false;
+	}
 	
 }
