@@ -1007,16 +1007,16 @@ public abstract class SaveProcessMainOdA2 {
 											 url2 = uri2.toURL();
 											saveImage(url2, Urlsi);
 										} catch (MalformedURLException e) {
-											ColectionLog.getLogLines().add("URL erronea en icono " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Urlsi+Idov+"."+extension);
+											ColectionLog.getLogLines().add("URL erronea en icono " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Idov+"."+extension);
 											e.printStackTrace();
 										} catch (IOException e) {
-											ColectionLog.getLogLines().add("Problema I/O  " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Urlsi+Idov+"."+extension);
+											ColectionLog.getLogLines().add("Problema I/O  " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Idov+"."+extension);
 											e.printStackTrace();
 										} catch (URISyntaxException e) {
-											ColectionLog.getLogLines().add("URI erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Urlsi+Idov+"."+extension);									
+											ColectionLog.getLogLines().add("URI erronea " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Idov+"."+extension);									
 											e.printStackTrace();
 										} catch (Exception e) {
-											ColectionLog.getLogLines().add("Erro indeterminado " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Urlsi+Idov+"."+extension);									
+											ColectionLog.getLogLines().add("Erro indeterminado " + (((CompleteResourceElementFile)FIleRel).getValue()).getPath() + " a " + "/bo/download/iconos/"+Idov+"."+extension);									
 											e.printStackTrace();
 										}
 										 
