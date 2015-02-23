@@ -104,8 +104,12 @@ public class SaveProcessMainOdA2NoOverwrite extends
 	@Override
 	protected void processModelo(List<CompleteStructure> list, int padre)
 			throws CompleteImportRuntimeException {
-		int pos =1;
+		
+		int pos = getOrden(padre);
+		
 		for (CompleteStructure Cattribute : list) {
+			
+//			int pos = getOrden(padre);
 			
 			if (Cattribute instanceof CompleteIterator)
 				throw new CompleteImportRuntimeException(EXISTE_ERROR_EN_EL_PARSEADO_DE_LAS_ITERACIONES);
@@ -148,18 +152,18 @@ public class SaveProcessMainOdA2NoOverwrite extends
 					if (otro!=null)
 					{
 						catalogocomp=otro.toString();
-						Salida=insertIntoFather(padre,Name,Browser,'C',catalogocomp,Visible);
+						Salida= MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `section_data` (`idpadre`, `nombre`, `visible`,`orden`, `browseable`, `tipo_valores`, `extensible`, `vocabulario`) VALUES ('"+padre+"','"+Name+"', '"+Visible+"','"+pos+"','"+Browser+"' , 'C', 'S', '"+catalogocomp+"');");
 					}
 					else {
 						if (Vocabularios.contains(vocabularioN))
 							{
 							catalogocomp="1";
-							Salida=insertIntoFather(padre,Name,Browser,'C',catalogocomp,Visible);
+							Salida= MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `section_data` (`idpadre`, `nombre`, `visible`,`orden`, `browseable`, `tipo_valores`, `extensible`, `vocabulario`) VALUES ('"+padre+"','"+Name+"', '"+Visible+"','"+pos+"','"+Browser+"' , 'C', 'S', '"+catalogocomp+"');");
 							VocabulariosSalida.put(vocabularioN,Salida );
 							}
 						else {
 						catalogocomp="0";
-						Salida=insertIntoFather(padre,Name,Browser,'C',catalogocomp,Visible);
+						Salida= MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `section_data` (`idpadre`, `nombre`, `visible`,`orden`, `browseable`, `tipo_valores`, `extensible`, `vocabulario`) VALUES ('"+padre+"','"+Name+"', '"+Visible+"','"+pos+"','"+Browser+"' , 'C', 'S', '"+catalogocomp+"');");
 						}
 					}
 					}

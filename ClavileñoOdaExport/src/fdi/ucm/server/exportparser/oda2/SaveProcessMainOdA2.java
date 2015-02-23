@@ -683,8 +683,12 @@ public abstract class SaveProcessMainOdA2 {
 	 */
 	protected void processModelo(List<CompleteStructure> list, int padre) throws CompleteImportRuntimeException {
 	
-		int pos =1;
+		int pos = getOrden(padre);
+		
 		for (CompleteStructure Cattribute : list) {
+			
+			
+//			int pos = getOrden(padre);
 			
 			if (Cattribute instanceof CompleteIterator)
 				throw new CompleteImportRuntimeException(EXISTE_ERROR_EN_EL_PARSEADO_DE_LAS_ITERACIONES);
@@ -722,18 +726,23 @@ public abstract class SaveProcessMainOdA2 {
 					if (otro!=null)
 					{
 						catalogocomp=otro.toString();
-						Salida=insertIntoFather(padre,Name,Browser,'C',catalogocomp,Visible);
+						
+						Salida= MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `section_data` (`idpadre`, `nombre`, `visible`,`orden`, `browseable`, `tipo_valores`, `extensible`, `vocabulario`) VALUES ('"+padre+"','"+Name+"', '"+Visible+"','"+pos+"','"+Browser+"' , 'C', 'S', '"+catalogocomp+"');");
+						
 					}
 					else {
 						if (Vocabularios.contains(vocabularioN))
 							{
 							catalogocomp="1";
-							Salida=insertIntoFather(padre,Name,Browser,'C',catalogocomp,Visible);
+							
+							Salida= MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `section_data` (`idpadre`, `nombre`, `visible`,`orden`, `browseable`, `tipo_valores`, `extensible`, `vocabulario`) VALUES ('"+padre+"','"+Name+"', '"+Visible+"','"+pos+"','"+Browser+"' , 'C', 'S', '"+catalogocomp+"');");
+							
 							VocabulariosSalida.put(vocabularioN,Salida );
 							}
 						else {
 						catalogocomp="0";
-						Salida=insertIntoFather(padre,Name,Browser,'C',catalogocomp,Visible);
+						
+						Salida= MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `section_data` (`idpadre`, `nombre`, `visible`,`orden`, `browseable`, `tipo_valores`, `extensible`, `vocabulario`) VALUES ('"+padre+"','"+Name+"', '"+Visible+"','"+pos+"','"+Browser+"' , 'C', 'S', '"+catalogocomp+"');");
 						}
 					}
 					}
@@ -761,7 +770,7 @@ public abstract class SaveProcessMainOdA2 {
 	 * @param vocabulario voavulario
 	 * @return id de salida en la tabla
 	 */
-	protected int insertIntoFather(int padre, String name, String browser, char Tipo, String vocabulario,String visible) {
+	protected int getOrden(int padre) {
 		try {
 			ResultSet rs=MySQLConnectionOdA2.RunQuerrySELECT("SELECT MAX(orden) FROM section_data WHERE idpadre="+padre+";");
 			if (rs!=null) 
@@ -773,11 +782,14 @@ public abstract class SaveProcessMainOdA2 {
 					if (datoO!=null)
 						Dato=datoO.toString();
 					int orden=Integer.parseInt(Dato);
-					orden++;
-					int Salida= MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `section_data` (`idpadre`, `nombre`, `visible`,`orden`, `browseable`, `tipo_valores`, `extensible`, `vocabulario`) VALUES ('"+padre+"','"+name+"', '"+visible+"','"+orden+"','"+browser+"' , '"+Tipo+"', 'S', '"+vocabulario+"');");
+					
+					rs.close();
+					
+					return orden++;
+					
 				
-			rs.close();
-			return Salida;
+			
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1303,7 +1315,7 @@ public abstract class SaveProcessMainOdA2 {
 				MySQLConnectionOdA2.RunQuerry("INSERT INTO `section_data` VALUES (2,0,'Modelo de MetaDatos','lom','metadatos','S',2,NULL,NULL,'S',0,NULL)," +
 						"(3,0,'Modelo de Datos de los Recursos','recursos','recursos','S',3,NULL,NULL,'S',0,NULL)," +
 						"(111,1,'Descripción',NULL,'fijo_texto','S',1,NULL,'T',NULL,NULL,NULL)," +
-						"(112,1,'Tipo Registro',NULL,'fijo_controlado','S',5,'S','C',NULL,NULL,NULL)," +
+						"(112,1,'Tipo Registro',NULL,'fijo_controlado','S',2,'S','C',NULL,NULL,NULL)," +
 						"(1,0,'Modelo de Datos','datos','datos','S',1,NULL,NULL,'S',0,NULL);");
 				
 
