@@ -128,16 +128,16 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	 * @param str texto de entrada.
 	 * @return texto sin caracteres especiales.
 	 */
-	public String RemoveSpecialCharacters(String str) {
-		   StringBuilder sb = new StringBuilder();
-		   for (int i = 0; i < str.length(); i++) {
+	private boolean hasSpecialChar(String str) {
+		for (int i = 0; i < str.length(); i++) {
 			   char c = str.charAt(i);
-			   if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_') {
-			         sb.append(c);
+			   if (!((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_')) {
+			         return true;
 			      }
+				   
 		}
-		   return sb.toString();
-		}
+		return false;
+	}
 
 	
 
@@ -166,7 +166,11 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	public void setConfiguracion(ArrayList<String> DateEntrada) {
 		if (DateEntrada!=null)
 		{
-			Database = RemoveSpecialCharacters(DateEntrada.get(1));
+			
+			Database=DateEntrada.get(1);
+			if (hasSpecialChar(Database))
+					throw new CompleteImportRuntimeException("DDBB Name errors, can not accept this name, please use only compatible characters");
+			
 			boolean existe=MySQLConnectionOdA2.CheckDBS(DateEntrada.get(0),Database,Integer.parseInt(DateEntrada.get(2)),DateEntrada.get(3),DateEntrada.get(4));
 			KeepConfig=Boolean.parseBoolean(DateEntrada.get(5));
 			Create=Boolean.parseBoolean(DateEntrada.get(6));
@@ -206,101 +210,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	}
 
 
-//	public String Zip() {
-//		  
-//		String Salida = Path+System.currentTimeMillis()+".zip";
-//		ZipOutputStream out = null;      
-//		try {
-//		         BufferedInputStream origin = null;
-//		         FileOutputStream dest = new 
-//		           FileOutputStream(Salida);
-//		         CheckedOutputStream checksum = new 
-//		           CheckedOutputStream(dest, new Adler32());
-//		         out = new 
-//		           ZipOutputStream(new 
-//		             BufferedOutputStream(checksum));
-//		         //out.setMethod(ZipOutputStream.DEFLATED);
-//		         byte data[] = new byte[BUFFER];
-//		         // get a list of files from current directory
-//		         File f = new File(FolderP);
-//		         String files[] = f.list();
-//
-//		         
-//		         addFilesToZip(files,out,Salida,origin,data,"");
-////		         for (int i=0; i<files.length; i++) {
-////		        	 
-////		        	 String elem=Path+files[i];
-////		        	 if (!elem.equals(Salida))
-////		        	 {
-////		        		 System.out.println("Adding: "+elem);
-////			            
-////			            
-////			            
-////			            FileInputStream fi = new 
-////			              FileInputStream(elem);
-////			            origin = new 
-////			              BufferedInputStream(fi, BUFFER);
-////			            ZipEntry entry = new ZipEntry(elem);
-////			            out.putNextEntry(entry);
-////			            int count;
-////			            while((count = origin.read(data, 0, 
-////			              BUFFER)) != -1) {
-////			               out.write(data, 0, count);
-////			            }
-////			            origin.close();
-////		        	 }
-////		         }
-//		         out.close();
-//		         System.out.println("checksum: "+checksum.getChecksum().getValue());
-//		      } catch(Exception e) {
-//		         e.printStackTrace();
-//		         
-//		      } finally 
-//		      {
-//		    	  if (out!=null)
-//					try {
-//						out.close();
-//					} catch (IOException e) {
-//						e.printStackTrace();
-//					}
-//		    	  
-//		      }
-//		      return Salida;
-//	}
-//
-//	private void addFilesToZip(String[] files, ZipOutputStream out, String salida, BufferedInputStream origin, byte[] data,String RelativePath) throws IOException {
-//		 for (int i=0; i<files.length; i++) {
-//        	 
-//        	 String elem=FolderP+RelativePath+files[i];
-//        	 File F=new File(elem);
-//        	 if (!elem.equals(salida)&&!F.isDirectory())
-//        	 {
-//        		 System.out.println("Adding: "+elem);
-//	            
-//	            
-//	            
-//	            FileInputStream fi = new 
-//	              FileInputStream(elem);
-//	            origin = new 
-//	              BufferedInputStream(fi, BUFFER);
-//	            ZipEntry entry = new ZipEntry(elem);
-//	            out.putNextEntry(entry);
-//	            int count;
-//	            while((count = origin.read(data, 0, 
-//	              BUFFER)) != -1) {
-//	               out.write(data, 0, count);
-//	            }
-//	            origin.close();
-//        	 }
-//        	 else if (!elem.equals(salida)&&F.isDirectory())
-//        	 {
-//        		 String files2[] = F.list();
-//		         addFilesToZip(files2,out,salida,origin,data,files[i]+File.separator);
-//        	 }
-//        	 
-//         }
-//		
-//	} 
+
 	
 	
 	public void zipIt(String zipFile)
@@ -311,14 +221,7 @@ public class Oda2SaveRemoteCollection extends SaveCollection {
 	   ZipOutputStream zos = null;
 	   try
 	   {
-//	      try
-//	      {
-//	         source = SOURCE_FOLDER.substring(SOURCE_FOLDER.lastIndexOf("\\") + 1, SOURCE_FOLDER.length());
-//	      }
-//	     catch (Exception e)
-//	     {
-//	        source = SOURCE_FOLDER;
-//	     }
+
 	     fos = new FileOutputStream(zipFile);
 	     zos = new ZipOutputStream(fos);
 

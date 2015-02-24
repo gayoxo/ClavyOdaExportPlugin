@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import fdi.ucm.server.modelComplete.CompleteImportRuntimeException;
+
 /**
  * Clase que implementa la conexion con un Servidor de oda en bade MySQL
  * @author Joaquin Gayoso-Cabada
@@ -43,16 +45,20 @@ public class MySQLConnectionOdA2 {
 	}
 	
 	public MySQLConnectionOdA2(String database,String user, String password) {
-		try {
-			Class.forName(DriverDatabase);
-			InicializacionAnonima(database,user,password); 
-		} catch (ClassNotFoundException e) {
-			System.err.println(ErrorMySQLConnection);
-			e.printStackTrace();
-		} catch (SQLException e) {
-			System.err.println(ErrorCOnexionDB);
-			e.printStackTrace();
-		}  
+		
+			try {
+				Class.forName(DriverDatabase);
+				InicializacionAnonima(database,user,password); 
+			} catch (ClassNotFoundException e) {
+					System.err.println(ErrorMySQLConnection);
+					e.printStackTrace();
+					throw new CompleteImportRuntimeException(ErrorMySQLConnection);
+				} catch (SQLException e) {
+					System.err.println(ErrorCOnexionDB);
+					e.printStackTrace();
+					throw new CompleteImportRuntimeException(ErrorMySQLConnection);
+				}
+		
 	}
 
 	private void InicializacionAnonima(String dbNameIP,String database, int port, String user, String password) throws SQLException {
@@ -60,7 +66,7 @@ public class MySQLConnectionOdA2 {
 		conexion = DriverManager.getConnection(DBaseServerUnknow, user, password);	
 		ResultSet resultSet = conexion.getMetaData().getCatalogs();
 
-		database=database.toLowerCase();
+//		database=database.toLowerCase();
 		boolean encontrado=false;
         while (resultSet.next()) {
 
