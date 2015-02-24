@@ -126,7 +126,10 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 	public void setConfiguracion(ArrayList<String> DateEntrada) {
 		if (DateEntrada!=null)
 		{
-			Database = RemoveSpecialCharacters(DateEntrada.get(0));
+			Database=DateEntrada.get(0);
+			if (hasSpecialChar(Database))
+					throw new CompleteImportRuntimeException("DDBB Name errors, can not accept this name, please use only compatible characters");
+			
 			boolean existe=MySQLConnectionOdA2.CheckDBS(Database,DateEntrada.get(1),DateEntrada.get(2));
 			KeepConfig=Boolean.parseBoolean(DateEntrada.get(3));
 			Create=Boolean.parseBoolean(DateEntrada.get(4));
@@ -153,6 +156,17 @@ public class Oda2SaveLocalhostCollection extends SaveCollection {
 		}
 		}
 		
+
+	private boolean hasSpecialChar(String str) {
+		for (int i = 0; i < str.length(); i++) {
+			   char c = str.charAt(i);
+			   if (!((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || c == '_')) {
+			         return true;
+			      }
+				   
+		}
+		return false;
+	}
 
 	@Override
 	public String getName() {
