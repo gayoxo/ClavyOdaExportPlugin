@@ -1159,6 +1159,15 @@ public abstract class SaveProcessMainOdA2 {
 					
 					if (fecha==null)
 						try {
+							SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+							fecha = formatoDelTexto.parse(((CompleteTextElement) attributeValue).getValue());
+						} catch (Exception e) {
+							//Nada
+							fecha = null;
+						}
+					
+					if (fecha==null)
+						try {
 							SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyyMMdd");
 							fecha = formatoDelTexto.parse(((CompleteTextElement) attributeValue).getValue());
 						} catch (Exception e) {
@@ -1185,7 +1194,7 @@ public abstract class SaveProcessMainOdA2 {
 						}
 						
 					if (fecha==null)
-						ColectionLog.getLogLines().add("Error en formato del texto para la fecha, solo formatos compatibles yyyy-MM-dd HH:mm:ss ó yyyy-MM-dd ó yyyyMMdd ó dd/MM/yyyy ó dd/MM/yy");
+						ColectionLog.getLogLines().add("Error en formato del texto para la fecha \""+((CompleteTextElement) attributeValue).getValue()+"\", solo formatos compatibles yyyy-MM-dd HH:mm:ss ó yyyy-MM-dd ó yyyyMMdd ó dd/MM/yyyy ó dd/MM/yy");
 					else
 					{
 						DateFormat df = new SimpleDateFormat ("yyyyMMdd");
