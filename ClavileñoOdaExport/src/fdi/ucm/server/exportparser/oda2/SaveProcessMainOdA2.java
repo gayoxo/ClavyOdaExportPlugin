@@ -1138,15 +1138,59 @@ public abstract class SaveProcessMainOdA2 {
 				}
 				else if (StaticFuctionsOda2.isDate(attributeValue.getHastype()))
 				{
-					SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					Date fecha = null;
+					//yyyy-MM-dd HH:mm:ss
 					try {
+						SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 						fecha = formatoDelTexto.parse(((CompleteTextElement) attributeValue).getValue());
+					} catch (Exception e) {
+						//Nada
+						fecha = null;
+					}
+					
+					if (fecha==null)
+						try {
+							SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+							fecha = formatoDelTexto.parse(((CompleteTextElement) attributeValue).getValue());
+						} catch (Exception e) {
+							//Nada
+							fecha = null;
+						}
+					
+					if (fecha==null)
+						try {
+							SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyyMMdd");
+							fecha = formatoDelTexto.parse(((CompleteTextElement) attributeValue).getValue());
+						} catch (Exception e) {
+							//Nada
+							fecha = null;
+						}
+					
+					if (fecha==null)
+						try {
+							SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
+							fecha = formatoDelTexto.parse(((CompleteTextElement) attributeValue).getValue());
+						} catch (Exception e) {
+							//Nada
+							fecha = null;
+						}
+					
+					if (fecha==null)
+						try {
+							SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yy");
+							fecha = formatoDelTexto.parse(((CompleteTextElement) attributeValue).getValue());
+						} catch (Exception e) {
+							//Nada
+							fecha = null;
+						}
+						
+					if (fecha==null)
+						ColectionLog.getLogLines().add("Error en formato del texto para la fecha, solo formatos compatibles yyyy-MM-dd HH:mm:ss ó yyyy-MM-dd ó yyyyMMdd ó dd/MM/yyyy ó dd/MM/yy");
+					else
+					{
 						DateFormat df = new SimpleDateFormat ("yyyyMMdd");
 						String value=df.format(fecha);
 						MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `date_data` (`idov`, `idseccion`, `value`) VALUES ('"+Idov+"', '"+seccion+"', '"+value+"');");
-					} catch (ParseException e) {
-						e.printStackTrace();
 					}
 					
 				}
