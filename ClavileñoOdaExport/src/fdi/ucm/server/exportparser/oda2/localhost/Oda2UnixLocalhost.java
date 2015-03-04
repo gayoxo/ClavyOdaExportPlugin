@@ -7,11 +7,19 @@ public class Oda2UnixLocalhost {
 	public static void SystemProcess(String newName,String user,String pass) throws IOException, InterruptedException {
 		String cmd = "cp -R -p /var/www/odaBase/ /var/www/"+newName;
 		String php = "<?php " +
-				"ini_set(\"register_globals\",\"1\"); " +
-				"ini_set(\"magic_quotes\",\"0\"); " +
+				"session_start(); " +
+				"if(!ini_get('register_globals')){ " +
+				  "$superglobales=array($_ENV,$_GET,$_POST,$_COOKIE,$_SERVER,$_FILES); " +
+		          "if(isset($_SESSION)){ "+
+		             "array_unshift($superglobales,$_SESSION); "+
+		             "}"+
+		          "foreach($superglobales as $superglobal){"+
+		          	"extract($superglobal,EXTR_SKIP);"+
+		          	"}"+
+		          "}"+
+		        "ini_set(\"magic_quotes\",\"0\")"+
 				"ini_set(\"display_errors\", \"0\"); " +
 				"ini_set( 'default_charset', 'UTF-8' ); " +
-				"error_reporting(E_ALL & ~(E_NOTICE | E_STRICT |E_DEPRECATED));"+
 				"ini_set('session.auto_start','1'); "+
 				"define('TZN_DB_HOST','localhost'); "  +
 				"define('TZN_DB_USER','"+user+"'); " + 
