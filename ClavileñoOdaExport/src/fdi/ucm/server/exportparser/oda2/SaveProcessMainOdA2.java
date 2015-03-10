@@ -14,7 +14,6 @@ import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1241,16 +1240,71 @@ public abstract class SaveProcessMainOdA2 {
 				}
 				else if (StaticFuctionsOda2.isDate(attributeValue.getHastype()))
 				{
-					SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					
 					Date fecha = null;
+					//yyyy-MM-dd HH:mm:ss
 					try {
+						SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 						fecha = formatoDelTexto.parse(((CompleteTextElement) attributeValue).getValue());
+					} catch (Exception e) {
+						//Nada
+						fecha = null;
+					}
+					
+					if (fecha==null)
+						try {
+							SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd");
+							fecha = formatoDelTexto.parse(((CompleteTextElement) attributeValue).getValue());
+						} catch (Exception e) {
+							//Nada
+							fecha = null;
+						}
+					
+					if (fecha==null)
+						try {
+							SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+							fecha = formatoDelTexto.parse(((CompleteTextElement) attributeValue).getValue());
+						} catch (Exception e) {
+							//Nada
+							fecha = null;
+						}
+					
+					if (fecha==null)
+						try {
+							SimpleDateFormat formatoDelTexto = new SimpleDateFormat("yyyyMMdd");
+							fecha = formatoDelTexto.parse(((CompleteTextElement) attributeValue).getValue());
+						} catch (Exception e) {
+							//Nada
+							fecha = null;
+						}
+					
+					if (fecha==null)
+						try {
+							SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy");
+							fecha = formatoDelTexto.parse(((CompleteTextElement) attributeValue).getValue());
+						} catch (Exception e) {
+							//Nada
+							fecha = null;
+						}
+					
+					if (fecha==null)
+						try {
+							SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yy");
+							fecha = formatoDelTexto.parse(((CompleteTextElement) attributeValue).getValue());
+						} catch (Exception e) {
+							//Nada
+							fecha = null;
+						}
+					
+					
+					if (fecha==null)
+						ColectionLog.getLogLines().add("Error en formato del texto para la fecha \""+((CompleteTextElement) attributeValue).getValue()+"\", solo formatos compatibles yyyy-MM-dd HH:mm:ss ó yyyy-MM-dd ó yyyyMMdd ó dd/MM/yyyy ó dd/MM/yy");
+					else
+					{
 						DateFormat df = new SimpleDateFormat ("yyyyMMdd");
 						String value=df.format(fecha);
 						MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `date_data` (`idov`, `idseccion`, `value`,`idrecurso`) VALUES ('"+Idov+"', '"+seccion+"', '"+value+"', '"+ValueRec+"');");
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
+					} 
 					
 				}
 				else if (StaticFuctionsOda2.isControled(attributeValue.getHastype()))
