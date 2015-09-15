@@ -37,7 +37,7 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteIterator;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteResourceElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteStructure;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
@@ -500,8 +500,8 @@ public abstract class SaveProcessMainOdA2 {
 			if	(collectionAttribute instanceof CompleteLinkElementType)
 		{
 			nuevo=new CompleteLinkElementType(((CompleteLinkElementType) collectionAttribute).getName(),collectionAttribute.getFather());
-			for (CompleteOperationalView nuevoShow : collectionAttribute.getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : collectionAttribute.getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			for (CompleteStructure iterable_element : collectionAttribute.getSons()) {
@@ -514,8 +514,8 @@ public abstract class SaveProcessMainOdA2 {
 		else if	(collectionAttribute instanceof CompleteResourceElementType)
 		{
 			nuevo=new CompleteResourceElementType(((CompleteResourceElementType) collectionAttribute).getName(),collectionAttribute.getFather());
-			for (CompleteOperationalView nuevoShow : collectionAttribute.getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : collectionAttribute.getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			for (CompleteStructure iterable_element : collectionAttribute.getSons()) {
@@ -529,8 +529,8 @@ public abstract class SaveProcessMainOdA2 {
 		{
 
 			nuevo=new CompleteTextElementType(((CompleteTextElementType) collectionAttribute).getName(), collectionAttribute.getFather());
-			for (CompleteOperationalView nuevoShow : collectionAttribute.getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : collectionAttribute.getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			for (CompleteStructure iterable_element : collectionAttribute.getSons()) {
@@ -543,8 +543,8 @@ public abstract class SaveProcessMainOdA2 {
 
 		else {
 			nuevo=new CompleteElementType(((CompleteElementType) collectionAttribute).getName(), collectionAttribute.getFather());
-			for (CompleteOperationalView nuevoShow : collectionAttribute.getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : collectionAttribute.getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			for (CompleteStructure iterable_element : collectionAttribute.getSons()) {
@@ -589,8 +589,8 @@ public abstract class SaveProcessMainOdA2 {
 			if	(elementoColonar instanceof CompleteLinkElementType)
 		{
 			nuevo=new CompleteLinkElementType(((CompleteLinkElementType) elementoColonar).getName(), padreNUevo);
-			for (CompleteOperationalView nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			for (CompleteStructure iterable_element : elementoColonar.getSons()) {
@@ -603,8 +603,8 @@ public abstract class SaveProcessMainOdA2 {
 		else if	(elementoColonar instanceof CompleteResourceElementType)
 		{
 			nuevo=new CompleteResourceElementType(((CompleteResourceElementType) elementoColonar).getName(), padreNUevo);
-			for (CompleteOperationalView nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			for (CompleteStructure iterable_element : elementoColonar.getSons()) {
@@ -617,8 +617,8 @@ public abstract class SaveProcessMainOdA2 {
 		else if	(elementoColonar instanceof CompleteTextElementType)
 		{
 			nuevo=new CompleteTextElementType(((CompleteTextElementType) elementoColonar).getName(), padreNUevo);
-			for (CompleteOperationalView nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			for (CompleteStructure iterable_element : elementoColonar.getSons()) {
@@ -630,8 +630,8 @@ public abstract class SaveProcessMainOdA2 {
 		}
 		else if (elementoColonar instanceof CompleteElementType){
 			nuevo=new CompleteElementType(((CompleteElementType) elementoColonar).getName(), padreNUevo);
-			for (CompleteOperationalView nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			
