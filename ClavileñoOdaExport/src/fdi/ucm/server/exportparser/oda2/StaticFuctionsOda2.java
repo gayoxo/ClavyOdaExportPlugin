@@ -4,6 +4,7 @@
 package fdi.ucm.server.exportparser.oda2;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import fdi.ucm.server.modelComplete.collection.document.CompleteDocuments;
@@ -14,6 +15,7 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteStructure;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
 /**
@@ -113,11 +115,13 @@ public class StaticFuctionsOda2 {
 	 * @param ElementTypeId
 	 * @return
 	 */
-	public static boolean isAVirtualObject(CompleteDocuments element) {
+	public static boolean isAVirtualObject(CompleteDocuments element, List<CompleteGrammar> Lista) {
 		
-		if (isVirtualObject(element.getDocument()))
+		for (CompleteGrammar completeGrammar : Lista) {
+		
+		if (isInGrammar(element, completeGrammar)&&isVirtualObject(completeGrammar))
 			return true;
-		
+		}
 		return false;
 	}
 	
@@ -126,11 +130,14 @@ public class StaticFuctionsOda2 {
 	 * @param ElementTypeId
 	 * @return
 	 */
-	public static boolean isAFile(CompleteDocuments element) {
+	public static boolean isAFile(CompleteDocuments element, List<CompleteGrammar> Lista) {
+		
+		for (CompleteGrammar completeGrammar : Lista) {
 		
 
-			if (isFile(element.getDocument()))
+			if (isInGrammar(element, completeGrammar)&&isFile(completeGrammar))
 				return true;
+		}
 		return false;
 	}
 	
@@ -287,10 +294,12 @@ public class StaticFuctionsOda2 {
 	 * @param objetoDigital
 	 * @return
 	 */
-	public static boolean getPublic(CompleteDocuments objetoDigital) {
+	public static boolean getPublic(CompleteDocuments objetoDigital, List<CompleteGrammar> Lista) {
+		
+		for (CompleteGrammar completeGrammar : Lista) {
 		
 
-			if (isVirtualObject(objetoDigital.getDocument()))
+			if (isInGrammar(objetoDigital, completeGrammar)&&isVirtualObject(completeGrammar))
 				{
 				ArrayList<CompleteOperationalValue> ShowsInst = objetoDigital.getViewsValues();
 				for (CompleteOperationalValue show : ShowsInst) {
@@ -301,7 +310,7 @@ public class StaticFuctionsOda2 {
 							return false;
 				}
 				
-				ArrayList<CompleteOperationalValueType> Shows = objetoDigital.getDocument().getViews();
+				ArrayList<CompleteOperationalValueType> Shows = completeGrammar.getViews();
 				for (CompleteOperationalValueType show : Shows) {
 					if (show.getView().equals(StaticNamesOda2.ODA))
 					{
@@ -315,7 +324,7 @@ public class StaticFuctionsOda2 {
 				}
 				return false;
 				}
-
+		}
 		return false;
 
 	}
@@ -328,10 +337,12 @@ public class StaticFuctionsOda2 {
 	 * @param objetoDigital
 	 * @return
 	 */
-	public static boolean getPrivate(CompleteDocuments objetoDigital) {
+	public static boolean getPrivate(CompleteDocuments objetoDigital, List<CompleteGrammar> Lista) {
+		
+		for (CompleteGrammar completeGrammar : Lista) {
 		
 
-		if (isVirtualObject(objetoDigital.getDocument()))
+		if (isInGrammar(objetoDigital, completeGrammar)&&isVirtualObject(completeGrammar))
 				{
 			ArrayList<CompleteOperationalValue> ShowsInst = objetoDigital.getViewsValues();
 				for (CompleteOperationalValue show : ShowsInst) {
@@ -342,7 +353,7 @@ public class StaticFuctionsOda2 {
 							return false;
 				}
 				
-				ArrayList<CompleteOperationalValueType> Shows = objetoDigital.getDocument().getViews();
+				ArrayList<CompleteOperationalValueType> Shows = completeGrammar.getViews();
 				for (CompleteOperationalValueType show : Shows) {
 					if (show.getView().equals(StaticNamesOda2.ODA))
 					{
@@ -355,7 +366,7 @@ public class StaticFuctionsOda2 {
 				}
 				return true;
 				}
-		
+		}
 		return true;
 
 	}
@@ -548,9 +559,12 @@ public class StaticFuctionsOda2 {
 
 
 
-	public static boolean isAURL(CompleteDocuments recursoAProcesarC) {
-		if (isURL(recursoAProcesarC.getDocument()))
-			return true;
+	public static boolean isAURL(CompleteDocuments recursoAProcesarC, List<CompleteGrammar> Lista) {
+		
+		for (CompleteGrammar completeGrammar : Lista) {
+			if (isInGrammar(recursoAProcesarC, completeGrammar)&&isURL(completeGrammar))
+				return true;
+		}
 	return false;
 	}
 
@@ -684,5 +698,32 @@ public class StaticFuctionsOda2 {
 		}
 		return false;
 	}
+	
+	public static boolean isInGrammar(CompleteDocuments iterable_element,
+			CompleteGrammar completeGrammar) {
+		HashSet<Long> ElemT=new HashSet<Long>();
+		for (CompleteElement dd : iterable_element.getDescription()) {
+			ElemT.add(dd.getHastype().getClavilenoid());
+		}
+		
+		return isInGrammar(ElemT, completeGrammar.getSons());
+		
+		
+	}
+
+
+
+	private static boolean isInGrammar(HashSet<Long> elemT,
+			List<CompleteStructure> sons) {
+		for (CompleteStructure CSlong1 : sons) {
+			if (elemT.contains(CSlong1.getClavilenoid())||isInGrammar(elemT, CSlong1.getSons()))
+				return true;
+			
+		}
+		return false;
+	}
+
+
+
 	
 }

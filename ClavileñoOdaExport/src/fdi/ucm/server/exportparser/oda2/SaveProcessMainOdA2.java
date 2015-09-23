@@ -803,7 +803,7 @@ public abstract class SaveProcessMainOdA2 {
 	 */
 	protected void processOV(List<CompleteDocuments> list) throws CompleteImportRuntimeException {
 		for (CompleteDocuments resources : list) {
-			if (StaticFuctionsOda2.isAVirtualObject(resources))
+			if (StaticFuctionsOda2.isAVirtualObject(resources,toOda.getMetamodelGrammar()))
 				saveOV(resources);
 		}
 		
@@ -835,8 +835,8 @@ public abstract class SaveProcessMainOdA2 {
 	protected void saveOV(CompleteDocuments ObjetoDigital) throws CompleteImportRuntimeException {
 		try{
 //		Integer Idov=StaticFuctionsOda2.findIdov(ObjetoDigital);
-		boolean Public=StaticFuctionsOda2.getPublic(ObjetoDigital);
-		boolean Private=StaticFuctionsOda2.getPrivate(ObjetoDigital);
+		boolean Public=StaticFuctionsOda2.getPublic(ObjetoDigital,toOda.getMetamodelGrammar());
+		boolean Private=StaticFuctionsOda2.getPrivate(ObjetoDigital,toOda.getMetamodelGrammar());
 		
 		String SPublic="N";
 		if (Public)
@@ -929,7 +929,7 @@ public abstract class SaveProcessMainOdA2 {
 	
 				CompleteDocuments recursoAProcesarC = (CompleteDocuments)recursoAProcesar;
 				
-				if (StaticFuctionsOda2.isAVirtualObject(recursoAProcesarC))
+				if (StaticFuctionsOda2.isAVirtualObject(recursoAProcesarC,toOda.getMetamodelGrammar()))
 				{
 					
 					Integer Idov=tabla.get(recursoAProcesarC);
@@ -942,7 +942,7 @@ public abstract class SaveProcessMainOdA2 {
 						ColectionLog.getLogLines().add("Link a objeto virtual: "+ recursoAProcesarC.getDescriptionText()+ "no existe en la lista de recursos, pero tiene un link, IGNORADO" );
 				}
 				else
-					if (StaticFuctionsOda2.isAFile(recursoAProcesarC))
+					if (StaticFuctionsOda2.isAFile(recursoAProcesarC,toOda.getMetamodelGrammar()))
 				{
 						CompleteResourceElement FIleRel=StaticFuctionsOda2.findMetaValueFile(recursoAProcesarC.getDescription());
 						CompleteLinkElement idovrefVal= StaticFuctionsOda2.findMetaValueIDOVowner(recursoAProcesarC.getDescription());
@@ -1048,7 +1048,7 @@ public abstract class SaveProcessMainOdA2 {
 					else ColectionLog.getLogLines().add("El objeto dueño del archivo es nulo o no Objeto Virtual, Archivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO ");
 				}
 					else
-						if (StaticFuctionsOda2.isAURL(recursoAProcesarC))
+						if (StaticFuctionsOda2.isAURL(recursoAProcesarC,toOda.getMetamodelGrammar()))
 						{
 							String ValueUri="";
 							CompleteResourceElement UniFile=StaticFuctionsOda2.findMetaValueUri(recursoAProcesarC.getDescription());
