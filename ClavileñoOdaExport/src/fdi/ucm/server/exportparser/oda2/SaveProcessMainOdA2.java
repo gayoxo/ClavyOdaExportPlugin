@@ -1709,19 +1709,35 @@ public abstract class SaveProcessMainOdA2 {
 	 */
 	private void saveImage(URL imageUrl, String destinationFile) throws IOException {
 
-		URL url = imageUrl;
-		InputStream is = url.openStream();
-		OutputStream os = new FileOutputStream(destinationFile);
+		int reintentos = 3;
+		boolean salvada=false;
+		
+		while (!salvada&&reintentos>0) {
+			try {
+				reintentos--;
+				
+				URL url = imageUrl;
+				InputStream is = url.openStream();
+				OutputStream os = new FileOutputStream(destinationFile);
 
-		byte[] b = new byte[2048];
-		int length;
+				byte[] b = new byte[2048];
+				int length;
 
-		while ((length = is.read(b)) != -1) {
-			os.write(b, 0, length);
+				while ((length = is.read(b)) != -1) {
+					os.write(b, 0, length);
+				}
+
+				is.close();
+				os.close();
+				salvada=true;
+			} catch (IOException e) {
+				ColectionLog.getLogLines().add("Problema I/O coping file:"+imageUrl+", retry");
+			}
 		}
-
-		is.close();
-		os.close();
+		
+		if (!salvada)
+			throw new IOException();
+		
 	}
 	
 	protected CompleteTextElementType findIdov() {
