@@ -966,6 +966,23 @@ public abstract class SaveProcessMainOdA2 {
 								String extension="jpg";
 								if (ext.length>0)
 								 extension= ext[ext.length-1];
+				
+								StringBuffer SB=new StringBuffer();
+								for (int i = 0; i < ext.length; i++) {
+									
+									if (i!=0)
+										SB.append(".");
+									
+									String Value=ext[i];
+									if (i==ext.length-1)
+										Value=Value.toLowerCase();
+									
+									SB.append(Value);
+									
+								}
+								
+								
+									NameS=SB.toString();
 								
 								
 								if (Idov==idov)
@@ -977,6 +994,7 @@ public abstract class SaveProcessMainOdA2 {
 									 File DestinoD=new File(Urls); 
 									 DestinoD.mkdirs();
 									 Urls=Urls+NameS;
+									 
 									 File DestinoF=new File(Urls); 
 									 DestinoF.delete();
 									 try {			 
@@ -1009,7 +1027,7 @@ public abstract class SaveProcessMainOdA2 {
 										 String Urlsi=PathGeneral+"/iconos/";
 										 File DestinoDi=new File(Urlsi); 
 										 DestinoDi.mkdirs();
-										 Urlsi=Urlsi+Idov+"."+extension;
+										 Urlsi=Urlsi+Idov+"."+extension.toLowerCase();
 										 File DestinoFi=new File(Urlsi); 
 										 DestinoFi.delete();
 										 try {
