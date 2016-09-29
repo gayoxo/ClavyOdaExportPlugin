@@ -41,7 +41,7 @@ public class SaveProcessMainOdA2NoOverwrite extends
 	protected void processOV(List<CompleteDocuments> list)
 			throws CompleteImportRuntimeException {
 		for (CompleteDocuments resources : list) {
-			if (StaticFuctionsOda2.isAVirtualObject(resources,toOda.getMetamodelGrammar()))
+			if (StaticFuctionsOda2.isAVirtualObject(resources))
 				saveOV(resources);
 		}
 		
@@ -200,8 +200,8 @@ public class SaveProcessMainOdA2NoOverwrite extends
 		
 		if (IDOV!=null)
 		{
-			boolean Public=StaticFuctionsOda2.getPublic(ObjetoDigital,toOda.getMetamodelGrammar());
-			boolean Private=StaticFuctionsOda2.getPrivate(ObjetoDigital,toOda.getMetamodelGrammar());
+			boolean Public=StaticFuctionsOda2.getPublic(ObjetoDigital);
+			boolean Private=StaticFuctionsOda2.getPrivate(ObjetoDigital);
 			
 			String SPublic="N";
 			if (Public)
@@ -225,8 +225,8 @@ public class SaveProcessMainOdA2NoOverwrite extends
 
 		try{
 //			Integer Idov=StaticFuctionsOda2.findIdov(ObjetoDigital);
-			boolean Public=StaticFuctionsOda2.getPublic(ObjetoDigital,toOda.getMetamodelGrammar());
-			boolean Private=StaticFuctionsOda2.getPrivate(ObjetoDigital,toOda.getMetamodelGrammar());
+			boolean Public=StaticFuctionsOda2.getPublic(ObjetoDigital);
+			boolean Private=StaticFuctionsOda2.getPrivate(ObjetoDigital);
 			
 			String SPublic="N";
 			if (Public)
