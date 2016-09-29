@@ -37,7 +37,7 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteIterator;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteResourceElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteStructure;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
@@ -500,8 +500,8 @@ public abstract class SaveProcessMainOdA2 {
 			if	(collectionAttribute instanceof CompleteLinkElementType)
 		{
 			nuevo=new CompleteLinkElementType(((CompleteLinkElementType) collectionAttribute).getName(),collectionAttribute.getFather());
-			for (CompleteOperationalView nuevoShow : collectionAttribute.getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : collectionAttribute.getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			for (CompleteStructure iterable_element : collectionAttribute.getSons()) {
@@ -514,8 +514,8 @@ public abstract class SaveProcessMainOdA2 {
 		else if	(collectionAttribute instanceof CompleteResourceElementType)
 		{
 			nuevo=new CompleteResourceElementType(((CompleteResourceElementType) collectionAttribute).getName(),collectionAttribute.getFather());
-			for (CompleteOperationalView nuevoShow : collectionAttribute.getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : collectionAttribute.getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			for (CompleteStructure iterable_element : collectionAttribute.getSons()) {
@@ -529,8 +529,8 @@ public abstract class SaveProcessMainOdA2 {
 		{
 
 			nuevo=new CompleteTextElementType(((CompleteTextElementType) collectionAttribute).getName(), collectionAttribute.getFather());
-			for (CompleteOperationalView nuevoShow : collectionAttribute.getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : collectionAttribute.getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			for (CompleteStructure iterable_element : collectionAttribute.getSons()) {
@@ -543,8 +543,8 @@ public abstract class SaveProcessMainOdA2 {
 
 		else {
 			nuevo=new CompleteElementType(((CompleteElementType) collectionAttribute).getName(), collectionAttribute.getFather());
-			for (CompleteOperationalView nuevoShow : collectionAttribute.getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : collectionAttribute.getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			for (CompleteStructure iterable_element : collectionAttribute.getSons()) {
@@ -589,8 +589,8 @@ public abstract class SaveProcessMainOdA2 {
 			if	(elementoColonar instanceof CompleteLinkElementType)
 		{
 			nuevo=new CompleteLinkElementType(((CompleteLinkElementType) elementoColonar).getName(), padreNUevo);
-			for (CompleteOperationalView nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			for (CompleteStructure iterable_element : elementoColonar.getSons()) {
@@ -603,8 +603,8 @@ public abstract class SaveProcessMainOdA2 {
 		else if	(elementoColonar instanceof CompleteResourceElementType)
 		{
 			nuevo=new CompleteResourceElementType(((CompleteResourceElementType) elementoColonar).getName(), padreNUevo);
-			for (CompleteOperationalView nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			for (CompleteStructure iterable_element : elementoColonar.getSons()) {
@@ -617,8 +617,8 @@ public abstract class SaveProcessMainOdA2 {
 		else if	(elementoColonar instanceof CompleteTextElementType)
 		{
 			nuevo=new CompleteTextElementType(((CompleteTextElementType) elementoColonar).getName(), padreNUevo);
-			for (CompleteOperationalView nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			for (CompleteStructure iterable_element : elementoColonar.getSons()) {
@@ -630,8 +630,8 @@ public abstract class SaveProcessMainOdA2 {
 		}
 		else if (elementoColonar instanceof CompleteElementType){
 			nuevo=new CompleteElementType(((CompleteElementType) elementoColonar).getName(), padreNUevo);
-			for (CompleteOperationalView nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
-				CompleteOperationalView NuevoShownClonado=nuevoShow;
+			for (CompleteOperationalValueType nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
+				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
 				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
 			}
 			
@@ -803,7 +803,7 @@ public abstract class SaveProcessMainOdA2 {
 	 */
 	protected void processOV(List<CompleteDocuments> list) throws CompleteImportRuntimeException {
 		for (CompleteDocuments resources : list) {
-			if (StaticFuctionsOda2.isAVirtualObject(resources))
+			if (StaticFuctionsOda2.isAVirtualObject(resources,toOda.getMetamodelGrammar()))
 				saveOV(resources);
 		}
 		
@@ -835,8 +835,8 @@ public abstract class SaveProcessMainOdA2 {
 	protected void saveOV(CompleteDocuments ObjetoDigital) throws CompleteImportRuntimeException {
 		try{
 //		Integer Idov=StaticFuctionsOda2.findIdov(ObjetoDigital);
-		boolean Public=StaticFuctionsOda2.getPublic(ObjetoDigital);
-		boolean Private=StaticFuctionsOda2.getPrivate(ObjetoDigital);
+		boolean Public=StaticFuctionsOda2.getPublic(ObjetoDigital,toOda.getMetamodelGrammar());
+		boolean Private=StaticFuctionsOda2.getPrivate(ObjetoDigital,toOda.getMetamodelGrammar());
 		
 		String SPublic="N";
 		if (Public)
@@ -929,7 +929,7 @@ public abstract class SaveProcessMainOdA2 {
 	
 				CompleteDocuments recursoAProcesarC = (CompleteDocuments)recursoAProcesar;
 				
-				if (StaticFuctionsOda2.isAVirtualObject(recursoAProcesarC))
+				if (StaticFuctionsOda2.isAVirtualObject(recursoAProcesarC,toOda.getMetamodelGrammar()))
 				{
 					
 					Integer Idov=tabla.get(recursoAProcesarC);
@@ -942,7 +942,7 @@ public abstract class SaveProcessMainOdA2 {
 						ColectionLog.getLogLines().add("Link a objeto virtual: "+ recursoAProcesarC.getDescriptionText()+ "no existe en la lista de recursos, pero tiene un link, IGNORADO" );
 				}
 				else
-					if (StaticFuctionsOda2.isAFile(recursoAProcesarC))
+					if (StaticFuctionsOda2.isAFile(recursoAProcesarC,toOda.getMetamodelGrammar()))
 				{
 						CompleteResourceElement FIleRel=StaticFuctionsOda2.findMetaValueFile(recursoAProcesarC.getDescription());
 						CompleteLinkElement idovrefVal= StaticFuctionsOda2.findMetaValueIDOVowner(recursoAProcesarC.getDescription());
@@ -966,6 +966,23 @@ public abstract class SaveProcessMainOdA2 {
 								String extension="jpg";
 								if (ext.length>0)
 								 extension= ext[ext.length-1];
+				
+								StringBuffer SB=new StringBuffer();
+								for (int i = 0; i < ext.length; i++) {
+									
+									if (i!=0)
+										SB.append(".");
+									
+									String Value=ext[i];
+									if (i==ext.length-1)
+										Value=Value.toLowerCase();
+									
+									SB.append(Value);
+									
+								}
+								
+								
+									NameS=SB.toString();
 								
 								
 								if (Idov==idov)
@@ -977,6 +994,7 @@ public abstract class SaveProcessMainOdA2 {
 									 File DestinoD=new File(Urls); 
 									 DestinoD.mkdirs();
 									 Urls=Urls+NameS;
+									 
 									 File DestinoF=new File(Urls); 
 									 DestinoF.delete();
 									 try {			 
@@ -1009,7 +1027,7 @@ public abstract class SaveProcessMainOdA2 {
 										 String Urlsi=PathGeneral+"/iconos/";
 										 File DestinoDi=new File(Urlsi); 
 										 DestinoDi.mkdirs();
-										 Urlsi=Urlsi+Idov+"."+extension;
+										 Urlsi=Urlsi+Idov+"."+extension.toLowerCase();
 										 File DestinoFi=new File(Urlsi); 
 										 DestinoFi.delete();
 										 try {
@@ -1048,7 +1066,7 @@ public abstract class SaveProcessMainOdA2 {
 					else ColectionLog.getLogLines().add("El objeto dueño del archivo es nulo o no Objeto Virtual, Archivo:"+recursoAProcesarC.getDescriptionText()+", IGNORADO ");
 				}
 					else
-						if (StaticFuctionsOda2.isAURL(recursoAProcesarC))
+						if (StaticFuctionsOda2.isAURL(recursoAProcesarC,toOda.getMetamodelGrammar()))
 						{
 							String ValueUri="";
 							CompleteResourceElement UniFile=StaticFuctionsOda2.findMetaValueUri(recursoAProcesarC.getDescription());
@@ -1691,19 +1709,35 @@ public abstract class SaveProcessMainOdA2 {
 	 */
 	private void saveImage(URL imageUrl, String destinationFile) throws IOException {
 
-		URL url = imageUrl;
-		InputStream is = url.openStream();
-		OutputStream os = new FileOutputStream(destinationFile);
+		int reintentos = 3;
+		boolean salvada=false;
+		
+		while (!salvada&&reintentos>0) {
+			try {
+				reintentos--;
+				
+				URL url = imageUrl;
+				InputStream is = url.openStream();
+				OutputStream os = new FileOutputStream(destinationFile);
 
-		byte[] b = new byte[2048];
-		int length;
+				byte[] b = new byte[2048];
+				int length;
 
-		while ((length = is.read(b)) != -1) {
-			os.write(b, 0, length);
+				while ((length = is.read(b)) != -1) {
+					os.write(b, 0, length);
+				}
+
+				is.close();
+				os.close();
+				salvada=true;
+			} catch (IOException e) {
+				ColectionLog.getLogLines().add("Problema I/O coping file:"+imageUrl+", retry");
+			}
 		}
-
-		is.close();
-		os.close();
+		
+		if (!salvada)
+			throw new IOException();
+		
 	}
 	
 	protected CompleteTextElementType findIdov() {
