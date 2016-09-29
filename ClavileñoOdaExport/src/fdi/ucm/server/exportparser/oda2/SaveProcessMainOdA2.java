@@ -37,7 +37,7 @@ import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteIterator;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteLinkElementType;
-import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteResourceElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteStructure;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
@@ -500,10 +500,8 @@ public abstract class SaveProcessMainOdA2 {
 			if	(collectionAttribute instanceof CompleteLinkElementType)
 		{
 			nuevo=new CompleteLinkElementType(((CompleteLinkElementType) collectionAttribute).getName(),collectionAttribute.getFather());
-			for (CompleteOperationalValueType nuevoShow : collectionAttribute.getShows()) {
-				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
-				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
-			}
+			((CompleteElementType)nuevo).getShows().addAll(showClonado(collectionAttribute.getShows()));
+			
 			for (CompleteStructure iterable_element : collectionAttribute.getSons()) {
 				CompleteStructure cloneEle = CloneEleProfundo(iterable_element,nuevo,element);
 				nuevo.getSons().add(cloneEle);
@@ -514,10 +512,7 @@ public abstract class SaveProcessMainOdA2 {
 		else if	(collectionAttribute instanceof CompleteResourceElementType)
 		{
 			nuevo=new CompleteResourceElementType(((CompleteResourceElementType) collectionAttribute).getName(),collectionAttribute.getFather());
-			for (CompleteOperationalValueType nuevoShow : collectionAttribute.getShows()) {
-				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
-				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
-			}
+			((CompleteElementType)nuevo).getShows().addAll(showClonado(collectionAttribute.getShows()));
 			for (CompleteStructure iterable_element : collectionAttribute.getSons()) {
 				CompleteStructure cloneEle = CloneEleProfundo(iterable_element,nuevo,element);
 				nuevo.getSons().add(cloneEle);
@@ -529,10 +524,7 @@ public abstract class SaveProcessMainOdA2 {
 		{
 
 			nuevo=new CompleteTextElementType(((CompleteTextElementType) collectionAttribute).getName(), collectionAttribute.getFather());
-			for (CompleteOperationalValueType nuevoShow : collectionAttribute.getShows()) {
-				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
-				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
-			}
+			((CompleteElementType)nuevo).getShows().addAll(showClonado(collectionAttribute.getShows()));
 			for (CompleteStructure iterable_element : collectionAttribute.getSons()) {
 				CompleteStructure cloneEle = CloneEleProfundo(iterable_element,nuevo,element);
 				nuevo.getSons().add(cloneEle);
@@ -543,10 +535,7 @@ public abstract class SaveProcessMainOdA2 {
 
 		else {
 			nuevo=new CompleteElementType(((CompleteElementType) collectionAttribute).getName(), collectionAttribute.getFather());
-			for (CompleteOperationalValueType nuevoShow : collectionAttribute.getShows()) {
-				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
-				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
-			}
+			((CompleteElementType)nuevo).getShows().addAll(showClonado(collectionAttribute.getShows()));
 			for (CompleteStructure iterable_element : collectionAttribute.getSons()) {
 				CompleteStructure cloneEle = CloneEleProfundo(iterable_element,nuevo,element);
 				nuevo.getSons().add(cloneEle);
@@ -560,6 +549,17 @@ public abstract class SaveProcessMainOdA2 {
 
 
 	
+
+private List<CompleteOperationalView> showClonado(ArrayList<CompleteOperationalView> shows) {
+	 List<CompleteOperationalView> Salida=new ArrayList<CompleteOperationalView>();
+	 for (CompleteOperationalView nuevoShow : shows) {		
+			CompleteOperationalView NuevoShownClonado=nuevoShow;
+		Salida.add(NuevoShownClonado);
+	}
+		return null;
+	}
+
+
 
 /**
  * Funcion que clona un elemento de manera profunda
@@ -589,10 +589,7 @@ public abstract class SaveProcessMainOdA2 {
 			if	(elementoColonar instanceof CompleteLinkElementType)
 		{
 			nuevo=new CompleteLinkElementType(((CompleteLinkElementType) elementoColonar).getName(), padreNUevo);
-			for (CompleteOperationalValueType nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
-				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
-				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
-			}
+			((CompleteElementType)nuevo).getShows().addAll(showClonado(((CompleteElementType) elementoColonar).getShows()));
 			for (CompleteStructure iterable_element : elementoColonar.getSons()) {
 				CompleteStructure cloneEle = CloneEleProfundo(iterable_element,nuevo,element);
 				nuevo.getSons().add(cloneEle);
@@ -603,10 +600,7 @@ public abstract class SaveProcessMainOdA2 {
 		else if	(elementoColonar instanceof CompleteResourceElementType)
 		{
 			nuevo=new CompleteResourceElementType(((CompleteResourceElementType) elementoColonar).getName(), padreNUevo);
-			for (CompleteOperationalValueType nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
-				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
-				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
-			}
+			((CompleteElementType)nuevo).getShows().addAll(showClonado(((CompleteElementType) elementoColonar).getShows()));
 			for (CompleteStructure iterable_element : elementoColonar.getSons()) {
 				CompleteStructure cloneEle = CloneEleProfundo(iterable_element,nuevo,element);
 				nuevo.getSons().add(cloneEle);
@@ -617,10 +611,7 @@ public abstract class SaveProcessMainOdA2 {
 		else if	(elementoColonar instanceof CompleteTextElementType)
 		{
 			nuevo=new CompleteTextElementType(((CompleteTextElementType) elementoColonar).getName(), padreNUevo);
-			for (CompleteOperationalValueType nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
-				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
-				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
-			}
+			((CompleteElementType)nuevo).getShows().addAll(showClonado(((CompleteElementType) elementoColonar).getShows()));
 			for (CompleteStructure iterable_element : elementoColonar.getSons()) {
 				CompleteStructure cloneEle = CloneEleProfundo(iterable_element,nuevo,element);
 				nuevo.getSons().add(cloneEle);
@@ -630,10 +621,7 @@ public abstract class SaveProcessMainOdA2 {
 		}
 		else if (elementoColonar instanceof CompleteElementType){
 			nuevo=new CompleteElementType(((CompleteElementType) elementoColonar).getName(), padreNUevo);
-			for (CompleteOperationalValueType nuevoShow : ((CompleteElementType) elementoColonar).getShows()) {
-				CompleteOperationalValueType NuevoShownClonado=nuevoShow;
-				((CompleteElementType)nuevo).getShows().add(NuevoShownClonado);
-			}
+			((CompleteElementType)nuevo).getShows().addAll(showClonado(((CompleteElementType) elementoColonar).getShows()));
 			
 			for (CompleteStructure iterable_element : elementoColonar.getSons()) {
 				CompleteStructure cloneEle = CloneEleProfundo(iterable_element,nuevo,element);
@@ -834,7 +822,7 @@ public abstract class SaveProcessMainOdA2 {
 	 */
 	protected void saveOV(CompleteDocuments ObjetoDigital) throws CompleteImportRuntimeException {
 		try{
-//		Integer Idov=StaticFuctionsOda2.findIdov(ObjetoDigital);
+		Integer Idov=StaticFuctionsOda2.findIdov(ObjetoDigital,this.IDOV);
 		boolean Public=StaticFuctionsOda2.getPublic(ObjetoDigital,toOda.getMetamodelGrammar());
 		boolean Private=StaticFuctionsOda2.getPrivate(ObjetoDigital,toOda.getMetamodelGrammar());
 		
@@ -847,7 +835,12 @@ public abstract class SaveProcessMainOdA2 {
 			SPrivate="S";
 		
 				
-		int Salida = MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `virtual_object` (`ispublic`,`isprivate`) VALUES ('"+SPublic+"','"+SPrivate+"');");
+		int Salida; 
+		
+		if (Idov!=null)
+			Salida= MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `virtual_object` (`id`,`ispublic`,`isprivate`) VALUES ('"+Idov+"','"+SPublic+"','"+SPrivate+"');");
+		else
+			Salida= MySQLConnectionOdA2.RunQuerryINSERT("INSERT INTO `virtual_object` (`ispublic`,`isprivate`) VALUES ('"+SPublic+"','"+SPrivate+"');");
 		
 		if (ReturnIDs)
 		{
@@ -962,7 +955,7 @@ public abstract class SaveProcessMainOdA2 {
 								else iconoov="N";
 								String[] spliteStri=(((CompleteResourceElementFile)FIleRel).getValue()).getPath().split("/");
 								String NameS = spliteStri[spliteStri.length-1];
-								String[] ext = NameS.split(".");
+								String[] ext = NameS.split("\\.");
 								String extension="jpg";
 								if (ext.length>0)
 								 extension= ext[ext.length-1];
@@ -1731,7 +1724,7 @@ public abstract class SaveProcessMainOdA2 {
 				os.close();
 				salvada=true;
 			} catch (IOException e) {
-				ColectionLog.getLogLines().add("Problema I/O coping file:"+imageUrl+", retry");
+				System.err.println("Problema I/O coping file:"+imageUrl+", retry: "+reintentos);
 			}
 		}
 		

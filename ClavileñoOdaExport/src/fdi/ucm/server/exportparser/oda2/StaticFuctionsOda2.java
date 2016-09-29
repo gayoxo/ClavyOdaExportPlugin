@@ -12,9 +12,11 @@ import fdi.ucm.server.modelComplete.collection.document.CompleteElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteLinkElement;
 import fdi.ucm.server.modelComplete.collection.document.CompleteOperationalValue;
 import fdi.ucm.server.modelComplete.collection.document.CompleteResourceElement;
+import fdi.ucm.server.modelComplete.collection.document.CompleteTextElement;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteElementType;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteGrammar;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalValueType;
+import fdi.ucm.server.modelComplete.collection.grammar.CompleteOperationalView;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteStructure;
 import fdi.ucm.server.modelComplete.collection.grammar.CompleteTextElementType;
 
@@ -46,8 +48,10 @@ public class StaticFuctionsOda2 {
 	 * @return
 	 */
 	public static boolean getVisible(CompleteElementType completeElementType) {
-		ArrayList<CompleteOperationalValueType> Shows = completeElementType.getShows();
-		for (CompleteOperationalValueType show : Shows) {
+		
+		ArrayList<CompleteOperationalView> Shows =completeElementType.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 				if (show.getName().equals(StaticNamesOda2.VISIBLESHOWN))
 					if (show.getDefault().equals(Boolean.toString(true)))
 						return true;
@@ -65,8 +69,9 @@ public class StaticFuctionsOda2 {
 	 * @return
 	 */
 	public static boolean getBrowseable(CompleteElementType completeElementType) {
-		ArrayList<CompleteOperationalValueType> Shows = completeElementType.getShows();
-		for (CompleteOperationalValueType show : Shows) {
+		ArrayList<CompleteOperationalView> Shows =completeElementType.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 				if (show.getName().equals(StaticNamesOda2.BROWSERSHOWN))
 					if (show.getDefault().equals(Boolean.toString(true)))
 						return true;
@@ -96,10 +101,12 @@ public class StaticFuctionsOda2 {
 	 */
 	public static boolean isVirtualObject(CompleteGrammar hastype) {
 		
-		ArrayList<CompleteOperationalValueType> Shows = hastype.getViews();
-		for (CompleteOperationalValueType show : Shows) {
+		
+		ArrayList<CompleteOperationalView> Shows =hastype.getViews();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 			
-			if (show.getView().equals(StaticNamesOda2.META))
+			if (show.getView().getName().equals(StaticNamesOda2.META))
 			{
 					if (show.getName().equals(StaticNamesOda2.TYPE))
 						if (show.getDefault().equals(StaticNamesOda2.VIRTUAL_OBJECT)) 
@@ -150,10 +157,11 @@ public class StaticFuctionsOda2 {
 	 */
 	public static boolean isFile(CompleteGrammar hastype) {
 		
-		ArrayList<CompleteOperationalValueType> Shows = hastype.getViews();
-		for (CompleteOperationalValueType show : Shows) {
+		ArrayList<CompleteOperationalView> Shows =hastype.getViews();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 			
-			if (show.getView().equals(StaticNamesOda2.META))
+			if (show.getView().getName().equals(StaticNamesOda2.META))
 			{
 					if (show.getName().equals(StaticNamesOda2.TYPE))
 						if (show.getDefault().equals(StaticNamesOda2.FILE)) 
@@ -171,10 +179,11 @@ public class StaticFuctionsOda2 {
 	 */
 	public static boolean isFileFisico(CompleteElementType hastype) {
 		
-		ArrayList<CompleteOperationalValueType> Shows = hastype.getShows();
-		for (CompleteOperationalValueType show : Shows) {
+		ArrayList<CompleteOperationalView> Shows =hastype.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 			
-			if (show.getView().equals(StaticNamesOda2.META))
+			if (show.getView().getName().equals(StaticNamesOda2.META))
 			{
 					if (show.getName().equals(StaticNamesOda2.TYPE))
 						if (show.getDefault().equals(StaticNamesOda2.FILERESOURCE)) 
@@ -191,10 +200,11 @@ public class StaticFuctionsOda2 {
 	 */
 	public static boolean isOwner(CompleteElementType hastype) {
 		
-		ArrayList<CompleteOperationalValueType> Shows = hastype.getShows();
-		for (CompleteOperationalValueType show : Shows) {
+		ArrayList<CompleteOperationalView> Shows =hastype.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 			
-			if (show.getView().equals(StaticNamesOda2.META))
+			if (show.getView().getName().equals(StaticNamesOda2.META))
 			{
 					if (show.getName().equals(StaticNamesOda2.TYPE))
 						if (show.getDefault().equals(StaticNamesOda2.IDOV_OWNER)) 
@@ -211,10 +221,11 @@ public class StaticFuctionsOda2 {
 	 */
 	public static boolean isMetaDatos(CompleteElementType hastype) {
 		
-		ArrayList<CompleteOperationalValueType> Shows = hastype.getShows();
-		for (CompleteOperationalValueType show : Shows) {
+		ArrayList<CompleteOperationalView> Shows =hastype.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 			
-			if (show.getView().equals(StaticNamesOda2.META))
+			if (show.getView().getName().equals(StaticNamesOda2.META))
 			{
 					if (show.getName().equals(StaticNamesOda2.TYPE))
 						if (show.getDefault().equals(StaticNamesOda2.METADATOS)) 
@@ -231,10 +242,11 @@ public class StaticFuctionsOda2 {
 	 */
 	public static boolean isDatos(CompleteElementType hastype) {
 		
-		ArrayList<CompleteOperationalValueType> Shows = hastype.getShows();
-		for (CompleteOperationalValueType show : Shows) {
+		ArrayList<CompleteOperationalView> Shows =hastype.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 			
-			if (show.getView().equals(StaticNamesOda2.META))
+			if (show.getView().getName().equals(StaticNamesOda2.META))
 			{
 					if (show.getName().equals(StaticNamesOda2.TYPE))
 						if (show.getDefault().equals(StaticNamesOda2.DATOS)) 
@@ -251,10 +263,11 @@ public class StaticFuctionsOda2 {
 	 */
 	public static boolean isResources(CompleteElementType hastype) {
 		
-		ArrayList<CompleteOperationalValueType> Shows = hastype.getShows();
-		for (CompleteOperationalValueType show : Shows) {
+		ArrayList<CompleteOperationalView> Shows =hastype.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 			
-			if (show.getView().equals(StaticNamesOda2.META))
+			if (show.getView().getName().equals(StaticNamesOda2.META))
 			{
 
 					if (show.getName().equals(StaticNamesOda2.TYPE))
@@ -274,10 +287,11 @@ public class StaticFuctionsOda2 {
 	 */
 	public static boolean isExtensible(CompleteElementType hastype) {
 		
-		ArrayList<CompleteOperationalValueType> Shows = hastype.getShows();
-		for (CompleteOperationalValueType show : Shows) {
+		ArrayList<CompleteOperationalView> Shows =hastype.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 			
-			if (show.getView().equals(StaticNamesOda2.ODA))
+			if (show.getView().getName().equals(StaticNamesOda2.ODA))
 			{
 					if (show.getName().equals(StaticNamesOda2.EXTENSIBLE))
 						if (show.getDefault().equals(Boolean.toString(true)))
@@ -303,16 +317,17 @@ public class StaticFuctionsOda2 {
 				{
 				ArrayList<CompleteOperationalValue> ShowsInst = objetoDigital.getViewsValues();
 				for (CompleteOperationalValue show : ShowsInst) {
-					if (show.getType().getView().equals(StaticNamesOda2.ODA)&&show.getType().getName().equals(StaticNamesOda2.PUBLIC))
+					if (show.getType().getView().getName().equals(StaticNamesOda2.ODA)&&show.getType().getName().equals(StaticNamesOda2.PUBLIC))
 						if (show.getValue().equals(Boolean.toString(true)))
 							return true;
 						else if (show.getValue().equals(Boolean.toString(false)))
 							return false;
 				}
 				
-				ArrayList<CompleteOperationalValueType> Shows = completeGrammar.getViews();
-				for (CompleteOperationalValueType show : Shows) {
-					if (show.getView().equals(StaticNamesOda2.ODA))
+				ArrayList<CompleteOperationalView> Shows =completeGrammar.getViews();
+				for (CompleteOperationalView completeOperationalView : Shows)
+					for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
+					if (show.getView().getName().equals(StaticNamesOda2.ODA))
 					{
 						if (show.getName().equals(StaticNamesOda2.PUBLIC))
 							if (show.getDefault().equals(Boolean.toString(true)))
@@ -346,16 +361,17 @@ public class StaticFuctionsOda2 {
 				{
 			ArrayList<CompleteOperationalValue> ShowsInst = objetoDigital.getViewsValues();
 				for (CompleteOperationalValue show : ShowsInst) {
-					if (show.getType().getView().equals(StaticNamesOda2.ODA)&&show.getType().getName().equals(StaticNamesOda2.PRIVATE))
+					if (show.getType().getView().getName().equals(StaticNamesOda2.ODA)&&show.getType().getName().equals(StaticNamesOda2.PRIVATE))
 						if (show.getValue().equals(Boolean.toString(true)))
 							return true;
 						else if (show.getValue().equals(Boolean.toString(false)))
 							return false;
 				}
 				
-				ArrayList<CompleteOperationalValueType> Shows = completeGrammar.getViews();
-				for (CompleteOperationalValueType show : Shows) {
-					if (show.getView().equals(StaticNamesOda2.ODA))
+				ArrayList<CompleteOperationalView> Shows =completeGrammar.getViews();
+				for (CompleteOperationalView completeOperationalView : Shows)
+					for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
+					if (show.getView().getName().equals(StaticNamesOda2.ODA))
 					{
 						if (show.getName().equals(StaticNamesOda2.PRIVATE))
 							if (show.getDefault().equals(Boolean.toString(true)))
@@ -392,8 +408,9 @@ public class StaticFuctionsOda2 {
 					return false;
 		}
 		
-		ArrayList<CompleteOperationalValueType> Shows = elem.getHastype().getShows();
-		for (CompleteOperationalValueType show : Shows) {
+		ArrayList<CompleteOperationalView> Shows =elem.getHastype().getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 				if (show.getName().equals(StaticNamesOda2.VISIBLESHOWN))
 					if (show.getDefault().equals(Boolean.toString(true)))
 							return true;
@@ -444,9 +461,10 @@ public class StaticFuctionsOda2 {
 	 * @return
 	 */
 	public static boolean isNumeric(CompleteElementType hastype) {
-		ArrayList<CompleteOperationalValueType> Shows = hastype.getShows();
-		for (CompleteOperationalValueType show : Shows) {	
-			if (show.getView().equals(StaticNamesOda2.METATYPE))
+		ArrayList<CompleteOperationalView> Shows =hastype.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
+			if (show.getView().getName().equals(StaticNamesOda2.METATYPE))
 			{
 					if (show.getName().equals(StaticNamesOda2.METATYPETYPE))
 							if (show.getDefault().equals(StaticNamesOda2.NUMERIC)) 
@@ -466,7 +484,7 @@ public class StaticFuctionsOda2 {
 	public static boolean isNumeric(CompleteElement elem) {
 		ArrayList<CompleteOperationalValue> ShowsInst = elem.getShows();
 		for (CompleteOperationalValue show : ShowsInst) {
-			if (show.getType().getView().equals(StaticNamesOda2.METATYPE)&&show.getType().getName().equals(StaticNamesOda2.METATYPETYPE))
+			if (show.getType().getView().getName().equals(StaticNamesOda2.METATYPE)&&show.getType().getName().equals(StaticNamesOda2.METATYPETYPE))
 				if (show.getValue().equals(StaticNamesOda2.NUMERIC))
 					return true;
 		}
@@ -483,9 +501,10 @@ public class StaticFuctionsOda2 {
 
 
 	public static boolean isDate(CompleteElementType attribute) {
-		ArrayList<CompleteOperationalValueType> Shows = attribute.getShows();
-		for (CompleteOperationalValueType show : Shows) {	
-			if (show.getView().equals(StaticNamesOda2.METATYPE))
+		ArrayList<CompleteOperationalView> Shows =attribute.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
+			if (show.getView().getName().equals(StaticNamesOda2.METATYPE))
 			{
 					if (show.getName().equals(StaticNamesOda2.METATYPETYPE))
 							if (show.getDefault().equals(StaticNamesOda2.DATE)) 
@@ -503,9 +522,10 @@ public class StaticFuctionsOda2 {
 
 
 	public static Integer getVocNumber(CompleteTextElementType attribute) {
-		ArrayList<CompleteOperationalValueType> Shows = attribute.getShows();
-		for (CompleteOperationalValueType show : Shows) {	
-			if (show.getView().equals(StaticNamesOda2.VOCABULARY))
+		ArrayList<CompleteOperationalView> Shows =attribute.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
+			if (show.getView().getName().equals(StaticNamesOda2.VOCABULARY))
 			{
 					if (show.getName().equals(StaticNamesOda2.VOCNUMBER))
 						try {
@@ -521,9 +541,10 @@ public class StaticFuctionsOda2 {
 	
 	
 	public static Boolean getVocCompartido(CompleteTextElementType attribute) {
-		ArrayList<CompleteOperationalValueType> Shows = attribute.getShows();
-		for (CompleteOperationalValueType show : Shows) {	
-			if (show.getView().equals(StaticNamesOda2.VOCABULARY))
+		ArrayList<CompleteOperationalView> Shows =attribute.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
+			if (show.getView().getName().equals(StaticNamesOda2.VOCABULARY))
 			{
 					if (show.getName().equals(StaticNamesOda2.COMPARTIDO))
 						try {
@@ -545,9 +566,10 @@ public class StaticFuctionsOda2 {
 
 
 	public static boolean isControled(CompleteElementType hastype) {
-		ArrayList<CompleteOperationalValueType> Shows = hastype.getShows();
-		for (CompleteOperationalValueType show : Shows) {	
-			if (show.getView().equals(StaticNamesOda2.METATYPE))
+		ArrayList<CompleteOperationalView> Shows =hastype.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
+			if (show.getView().getName().equals(StaticNamesOda2.METATYPE))
 			{
 				if (show.getName().equals(StaticNamesOda2.METATYPETYPE))
 						if (show.getDefault().equals(StaticNamesOda2.CONTROLED)) 
@@ -571,10 +593,11 @@ public class StaticFuctionsOda2 {
 
 
 	public static boolean isURL(CompleteGrammar document) {
-		ArrayList<CompleteOperationalValueType> Shows = document.getViews();
-		for (CompleteOperationalValueType show : Shows) {
+		ArrayList<CompleteOperationalView> Shows =document.getViews();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 			
-			if (show.getView().equals(StaticNamesOda2.META))
+			if (show.getView().getName().equals(StaticNamesOda2.META))
 			{
 					if (show.getName().equals(StaticNamesOda2.TYPE))
 						if (show.getDefault().equals(StaticNamesOda2.URL)) 
@@ -603,10 +626,11 @@ public class StaticFuctionsOda2 {
 	 */
 	public static boolean isURI(CompleteElementType hastype) {
 		
-		ArrayList<CompleteOperationalValueType> Shows = hastype.getShows();
-		for (CompleteOperationalValueType show : Shows) {
+		ArrayList<CompleteOperationalView> Shows =hastype.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 			
-			if (show.getView().equals(StaticNamesOda2.META))
+			if (show.getView().getName().equals(StaticNamesOda2.META))
 			{
 					if (show.getName().equals(StaticNamesOda2.TYPE))
 						if (show.getDefault().equals(StaticNamesOda2.URI)) 
@@ -619,10 +643,11 @@ public class StaticFuctionsOda2 {
 
 
 	public static Integer getIDODAD(CompleteElementType attribute) {
-		ArrayList<CompleteOperationalValueType> Shows = attribute.getShows();
-		for (CompleteOperationalValueType show : Shows) {
+		ArrayList<CompleteOperationalView> Shows =attribute.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 			
-			if (show.getView().equals(StaticNamesOda2.PRESNTACION))
+			if (show.getView().getName().equals(StaticNamesOda2.PRESNTACION))
 			{
 					if (show.getName().equals(StaticNamesOda2.OdaID))
 						try {
@@ -641,10 +666,11 @@ public class StaticFuctionsOda2 {
 
 
 	public static boolean isIDOV(CompleteTextElementType hastype) {
-		ArrayList<CompleteOperationalValueType> Shows = hastype.getShows();
-		for (CompleteOperationalValueType show : Shows) {
+		ArrayList<CompleteOperationalView> Shows =hastype.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 			
-			if (show.getView().equals(StaticNamesOda2.META))
+			if (show.getView().getName().equals(StaticNamesOda2.META))
 			{
 
 					if (show.getName().equals(StaticNamesOda2.TYPE))
@@ -659,10 +685,11 @@ public class StaticFuctionsOda2 {
 
 	public static void findPresentacionYCompleta(
 			CompleteElementType attribute,Integer IdovNuevo) {
-		ArrayList<CompleteOperationalValueType> Shows = attribute.getShows();
-		for (CompleteOperationalValueType show : Shows) {
+		ArrayList<CompleteOperationalView> Shows =attribute.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 			
-			if (show.getView().equals(StaticNamesOda2.PRESNTACION))
+			if (show.getView().getName().equals(StaticNamesOda2.PRESNTACION))
 			{
 				boolean found=false;
 
@@ -676,7 +703,7 @@ public class StaticFuctionsOda2 {
 
 				
 				if (!found)
-					attribute.getShows().add(new CompleteOperationalValueType(StaticNamesOda2.OdaID, Integer.toString(IdovNuevo), show.getView()));
+					show.getView().getValues().add(new CompleteOperationalValueType(StaticNamesOda2.OdaID, Integer.toString(IdovNuevo), show.getView()));
 			}
 		}
 	}
@@ -684,10 +711,11 @@ public class StaticFuctionsOda2 {
 
 
 	public static boolean isIgnored(CompleteElementType hastype) {
-		ArrayList<CompleteOperationalValueType> Shows = hastype.getShows();
-		for (CompleteOperationalValueType show : Shows) {
+		ArrayList<CompleteOperationalView> Shows =hastype.getShows();
+		for (CompleteOperationalView completeOperationalView : Shows)
+			for (CompleteOperationalValueType show : completeOperationalView.getValues()) {
 			
-			if (show.getView().equals(StaticNamesOda2.META))
+			if (show.getView().getName().equals(StaticNamesOda2.META))
 			{
 
 					if (show.getName().equals(StaticNamesOda2.TYPE))
@@ -721,6 +749,21 @@ public class StaticFuctionsOda2 {
 			
 		}
 		return false;
+	}
+
+
+
+	public static Integer findIdov(CompleteDocuments objetoDigital, CompleteTextElementType idov) {
+		for (CompleteElement ie : objetoDigital.getDescription()) {
+			if (ie instanceof CompleteTextElement&&ie.getHastype().getClavilenoid().equals(idov.getClavilenoid()))
+				try {
+					return Integer.parseInt(((CompleteTextElement)ie).getValue());
+					
+				} catch (Exception e) {
+					// handle exception
+				}
+		}
+		return null;
 	}
 
 
