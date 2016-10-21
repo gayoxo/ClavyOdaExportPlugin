@@ -1386,7 +1386,9 @@ private List<CompleteOperationalView> showClonado(ArrayList<CompleteOperationalV
 			"`idseccion` int(11) DEFAULT NULL,"+
 			"`value` int(8) DEFAULT NULL,"+
 			"`idrecurso` int(11) DEFAULT NULL,"+
-			"UNIQUE KEY `id` (`id`)"+
+			"UNIQUE KEY `id` (`id`),"+
+			"KEY `idseccion` (`idseccion`),"+
+			"KEY `idov` (`idov`)"+
 			") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;");
 				
 		MySQLConnectionOdA2.RunQuerry("DROP TABLE IF EXISTS `numeric_data`;");
@@ -1396,7 +1398,9 @@ private List<CompleteOperationalView> showClonado(ArrayList<CompleteOperationalV
 			"`idseccion` int(11) DEFAULT NULL,"+
 			"`value` decimal(30,15) DEFAULT NULL,"+
 			"`idrecurso` int(11) DEFAULT NULL,"+
-			"PRIMARY KEY (`id`)"+
+			"PRIMARY KEY (`id`),"+
+			"KEY `idseccion` (`idseccion`),"+
+			"KEY `idov` (`idov`)"+
 			") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 		
 		MySQLConnectionOdA2.RunQuerry("DROP TABLE IF EXISTS `resources`;");
@@ -1444,7 +1448,9 @@ private List<CompleteOperationalView> showClonado(ArrayList<CompleteOperationalV
 				  "`idseccion` int(11) DEFAULT NULL,"+
 				  "`value` text,"+
 				  "`idrecurso` int(11) DEFAULT NULL,"+
-				  "PRIMARY KEY (`id`)"+
+				  "PRIMARY KEY (`id`),"+
+			"KEY `idseccion` (`idseccion`),"+
+			"KEY `idov` (`idov`)"+
 				") ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 				
 				MySQLConnectionOdA2.RunQuerry("DROP TABLE IF EXISTS `virtual_object`;");
